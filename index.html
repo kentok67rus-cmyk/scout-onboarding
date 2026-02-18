@@ -18,8 +18,8 @@
         p { color: #555; font-size: 15px; line-height: 1.4; margin-bottom: 20px; font-weight: 500; }
         
         /* ПОЛЯ ВВОДА */
-        input, select { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid var(--yellow); border-radius: 14px; font-size: 18px; box-sizing: border-box; text-align: center; font-weight: bold; outline: none; transition: 0.3s; background: #fafafa; }
-        input:focus, select:focus { border-color: var(--black); background: #fff; }
+        input { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid var(--yellow); border-radius: 14px; font-size: 18px; box-sizing: border-box; text-align: center; font-weight: bold; outline: none; transition: 0.3s; background: #fafafa; }
+        input:focus { border-color: var(--black); background: #fff; }
         
         /* КНОПКИ */
         button { background: var(--yellow); color: #000; border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; width: 100%; margin-top: 20px; text-transform: uppercase; box-shadow: 0 5px 0 #d4c300; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; display: block; }
@@ -29,11 +29,15 @@
         .logo-main { width: 120px; height: auto; margin-bottom: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         
         /* МЕНЮ ВЫБОРА ФОРМАТА */
-        .format-btn { background: #fff; border: 3px solid var(--yellow); color: #000; margin-bottom: 15px; padding: 20px; text-align: left; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 6px 0 #f0f0f0; transition: 0.2s; }
+        .format-btn { background: #fff; border: 3px solid var(--yellow); color: #000; margin-bottom: 12px; padding: 18px; text-align: left; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 6px 0 #f0f0f0; transition: 0.2s; }
         .format-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #f0f0f0; }
-        .format-icon { font-size: 30px; margin-right: 15px; }
-        .format-info div:first-child { font-weight: 800; font-size: 18px; text-transform: uppercase; }
+        .format-icon { font-size: 28px; margin-right: 15px; }
+        .format-info div:first-child { font-weight: 800; font-size: 17px; text-transform: uppercase; }
         .format-info div:last-child { font-size: 13px; color: #666; margin-top: 4px; }
+
+        /* PDF КНОПКА */
+        .pdf-btn { background: #fff; border: 3px solid #e74c3c; color: #e74c3c; }
+        .pdf-btn:active { box-shadow: 0 3px 0 #e0e0e0; }
 
         /* ВИДЕО И АУДИО */
         .media-container { position: relative; border-radius: 16px; overflow: hidden; border: 2px solid var(--yellow); background: #000; margin-bottom: 15px; }
@@ -69,19 +73,19 @@
     <div id="screen-reg" class="screen active center">
         <img src="logo.jpg" class="logo-main" alt="Карета Мобилити" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
         <h2>Привет, Скаут! 🚴‍♂️</h2>
-        <p>Заполни анкету для старта.</p>
+        <p>Заполни анкету (сохранится автоматически).</p>
         
         <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
         <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
         <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
         <input type="text" id="user-birth" placeholder="Дата рождения (ДД.ММ.ГГГГ)" oninput="validateForm()" maxlength="10">
         
-        <button id="btn-start" disabled onclick="showFormats()">Далее</button>
+        <button id="btn-start" disabled onclick="saveAndGo()">Далее</button>
     </div>
 
     <div id="screen-formats" class="screen">
         <h2>Формат обучения</h2>
-        <p>Выбери, как тебе удобнее изучить материал:</p>
+        <p>Выбери, как тебе удобнее:</p>
         
         <button class="format-btn" onclick="startCards()">
             <div class="format-info">
@@ -106,6 +110,14 @@
             </div>
             <div class="format-icon">🎵</div>
         </button>
+
+        <button class="format-btn pdf-btn" onclick="openPDF()">
+            <div class="format-info">
+                <div style="color:#e74c3c">📑 Презентация</div>
+                <div style="color:#e74c3c">Открыть PDF файл</div>
+            </div>
+            <div class="format-icon">📄</div>
+        </button>
     </div>
 
     <div id="screen-theory-cards" class="screen center">
@@ -123,14 +135,6 @@
                 <iframe src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/?p=x-I4ULg0MU6OYQodDqvM4Q" frameBorder="0" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
             </div>
         </div>
-        <div class="summary-box">
-            <b>📌 Главное:</b>
-            <ul>
-                <li>Бот + Селфи = Старт смены</li>
-                <li>Парковка: 50 см, ровная линия</li>
-                <li>Инструменты: ключи, щетка, тряпки</li>
-            </ul>
-        </div>
         <button onclick="startQuiz()">Я посмотрел, к тесту!</button>
         <button style="background:#fff; color:#000; border:2px solid #eee; margin-top:10px; font-size:14px; box-shadow:none;" onclick="showFormats()">Назад</button>
     </div>
@@ -141,17 +145,9 @@
             <div style="font-size:50px; margin-bottom:10px;">🎧</div>
             <p style="margin-bottom:15px; font-weight:bold;">Слушай внимательно</p>
             <audio controls style="width: 100%; border-radius: 50px;">
-                <source src="https://docs.google.com/uc?export=download&id=1pfRoSiaaQwXVCxFXlimVle_Hitpi_6Gk" type="audio/mpeg">
+                <source src="podcast.m4a" type="audio/mp4">
                 Твой браузер не поддерживает аудио.
             </audio>
-        </div>
-        <div class="summary-box">
-            <b>📌 О чем подкаст:</b>
-            <ul>
-                <li>Баланс парковок: перегоняй лишние</li>
-                <li>Клиент: помогай и улыбайся</li>
-                <li>Ремонт: сообщай о сложном в бот</li>
-            </ul>
         </div>
         <button onclick="startQuiz()">Я прослушал, к тесту!</button>
         <button style="background:#fff; color:#000; border:2px solid #eee; margin-top:10px; font-size:14px; box-shadow:none;" onclick="showFormats()">Назад</button>
@@ -178,7 +174,6 @@
     </div>
 
     <script>
-        // ТВОЯ ССЫЛКА НА ТАБЛИЦУ
         const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbzYEY5zXmuwJZN6mCSE54f8_3JESa4SqAgXlZ9c_XcUqdmdnZQ91yvuQvZYILEQLW-4/exec";
         
         let tg = window.Telegram.WebApp;
@@ -189,14 +184,34 @@
         let swipedCards = 0;
         const TOTAL_QUESTIONS = 15;
 
-        // ВАЛИДАЦИЯ ФОРМЫ (4 ПОЛЯ)
+        // ПРОВЕРКА СОХРАНЕННЫХ ДАННЫХ
+        window.onload = function() {
+            let savedName = localStorage.getItem('scoutName');
+            let savedPhone = localStorage.getItem('scoutPhone');
+            let savedCity = localStorage.getItem('scoutCity');
+            let savedBirth = localStorage.getItem('scoutBirth');
+
+            if(savedName && savedPhone) {
+                document.getElementById('user-name').value = savedName;
+                document.getElementById('user-phone').value = savedPhone;
+                document.getElementById('user-city').value = savedCity || "";
+                document.getElementById('user-birth').value = savedBirth || "";
+                
+                userData.name = savedName;
+                userData.phone = savedPhone;
+                userData.city = savedCity;
+                userData.birth = savedBirth;
+                
+                showFormats();
+            }
+        };
+
         function validateForm() {
             let n = document.getElementById('user-name').value.trim();
             let c = document.getElementById('user-city').value.trim();
             let b = document.getElementById('user-birth').value.trim();
             let p = document.getElementById('user-phone');
             
-            // Маска телефона
             let digits = p.value.replace(/\D/g, '');
             if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);
             let formatted = '+7';
@@ -210,17 +225,25 @@
             document.getElementById('btn-start').disabled = !isValid;
         }
 
-        function showFormats() {
+        function saveAndGo() {
             userData.name = document.getElementById('user-name').value;
             userData.phone = document.getElementById('user-phone').value;
             userData.city = document.getElementById('user-city').value;
             userData.birth = document.getElementById('user-birth').value;
+            
+            localStorage.setItem('scoutName', userData.name);
+            localStorage.setItem('scoutPhone', userData.phone);
+            localStorage.setItem('scoutCity', userData.city);
+            localStorage.setItem('scoutBirth', userData.birth);
+            
+            showFormats();
+        }
 
+        function showFormats() {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-formats').classList.add('active');
         }
 
-        // --- ЛОГИКА ФОРМАТОВ ---
         function startVideo() {
             document.getElementById('screen-formats').classList.remove('active');
             document.getElementById('screen-theory-video').classList.add('active');
@@ -229,11 +252,14 @@
             document.getElementById('screen-formats').classList.remove('active');
             document.getElementById('screen-theory-audio').classList.add('active');
         }
+        function openPDF() {
+            window.open('presentation.pdf', '_blank');
+        }
+
         function startCards() {
             document.getElementById('screen-formats').classList.remove('active');
             document.getElementById('screen-theory-cards').classList.add('active');
             
-            // Генерация карточек
             swipedCards = 0;
             document.getElementById('tinder-deck').innerHTML = '';
             document.getElementById('btn-cards-finish').style.display = 'none';
@@ -242,25 +268,25 @@
             theory.forEach((item, i) => {
                 let card = document.createElement('div');
                 card.className = 'tinder-card';
-                card.innerHTML = `<img src="${item.i}" class="card-img" onerror="this.src='https://via.placeholder.com/400x300?text=Image'"><div class="card-text">${item.t}</div>`;
+                // ВНИМАНИЕ: ЗДЕСЬ Я ПРОПИСАЛ ЛОГИКУ: БЕРЕМ ИМЯ ФАЙЛА ИЗ ПЕРЕМЕННОЙ item.img
+                card.innerHTML = `<img src="${item.img}" class="card-img" onerror="this.src='https://via.placeholder.com/400x300?text=Нет+картинки'"><div class="card-text">${item.t}</div>`;
                 document.getElementById('tinder-deck').appendChild(card);
                 setupSwipe(card);
             });
         }
 
-        // --- ДАННЫЕ (8 КАРТОЧЕК С РАБОЧИМИ ССЫЛКАМИ) ---
+        // --- ДАННЫЕ: ТЕКСТ + ТОЧНОЕ ИМЯ ФАЙЛА ---
         const theory = [
-            { t: "<b>🎧 8. АУДИОГИД</b><br>Цена — <b>1 рубль</b>. Активно предлагай клиентам, это повышает лояльность.", i: "https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?auto=format&fit=crop&w=800&q=80" },
-            { t: "<b>🔧 7. РЕМОНТ</b><br>Мелкое — сам. Сложное (рама, рулевая) — <b>пиши в бот и ТМ</b>. Снимай с линии.", i: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=800&q=80" },
-            { t: "<b>🛠 6. ИНВЕНТАРЬ</b><br>Ключи 13/15, отвертка, стяжки, микрофибра, щетка. Ищи в пилоне/складе.", i: "https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?auto=format&fit=crop&w=800&q=80" },
-            { t: "<b>📱 5. ЗАРПЛАТА</b><br>Только через Telegram-бот. Нажал «Старт» + <b>селфи</b>. Нет бота — нет денег.", i: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80" },
-            { t: "<b>🤝 4. ЭКСПЕРТ</b><br>Ты — спасательный круг. Знай тарифы и приложение. Помогай с улыбкой.", i: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80" },
-            { t: "<b>⚖️ 3. БАЛАНС</b><br>Много карет? Увези. Мало? Пригони. Не заставляй людей ждать.", i: "https://images.unsplash.com/photo-1571326442567-28d8b8a53606?auto=format&fit=crop&w=800&q=80" },
-            { t: "<b>🅿️ 2. ПАРКОВКА</b><br>Строго в линию, <b>50 см</b>. Фары ровно, техника сияет.", i: "https://images.unsplash.com/photo-1506015391300-415214824367?auto=format&fit=crop&w=800&q=80" },
-            { t: "<b>👔 1. СТАНДАРТ</b><br>Запрещено курить, есть или пить на Карете. Мы — премиум.", i: "https://images.unsplash.com/photo-1560252829-804f1a72b308?auto=format&fit=crop&w=800&q=80" }
+            { t: "<b>👔 1. СТАНДАРТ</b><br>Запрещено курить, есть или пить на Карете. Мы — премиум бренд.", img: "1.jpg" }, // JPG
+            { t: "<b>🅿️ 2. ПАРКОВКА</b><br>Строго в линию, <b>50 см</b>. Фары ровно, техника сияет.", img: "2.png" }, // PNG
+            { t: "<b>⚖️ 3. БАЛАНС</b><br>Много карет? Увези. Мало? Пригони. Не заставляй людей ждать.", img: "3.jpg" }, // JPG
+            { t: "<b>🤝 4. ЭКСПЕРТ</b><br>Ты — спасательный круг. Знай тарифы и приложение.", img: "4.png" }, // PNG
+            { t: "<b>📱 5. ЗАРПЛАТА</b><br>Через Telegram-бот. Нажал «Старт» + <b>селфи в форме</b>.", img: "5.png" }, // PNG
+            { t: "<b>🛠 6. ИНВЕНТАРЬ</b><br>Ключи 13/15, отвертка, стяжки, микрофибра, щетка.", img: "6.png" }, // PNG
+            { t: "<b>🔧 7. РЕМОНТ</b><br>Мелкое — сам. Сложное — <b>пиши в бот</b>.", img: "7.png" }, // PNG
+            { t: "<b>🎧 8. АУДИОГИД</b><br>Цена — <b>1 рубль</b>. Предлагай каждому клиенту.", img: "8.png" }  // PNG
         ];
 
-        // --- 15 ВОПРОСОВ ---
         let questions = [
             { q: "Как считается твое рабочее время?", a: ["Записываю в блокнот", "Через Telegram-бот (геолокация)", "Говорю ТМ на словах"], c: 1, p: true },
             { q: "Что нужно сделать при старте смены в боте?", a: ["Просто нажать старт", "Сделать селфи в форме на фоне Карет", "Написать 'Я тут' в чат"], c: 1, p: true },
@@ -279,7 +305,6 @@
             { q: "Клиент грубит, но хочет ехать. Твоя реакция?", a: ["Грубить в ответ", "Вежливо помочь и объяснить правила", "Игнорировать"], c: 1, p: true }
         ];
 
-        // --- ЛОГИКА СВАЙПОВ (TINDER) ---
         function setupSwipe(card) {
             let startX = 0;
             let isDragging = false;
@@ -304,7 +329,6 @@
             };
         }
 
-        // --- ЛОГИКА ТЕСТА ---
         function startQuiz() {
             userData.score = 0; userData.coins = 0; currentQ = 0;
             questions.sort(() => Math.random() - 0.5);
@@ -341,7 +365,6 @@
             document.getElementById('res-info').innerText = userData.name;
             document.getElementById('res-coins').innerText = userData.coins;
             
-            // ПРОХОДНОЙ БАЛЛ 12/15
             if (userData.score < 12) {
                 document.getElementById('finish-title').innerText = "Тест не сдан ❌";
                 document.getElementById('send-status').innerText = `Минимум 12/15 (у тебя ${userData.score}).\nПопробуй другой формат обучения!`;
