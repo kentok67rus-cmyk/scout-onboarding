@@ -333,8 +333,9 @@
         
         <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
         <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
+        
+        <input type="text" id="user-birth" placeholder="ДД.ММ.ГГГГ" oninput="formatDate(this); validateForm()" maxlength="10">
         <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
-        <input type="text" id="user-birth" placeholder="Дата рождения (ДД.ММ.ГГГГ)" oninput="validateForm()" maxlength="10">
         
         <button id="btn-start" disabled onclick="saveAndGo()">Далее</button>
     </div>
@@ -383,7 +384,7 @@
 
     <div id="screen-theory-cards" class="screen center">
         <h2>Правила</h2>
-        <div class="swipe-hint">Листай текст вниз ⬇️, смахивай карточку ↔️</div>
+        <div class="swipe-hint">Листай текст ⬇️, смахивай ➡️ (Дальше) или ⬅️ (Назад)</div>
         <div class="tinder-container" id="tinder-deck"></div>
         
         <button id="btn-cards-finish" style="display:none; background:#2ecc71; color:white; box-shadow:0 5px 0 #27ae60;" onclick="markCompleted('cards')">✅ Отлично! В меню</button>
@@ -394,7 +395,7 @@
         <h2>Видеообзор</h2>
         <div class="media-container">
             <div class="video-wrapper">
-                <iframe src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/?p=x-I4ULg0MU6OYQodDqvM4Q" frameBorder="0" allow="autoplay; fullscreen"></iframe>
+                <iframe id="onboarding-video" src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/?p=x-I4ULg0MU6OYQodDqvM4Q" frameBorder="0" allow="autoplay; fullscreen"></iframe>
             </div>
         </div>
         
@@ -407,7 +408,7 @@
         <div style="background:#f4f4f4; padding:30px; border-radius:20px; margin-bottom:20px;">
             <div style="font-size:50px; margin-bottom:10px;">🎧</div>
             <p style="margin-bottom:15px; font-weight:bold;">Слушай внимательно</p>
-            <audio controls style="width: 100%; border-radius: 50px;">
+            <audio id="onboarding-audio" controls style="width: 100%; border-radius: 50px;">
                 <source src="podcast.m4a" type="audio/mp4">
             </audio>
         </div>
@@ -457,11 +458,22 @@
 
         let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
         let currentQ = 0;
-        let swipedCards = 0;
         const TOTAL_QUESTIONS = 15;
 
-        // ПРОГРЕСС ОБУЧЕНИЯ (Для галочек)
+        // ПРОГРЕСС ОБУЧЕНИЯ
         let progress = { cards: false, video: false, audio: false, pdf: false };
+
+        // МАССИВ ТЕОРИИ КАРТОЧЕК
+        const theory = [
+            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.<br>• Поддерживай чистоту техники. Пыль на сиденьях недопустима.", img: "1.jpg" }, 
+            { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Парковка — это наша витрина. Как стоят Кареты, так люди воспринимают наш сервис.<br><br><b>Правила:</b><br>• Ставь Кареты строго в одну ровную линию.<br>• Расстояние между ними — ровно <b>50 см</b>.<br>• Руль и фары должны смотреть строго прямо.<br>• Техника должна сиять, никаких перекосов на станции.", img: "2.png" }, 
+            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>Техника должна быть там, где она нужна людям. Не создавай пустых точек или «свалок» из карет.<br><br><b>Твои действия:</b><br>• Много карет на точке? Угони лишние на соседнюю пустую.<br>• Точка опустела? Быстро пригони технику.<br>• Клиенты не должны ждать в очереди из-за плохой логистики.", img: "3.jpg" }, 
+            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Для туриста ты — главный помощник в парке. Будь готов ответить на любой вопрос с улыбкой.<br><br><b>Что нужно знать:</b><br>• Все актуальные тарифы и правила аренды.<br>• Как работает приложение (помоги скачать, привязать карту).<br>• Куда лучше поехать (маршруты и красивые места).", img: "4.png" }, 
+            { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br><br>Всё управление сменой происходит строго через нашего Telegram-бота.<br><br><b>Алгоритм:</b><br>• Пришел на точку -> нажал «Старт смены».<br>• Обязательно сделай <b>селфи в фирменной форме</b> на фоне парковки.<br>• Нет отметки в боте = нет зарплаты. Бот фиксирует твое рабочее время.", img: "5.png" }, 
+            { t: "<b>🛠 6. РАБОЧИЙ ИНВЕНТАРЬ</b><br><br>Ты должен уметь быстро подготовить Карету к поездке. Весь инвентарь лежит в пилоне на парковке или на складе.<br><br><b>Твой набор:</b><br>• Гаечные ключи на 13 и 15, отвертка.<br>• Пластиковые стяжки.<br>• Яркая микрофибра для протирки.<br>• Жесткая щетка для счистки песка с рамы.", img: "6.png" }, 
+            { t: "<b>🔧 7. ПОЛОМКИ И РЕМОНТ</b><br><br>Техника иногда ломается. Главное — быстро и правильно среагировать.<br><br><b>Твои действия:</b><br>• Мелкий ремонт (подкрутить болт) — делай сам на месте.<br>• Серьезная поломка (трещина в раме, спустило колесо) — немедленно <b>пиши заявку в бот</b>.<br>• Сломанную Карету обязательно сними с линии.", img: "7.png" }, 
+            { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — это уникальная фишка наших Карет, которая повышает лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.<br>• Помоги туристам включить и надеть наушники.", img: "8.png" }
+        ];
 
         // ПРОВЕРКА СОХРАНЕНИЯ ПРИ ЗАГРУЗКЕ
         window.addEventListener('DOMContentLoaded', () => {
@@ -487,6 +499,14 @@
             }
         });
 
+        // ИСПРАВЛЕНИЕ: Маска для ввода даты рождения (ДД.ММ.ГГГГ)
+        function formatDate(input) {
+            let v = input.value.replace(/\D/g, ''); // Оставляем только цифры
+            if (v.length > 2) v = v.slice(0, 2) + '.' + v.slice(2);
+            if (v.length > 5) v = v.slice(0, 5) + '.' + v.slice(5, 9);
+            input.value = v;
+        }
+
         // ВАЛИДАЦИЯ ФОРМЫ
         function validateForm() {
             let n = document.getElementById('user-name').value.trim();
@@ -500,7 +520,8 @@
             }
             p.value = digits.length > 0 ? '+7' + digits : '+7'; 
             
-            let isValid = (n.length > 2 && c.length > 2 && b.length > 5 && digits.length >= 10);
+            // Дата рождения должна состоять ровно из 10 символов
+            let isValid = (n.length > 2 && c.length > 2 && b.length === 10 && digits.length >= 10);
             document.getElementById('btn-start').disabled = !isValid;
         }
 
@@ -519,8 +540,29 @@
             showFormats();
         }
 
+        // ИСПРАВЛЕНИЕ: Функция жесткой остановки аудио и видео
+        function stopMedia() {
+            // Тормозим аудио
+            let audio = document.getElementById('onboarding-audio');
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+            
+            // Тормозим видео (перезагрузкой src iframe)
+            let video = document.getElementById('onboarding-video');
+            if (video) {
+                let currentSrc = video.src;
+                video.src = '';
+                video.src = currentSrc;
+            }
+        }
+
         // НАВИГАЦИЯ
-        function showFormats() { showScreen('screen-formats'); }
+        function showFormats() { 
+            stopMedia(); // Останавливаем всё при выходе в меню
+            showScreen('screen-formats'); 
+        }
         function startVideo() { showScreen('screen-theory-video'); }
         function startAudio() { showScreen('screen-theory-audio'); }
         function openPDF() { showScreen('screen-theory-pdf'); }
@@ -532,86 +574,68 @@
 
         // ФИКСИРУЕМ ГАЛОЧКУ
         function markCompleted(format) {
+            stopMedia(); // Останавливаем медиа перед выходом
+            
             progress[format] = true;
             document.getElementById(`icon-${format}`).innerText = '✅';
             
-            // Если ВСЕ 4 формата пройдены - открываем кнопку теста
             if (progress.cards && progress.video && progress.audio && progress.pdf) {
                 let btnTest = document.getElementById('btn-main-test');
                 btnTest.disabled = false;
                 btnTest.innerText = 'Пройти тест 🔓';
             }
             
-            // Возвращаем в меню
             showFormats();
-            
-            // Легкая вибрация для приятного ощущения
             tg.HapticFeedback.notificationOccurred('success');
         }
 
-        // --- ЛОГИКА КАРТОЧЕК ---
+        // --- НОВАЯ ЛОГИКА КАРТОЧЕК (СВАЙП ВПРАВО - ВПЕРЕД, ВЛЕВО - НАЗАД) ---
+        let currentCardIndex = 0;
+        let maxCardIndex = 0;
+
         function startCards() {
             showScreen('screen-theory-cards');
-            swipedCards = 0;
-            document.getElementById('tinder-deck').innerHTML = '';
+            currentCardIndex = 0;
+            maxCardIndex = 0;
             document.getElementById('btn-cards-finish').style.display = 'none';
             document.querySelector('.swipe-hint').style.display = 'block';
-
-            const theory = [
-                { 
-                    t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.<br>• Поддерживай чистоту техники. Пыль на сиденьях недопустима.", 
-                    img: "1.jpg" 
-                }, 
-                { 
-                    t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Парковка — это наша витрина. Как стоят Кареты, так люди воспринимают наш сервис.<br><br><b>Правила:</b><br>• Ставь Кареты строго в одну ровную линию.<br>• Расстояние между ними — ровно <b>50 см</b>.<br>• Руль и фары должны смотреть строго прямо.<br>• Техника должна сиять, никаких перекосов на станции.", 
-                    img: "2.png" 
-                }, 
-                { 
-                    t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>Техника должна быть там, где она нужна людям. Не создавай пустых точек или «свалок» из карет.<br><br><b>Твои действия:</b><br>• Много карет на точке? Угони лишние на соседнюю пустую.<br>• Точка опустела? Быстро пригони технику.<br>• Клиенты не должны ждать в очереди из-за плохой логистики.", 
-                    img: "3.jpg" 
-                }, 
-                { 
-                    t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Для туриста ты — главный помощник в парке. Будь готов ответить на любой вопрос с улыбкой.<br><br><b>Что нужно знать:</b><br>• Все актуальные тарифы и правила аренды.<br>• Как работает приложение (помоги скачать, привязать карту).<br>• Куда лучше поехать (маршруты и красивые места).", 
-                    img: "4.png" 
-                }, 
-                { 
-                    t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br><br>Всё управление сменой происходит строго через нашего Telegram-бота.<br><br><b>Алгоритм:</b><br>• Пришел на точку -> нажал «Старт смены».<br>• Обязательно сделай <b>селфи в фирменной форме</b> на фоне парковки.<br>• Нет отметки в боте = нет зарплаты. Бот фиксирует твое рабочее время.", 
-                    img: "5.png" 
-                }, 
-                { 
-                    t: "<b>🛠 6. РАБОЧИЙ ИНВЕНТАРЬ</b><br><br>Ты должен уметь быстро подготовить Карету к поездке. Весь инвентарь лежит в пилоне на парковке или на складе.<br><br><b>Твой набор:</b><br>• Гаечные ключи на 13 и 15, отвертка.<br>• Пластиковые стяжки.<br>• Яркая микрофибра для протирки.<br>• Жесткая щетка для счистки песка с рамы.", 
-                    img: "6.png" 
-                }, 
-                { 
-                    t: "<b>🔧 7. ПОЛОМКИ И РЕМОНТ</b><br><br>Техника иногда ломается. Главное — быстро и правильно среагировать.<br><br><b>Твои действия:</b><br>• Мелкий ремонт (подкрутить болт) — делай сам на месте.<br>• Серьезная поломка (трещина в раме, спустило колесо) — немедленно <b>пиши заявку в бот</b>.<br>• Сломанную Карету обязательно сними с линии.", 
-                    img: "7.png" 
-                }, 
-                { 
-                    t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — это уникальная фишка наших Карет, которая повышает лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.<br>• Помоги туристам включить и надеть наушники.", 
-                    img: "8.png" 
-                }
-            ];
-
-            let reversedTheory = [...theory].reverse();
             
-            reversedTheory.forEach((item, i) => {
-                let card = document.createElement('div');
-                card.className = 'tinder-card';
-                
-                let fallbackImg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.png') : item.img.replace('.png', '.jpg');
-                let fallbackImgJpeg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.jpeg') : item.img.replace('.png', '.jpeg');
-                
-                card.innerHTML = `
-                    <img src="${item.img}" class="card-img" onerror="this.onerror=null; this.src='${fallbackImg}'; this.onerror=function(){this.onerror=null; this.src='${fallbackImgJpeg}';};">
-                    <div class="card-text">${item.t}</div>
-                `;
-                
-                document.getElementById('tinder-deck').appendChild(card);
-                setupSwipe(card);
-            });
+            renderCurrentCard(); // Отрисовываем первую карточку
         }
 
-        // --- УМНЫЙ СВАЙП ---
+        function renderCurrentCard() {
+            const deck = document.getElementById('tinder-deck');
+            deck.innerHTML = ''; // Очищаем колоду
+
+            let item = theory[currentCardIndex];
+            let card = document.createElement('div');
+            card.className = 'tinder-card';
+            
+            let fallbackImg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.png') : item.img.replace('.png', '.jpg');
+            let fallbackImgJpeg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.jpeg') : item.img.replace('.png', '.jpeg');
+            
+            // Добавил счетчик карточек (1/8) в правый верхний угол
+            card.innerHTML = `
+                <div style="position:absolute; top:12px; right:12px; font-weight:900; color:#000; background:var(--yellow); padding:5px 12px; border-radius:10px; z-index:10; font-size:14px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                    ${currentCardIndex + 1} / ${theory.length}
+                </div>
+                <img src="${item.img}" class="card-img" onerror="this.onerror=null; this.src='${fallbackImg}'; this.onerror=function(){this.onerror=null; this.src='${fallbackImgJpeg}';};">
+                <div class="card-text">${item.t}</div>
+            `;
+            
+            deck.appendChild(card);
+            setupSwipe(card);
+
+            // Если долистали до последней - показываем кнопку "Отлично"
+            if (maxCardIndex >= theory.length - 1) {
+                document.getElementById('btn-cards-finish').style.display = 'block';
+                document.querySelector('.swipe-hint').style.display = 'none';
+            } else {
+                document.getElementById('btn-cards-finish').style.display = 'none';
+                document.querySelector('.swipe-hint').style.display = 'block';
+            }
+        }
+
         function setupSwipe(card) {
             let startX = 0; 
             let startY = 0;
@@ -653,21 +677,37 @@
                 isDragging = false; 
                 card.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
                 
-                let diff = e.changedTouches[0].clientX - startX;
+                let diffX = e.changedTouches[0].clientX - startX;
                 
-                if (Math.abs(diff) > 100) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                    card.classList.add(diff > 0 ? 'swiped-right' : 'swiped-left');
-                    swipedCards++;
-                    
-                    setTimeout(() => { 
-                        card.remove(); 
-                        if (swipedCards >= 8) { 
-                            document.getElementById('btn-cards-finish').style.display = 'block'; 
-                            document.querySelector('.swipe-hint').style.display = 'none'; 
-                        } 
-                    }, 300);
-                } else {
+                // СВАЙП ВПРАВО (ДАЛЬШЕ)
+                if (diffX > 100) {
+                    if (currentCardIndex < theory.length - 1) {
+                        tg.HapticFeedback.impactOccurred('medium');
+                        card.classList.add('swiped-right'); // Улетает вправо
+                        currentCardIndex++;
+                        maxCardIndex = Math.max(maxCardIndex, currentCardIndex);
+                        setTimeout(() => renderCurrentCard(), 300);
+                    } else {
+                        // Если это последняя карточка - пружиним обратно
+                        card.style.transform = 'translate(0)';
+                        tg.HapticFeedback.notificationOccurred('warning');
+                    }
+                } 
+                // СВАЙП ВЛЕВО (НАЗАД)
+                else if (diffX < -100) {
+                    if (currentCardIndex > 0) {
+                        tg.HapticFeedback.impactOccurred('medium');
+                        card.classList.add('swiped-left'); // Улетает влево
+                        currentCardIndex--;
+                        setTimeout(() => renderCurrentCard(), 300);
+                    } else {
+                        // Если это первая карточка - пружиним обратно
+                        card.style.transform = 'translate(0)';
+                        tg.HapticFeedback.notificationOccurred('warning');
+                    }
+                } 
+                // НЕДОТЯНУЛ СВАЙП (возвращаем на место)
+                else {
                     card.style.transform = 'translate(0)';
                 }
             };
