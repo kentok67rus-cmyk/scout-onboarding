@@ -306,7 +306,6 @@
             font-size: 14px; 
         }
         
-        /* Блок информации в меню (обязательное прохождение) */
         .info-box {
             background: #e3f2fd; 
             padding: 15px; 
@@ -316,6 +315,16 @@
             border: 2px solid #2196f3;
             text-align: left;
             line-height: 1.4;
+        }
+        
+        .reset-btn {
+            background: transparent;
+            color: #999;
+            border: none;
+            box-shadow: none;
+            margin-top: 25px;
+            font-size: 14px;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -333,7 +342,6 @@
         
         <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
         <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
-        
         <input type="text" id="user-birth" placeholder="ДД.ММ.ГГГГ" oninput="formatDate(this); validateForm()" maxlength="10">
         <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
         
@@ -380,6 +388,8 @@
         </button>
         
         <button id="btn-main-test" disabled style="margin-top: 30px;" onclick="startQuiz()">Пройти тест 🔒</button>
+        
+        <button class="reset-btn" onclick="resetApp()">🔄 Сбросить данные и начать заново</button>
     </div>
 
     <div id="screen-theory-cards" class="screen center">
@@ -459,11 +469,9 @@
         let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
         let currentQ = 0;
         const TOTAL_QUESTIONS = 15;
-
-        // ПРОГРЕСС ОБУЧЕНИЯ
         let progress = { cards: false, video: false, audio: false, pdf: false };
 
-        // МАССИВ ТЕОРИИ КАРТОЧЕК
+        // ТЕОРИЯ КАРТОЧЕК
         const theory = [
             { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.<br>• Поддерживай чистоту техники. Пыль на сиденьях недопустима.", img: "1.jpg" }, 
             { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Парковка — это наша витрина. Как стоят Кареты, так люди воспринимают наш сервис.<br><br><b>Правила:</b><br>• Ставь Кареты строго в одну ровную линию.<br>• Расстояние между ними — ровно <b>50 см</b>.<br>• Руль и фары должны смотреть строго прямо.<br>• Техника должна сиять, никаких перекосов на станции.", img: "2.png" }, 
@@ -475,7 +483,6 @@
             { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — это уникальная фишка наших Карет, которая повышает лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.<br>• Помоги туристам включить и надеть наушники.", img: "8.png" }
         ];
 
-        // ПРОВЕРКА СОХРАНЕНИЯ ПРИ ЗАГРУЗКЕ
         window.addEventListener('DOMContentLoaded', () => {
             let savedName = localStorage.getItem('scoutName');
             let savedPhone = localStorage.getItem('scoutPhone');
@@ -499,15 +506,21 @@
             }
         });
 
-        // ИСПРАВЛЕНИЕ: Маска для ввода даты рождения (ДД.ММ.ГГГГ)
+        // ФУНКЦИЯ СБРОСА ПРИЛОЖЕНИЯ
+        function resetApp() {
+            if (confirm("Точно хочешь удалить все данные и начать заново?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
         function formatDate(input) {
-            let v = input.value.replace(/\D/g, ''); // Оставляем только цифры
+            let v = input.value.replace(/\D/g, ''); 
             if (v.length > 2) v = v.slice(0, 2) + '.' + v.slice(2);
             if (v.length > 5) v = v.slice(0, 5) + '.' + v.slice(5, 9);
             input.value = v;
         }
 
-        // ВАЛИДАЦИЯ ФОРМЫ
         function validateForm() {
             let n = document.getElementById('user-name').value.trim();
             let c = document.getElementById('user-city').value.trim();
@@ -520,12 +533,10 @@
             }
             p.value = digits.length > 0 ? '+7' + digits : '+7'; 
             
-            // Дата рождения должна состоять ровно из 10 символов
             let isValid = (n.length > 2 && c.length > 2 && b.length === 10 && digits.length >= 10);
             document.getElementById('btn-start').disabled = !isValid;
         }
 
-        // СОХРАНЕНИЕ ДАННЫХ
         function saveAndGo() {
             userData.name = document.getElementById('user-name').value;
             userData.phone = document.getElementById('user-phone').value;
@@ -540,29 +551,14 @@
             showFormats();
         }
 
-        // ИСПРАВЛЕНИЕ: Функция жесткой остановки аудио и видео
         function stopMedia() {
-            // Тормозим аудио
             let audio = document.getElementById('onboarding-audio');
-            if (audio) {
-                audio.pause();
-                audio.currentTime = 0;
-            }
-            
-            // Тормозим видео (перезагрузкой src iframe)
+            if (audio) { audio.pause(); audio.currentTime = 0; }
             let video = document.getElementById('onboarding-video');
-            if (video) {
-                let currentSrc = video.src;
-                video.src = '';
-                video.src = currentSrc;
-            }
+            if (video) { let currentSrc = video.src; video.src = ''; video.src = currentSrc; }
         }
 
-        // НАВИГАЦИЯ
-        function showFormats() { 
-            stopMedia(); // Останавливаем всё при выходе в меню
-            showScreen('screen-formats'); 
-        }
+        function showFormats() { stopMedia(); showScreen('screen-formats'); }
         function startVideo() { showScreen('screen-theory-video'); }
         function startAudio() { showScreen('screen-theory-audio'); }
         function openPDF() { showScreen('screen-theory-pdf'); }
@@ -572,10 +568,8 @@
             document.getElementById(id).classList.add('active');
         }
 
-        // ФИКСИРУЕМ ГАЛОЧКУ
         function markCompleted(format) {
-            stopMedia(); // Останавливаем медиа перед выходом
-            
+            stopMedia(); 
             progress[format] = true;
             document.getElementById(`icon-${format}`).innerText = '✅';
             
@@ -589,7 +583,7 @@
             tg.HapticFeedback.notificationOccurred('success');
         }
 
-        // --- НОВАЯ ЛОГИКА КАРТОЧЕК (СВАЙП ВПРАВО - ВПЕРЕД, ВЛЕВО - НАЗАД) ---
+        // --- ЛОГИКА КАРТОЧЕК ---
         let currentCardIndex = 0;
         let maxCardIndex = 0;
 
@@ -599,13 +593,12 @@
             maxCardIndex = 0;
             document.getElementById('btn-cards-finish').style.display = 'none';
             document.querySelector('.swipe-hint').style.display = 'block';
-            
-            renderCurrentCard(); // Отрисовываем первую карточку
+            renderCurrentCard();
         }
 
         function renderCurrentCard() {
             const deck = document.getElementById('tinder-deck');
-            deck.innerHTML = ''; // Очищаем колоду
+            deck.innerHTML = ''; 
 
             let item = theory[currentCardIndex];
             let card = document.createElement('div');
@@ -614,7 +607,6 @@
             let fallbackImg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.png') : item.img.replace('.png', '.jpg');
             let fallbackImgJpeg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.jpeg') : item.img.replace('.png', '.jpeg');
             
-            // Добавил счетчик карточек (1/8) в правый верхний угол
             card.innerHTML = `
                 <div style="position:absolute; top:12px; right:12px; font-weight:900; color:#000; background:var(--yellow); padding:5px 12px; border-radius:10px; z-index:10; font-size:14px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
                     ${currentCardIndex + 1} / ${theory.length}
@@ -626,7 +618,6 @@
             deck.appendChild(card);
             setupSwipe(card);
 
-            // Если долистали до последней - показываем кнопку "Отлично"
             if (maxCardIndex >= theory.length - 1) {
                 document.getElementById('btn-cards-finish').style.display = 'block';
                 document.querySelector('.swipe-hint').style.display = 'none';
@@ -669,44 +660,36 @@
             };
             
             card.ontouchend = e => {
-                if (isScrolling) {
-                    isScrolling = false;
-                    return;
-                }
+                if (isScrolling) { isScrolling = false; return; }
                 
                 isDragging = false; 
                 card.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
                 
                 let diffX = e.changedTouches[0].clientX - startX;
                 
-                // СВАЙП ВПРАВО (ДАЛЬШЕ)
                 if (diffX > 100) {
                     if (currentCardIndex < theory.length - 1) {
                         tg.HapticFeedback.impactOccurred('medium');
-                        card.classList.add('swiped-right'); // Улетает вправо
+                        card.classList.add('swiped-right'); 
                         currentCardIndex++;
                         maxCardIndex = Math.max(maxCardIndex, currentCardIndex);
                         setTimeout(() => renderCurrentCard(), 300);
                     } else {
-                        // Если это последняя карточка - пружиним обратно
                         card.style.transform = 'translate(0)';
                         tg.HapticFeedback.notificationOccurred('warning');
                     }
                 } 
-                // СВАЙП ВЛЕВО (НАЗАД)
                 else if (diffX < -100) {
                     if (currentCardIndex > 0) {
                         tg.HapticFeedback.impactOccurred('medium');
-                        card.classList.add('swiped-left'); // Улетает влево
+                        card.classList.add('swiped-left'); 
                         currentCardIndex--;
                         setTimeout(() => renderCurrentCard(), 300);
                     } else {
-                        // Если это первая карточка - пружиним обратно
                         card.style.transform = 'translate(0)';
                         tg.HapticFeedback.notificationOccurred('warning');
                     }
                 } 
-                // НЕДОТЯНУЛ СВАЙП (возвращаем на место)
                 else {
                     card.style.transform = 'translate(0)';
                 }
@@ -732,17 +715,13 @@
             { q: "Клиент грубит, но хочет ехать. Твоя реакция?", a: ["Грубить в ответ", "Вежливо помочь и объяснить правила", "Игнорировать"], c: 1, p: true }
         ];
 
-        // --- ЛОГИКА ТЕСТА ---
         function startQuiz() {
             userData.score = 0; 
             userData.coins = 0; 
             currentQ = 0;
-            
             questions.sort(() => Math.random() - 0.5);
-            
             showScreen('screen-quiz');
             document.getElementById('statusBar').style.display = 'flex';
-            
             renderQ();
         }
 
@@ -750,32 +729,20 @@
             let q = questions[currentQ];
             document.getElementById('q-counter').innerText = `${currentQ+1}/${TOTAL_QUESTIONS}`;
             document.getElementById('q-text').innerText = q.q;
-            document.getElementById('options-box').innerHTML = q.a.map((opt, i) => `
-                <div class="option" onclick="handleAns(${i})">${opt}</div>
-            `).join('');
+            document.getElementById('options-box').innerHTML = q.a.map((opt, i) => `<div class="option" onclick="handleAns(${i})">${opt}</div>`).join('');
         }
 
         function handleAns(idx) {
             if (idx === questions[currentQ].c) { 
                 userData.score++; 
-                if (questions[currentQ].p) {
-                    userData.coins += 100; 
-                }
+                if (questions[currentQ].p) { userData.coins += 100; }
                 tg.HapticFeedback.notificationOccurred('success'); 
-            } else {
-                tg.HapticFeedback.notificationOccurred('error');
-            }
+            } else { tg.HapticFeedback.notificationOccurred('error'); }
             
             currentQ++;
-            
-            if (currentQ < TOTAL_QUESTIONS) {
-                renderQ(); 
-            } else {
-                showFinish();
-            }
+            if (currentQ < TOTAL_QUESTIONS) { renderQ(); } else { showFinish(); }
         }
 
-        // --- ФИНИШ И ОТПРАВКА ДАННЫХ ---
         function showFinish() {
             showScreen('screen-finish');
             document.getElementById('statusBar').style.display = 'none';
@@ -790,7 +757,6 @@
                 document.getElementById('btn-retry').style.display = "block";
             } else {
                 document.getElementById('res-coins').innerText = userData.coins;
-                
                 document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
                 document.getElementById('send-status').innerText = "Отправка результатов...";
                 document.getElementById('send-status').style.color = "#2ecc71";
@@ -812,9 +778,7 @@
                 fetch(GOOGLE_URL, {
                     method: "POST",
                     mode: "no-cors",
-                    headers: { 
-                        "Content-Type": "text/plain" 
-                    },
+                    headers: { "Content-Type": "text/plain" },
                     body: payload
                 }).then(() => {
                     document.getElementById('send-status').innerText = "✅ ДАННЫЕ В ТАБЛИЦЕ!";
