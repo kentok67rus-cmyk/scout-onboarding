@@ -306,14 +306,14 @@
             font-size: 14px; 
         }
         
-        /* Блок бонуса в меню */
-        .bonus-box {
-            background: #fff9c4; 
-            padding: 12px; 
+        /* Блок информации в меню (обязательное прохождение) */
+        .info-box {
+            background: #e3f2fd; 
+            padding: 15px; 
             border-radius: 12px; 
             margin-bottom: 15px; 
             font-size: 14px; 
-            border: 2px dashed #f1c40f;
+            border: 2px solid #2196f3;
             text-align: left;
             line-height: 1.4;
         }
@@ -342,9 +342,8 @@
     <div id="screen-formats" class="screen">
         <h2>Формат обучения</h2>
         
-        <div class="bonus-box">
-            🎁 <b>Внимание:</b> Изучи хотя бы один формат для допуска к тесту. <br>
-            За каждый <b>дополнительный</b> изученный формат ты получишь <b>+500 монет</b>!
+        <div class="info-box">
+            ⚠️ <b>Внимание:</b> Для допуска к тесту необходимо изучить <b>все</b> форматы обучения. Собери все 4 зеленые галочки, чтобы разблокировать кнопку.
         </div>
         
         <button class="format-btn" onclick="startCards()">
@@ -440,9 +439,8 @@
         <p id="res-info" style="font-size:18px; font-weight:bold; color:#000; margin-bottom: 15px;"></p>
         
         <div style="background:var(--yellow); padding:20px; border-radius: 18px; margin: 20px 0; box-shadow: 0 6px 0 #d4c300;" id="coin-box">
-            <p style="margin:0; font-size: 14px; font-weight: bold; color: #555; text-transform: uppercase;">Итого заработано:</p>
-            <h3 style="margin:5px 0 0 0; font-size: 32px; font-weight: 900;">💰 <span id="res-coins">0</span></h3>
-            <p id="bonus-info" style="margin: 10px 0 0 0; font-size: 13px; font-weight: 600; color: #d35400;"></p>
+            <p style="margin:0; font-size: 14px; font-weight: bold; color: #555; text-transform: uppercase;">Итого заработано монет:</p>
+            <h3 style="margin:5px 0 0 0; font-size: 38px; font-weight: 900;">💰 <span id="res-coins">0</span></h3>
         </div>
         
         <p id="send-status" style="font-weight: bold; font-size: 16px;"></p>
@@ -462,9 +460,8 @@
         let swipedCards = 0;
         const TOTAL_QUESTIONS = 15;
 
-        // ПРОГРЕСС ОБУЧЕНИЯ (Для галочек и бонусов)
+        // ПРОГРЕСС ОБУЧЕНИЯ (Для галочек)
         let progress = { cards: false, video: false, audio: false, pdf: false };
-        let bonusCoinsToGive = 0;
 
         // ПРОВЕРКА СОХРАНЕНИЯ ПРИ ЗАГРУЗКЕ
         window.addEventListener('DOMContentLoaded', () => {
@@ -533,23 +530,17 @@
             document.getElementById(id).classList.add('active');
         }
 
-        // ФИКСИРУЕМ ГАЛОЧКУ И СЧИТАЕМ БОНУС
+        // ФИКСИРУЕМ ГАЛОЧКУ
         function markCompleted(format) {
             progress[format] = true;
             document.getElementById(`icon-${format}`).innerText = '✅';
             
-            let completedCount = Object.values(progress).filter(v => v === true).length;
-            
-            // Если хотя бы 1 формат пройден - открываем кнопку теста
-            if (completedCount > 0) {
+            // Если ВСЕ 4 формата пройдены - открываем кнопку теста
+            if (progress.cards && progress.video && progress.audio && progress.pdf) {
                 let btnTest = document.getElementById('btn-main-test');
                 btnTest.disabled = false;
                 btnTest.innerText = 'Пройти тест 🔓';
             }
-            
-            // Считаем бонусы. За первый формат - 0. За каждый следующий - 500.
-            bonusCoinsToGive = (completedCount - 1) * 500;
-            if (bonusCoinsToGive < 0) bonusCoinsToGive = 0;
             
             // Возвращаем в меню
             showFormats();
@@ -758,18 +749,8 @@
                 document.getElementById('btn-close').style.display = "none";
                 document.getElementById('btn-retry').style.display = "block";
             } else {
-                // ДОБАВЛЯЕМ БОНУС К ОСНОВНЫМ МОНЕТАМ ПЕРЕД ОТПРАВКОЙ
-                userData.coins += bonusCoinsToGive;
-                
                 document.getElementById('res-coins').innerText = userData.coins;
                 
-                // Показываем из чего сложилась сумма
-                if (bonusCoinsToGive > 0) {
-                    document.getElementById('bonus-info').innerText = `В том числе бонус за доп. форматы: +${bonusCoinsToGive}`;
-                } else {
-                    document.getElementById('bonus-info').innerText = `Пройди другие форматы перед тестом в следующий раз для бонуса!`;
-                }
-
                 document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
                 document.getElementById('send-status').innerText = "Отправка результатов...";
                 document.getElementById('send-status').style.color = "#2ecc71";
