@@ -25,7 +25,6 @@
             -webkit-font-smoothing: antialiased; 
         }
         
-        /* ЭКРАНЫ */
         .screen { 
             display: none; 
             background: #fff; 
@@ -36,15 +35,20 @@
             animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
             box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
         }
-        .screen.center { text-align: center; }
-        .active { display: block; }
+        
+        .screen.center { 
+            text-align: center; 
+        }
+        
+        .active { 
+            display: block; 
+        }
         
         @keyframes fadeIn { 
             from { opacity: 0; transform: translateY(20px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
         
-        /* ЗАГОЛОВКИ И ТЕКСТ */
         h2 { 
             text-transform: uppercase; 
             font-size: 22px; 
@@ -54,6 +58,7 @@
             font-weight: 800; 
             line-height: 1.2; 
         }
+        
         p { 
             color: #555; 
             font-size: 15px; 
@@ -62,7 +67,6 @@
             font-weight: 500; 
         }
         
-        /* ПОЛЯ ВВОДА */
         input { 
             width: 100%; 
             padding: 16px; 
@@ -77,12 +81,12 @@
             transition: 0.3s; 
             background: #fafafa; 
         }
+        
         input:focus { 
             border-color: var(--black); 
             background: #fff; 
         }
         
-        /* КНОПКИ */
         button { 
             background: var(--yellow); 
             color: #000; 
@@ -99,10 +103,12 @@
             transition: transform 0.1s, box-shadow 0.1s; 
             display: block; 
         }
+        
         button:active { 
             transform: translateY(3px); 
             box-shadow: 0 2px 0 #d4c300; 
         }
+        
         button:disabled { 
             background: #e0e0e0; 
             color: #a0a0a0; 
@@ -119,7 +125,6 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
         }
         
-        /* МЕНЮ ВЫБОРА ФОРМАТА */
         .format-btn { 
             background: #fff; 
             border: 3px solid var(--yellow); 
@@ -133,23 +138,35 @@
             box-shadow: 0 6px 0 #f0f0f0; 
             transition: 0.2s; 
         }
+        
         .format-btn:active { 
             transform: translateY(3px); 
             box-shadow: 0 3px 0 #f0f0f0; 
         }
-        .format-icon { font-size: 28px; margin-right: 15px; }
-        .format-info div:first-child { font-weight: 800; font-size: 17px; text-transform: uppercase; }
-        .format-info div:last-child { font-size: 13px; color: #666; margin-top: 4px; }
-
-        /* КНОПКА PDF */
+        
+        .format-icon { 
+            font-size: 28px; 
+            margin-right: 15px; 
+        }
+        
+        .format-info div:first-child { 
+            font-weight: 800; 
+            font-size: 17px; 
+            text-transform: uppercase; 
+        }
+        
+        .format-info div:last-child { 
+            font-size: 13px; 
+            color: #666; 
+            margin-top: 4px; 
+        }
+        
         .pdf-btn { 
             background: #fff; 
             border: 3px solid #e74c3c; 
             color: #e74c3c; 
         }
-        .pdf-btn:active { box-shadow: 0 3px 0 #e0e0e0; }
-
-        /* МЕДИА (ВИДЕО/АУДИО) */
+        
         .media-container { 
             position: relative; 
             border-radius: 16px; 
@@ -158,11 +175,13 @@
             background: #000; 
             margin-bottom: 15px; 
         }
+        
         .video-wrapper { 
             position: relative; 
             padding-bottom: 56.25%; 
             height: 0; 
         }
+        
         .video-wrapper iframe { 
             position: absolute; 
             top: 0; 
@@ -171,7 +190,6 @@
             height: 100%; 
         }
         
-        /* TINDER КАРТОЧКИ (СВАЙПЫ) */
         .tinder-container { 
             position: relative; 
             height: 500px; 
@@ -179,6 +197,7 @@
             margin-top: 10px; 
             perspective: 1000px; 
         }
+        
         .tinder-card { 
             position: absolute; 
             top: 0; 
@@ -195,15 +214,25 @@
             flex-direction: column; 
             text-align: left; 
         }
-        .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
-        .tinder-card.swiped-right { transform: translateX(200%) rotate(30deg) !important; opacity: 0; }
+        
+        .tinder-card.swiped-left { 
+            transform: translateX(-200%) rotate(-30deg) !important; 
+            opacity: 0; 
+        }
+        
+        .tinder-card.swiped-right { 
+            transform: translateX(200%) rotate(30deg) !important; 
+            opacity: 0; 
+        }
         
         .card-img { 
             width: 100%; 
             height: 45%; 
             object-fit: cover; 
             border-bottom: 3px solid var(--yellow); 
+            background: #f0f0f0; 
         }
+        
         .card-text { 
             padding: 20px; 
             font-size: 15px; 
@@ -215,6 +244,7 @@
             justify-content: center; 
             font-weight: 500; 
         }
+        
         .swipe-hint { 
             font-size: 13px; 
             color: #999; 
@@ -222,9 +252,13 @@
             animation: pulse 2s infinite; 
             font-weight: 600; 
         }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        
+        @keyframes pulse { 
+            0% { opacity: 0.6; } 
+            50% { opacity: 1; } 
+            100% { opacity: 0.6; } 
+        }
 
-        /* КВИЗ (ТЕСТ) */
         .option { 
             display: flex; 
             align-items: center; 
@@ -240,10 +274,12 @@
             transition: 0.2s; 
             -webkit-tap-highlight-color: transparent; 
         }
+        
         .option:active { 
             background: #ececec; 
             transform: scale(0.98); 
         }
+        
         .status-bar { 
             display: flex; 
             justify-content: space-between; 
@@ -288,7 +324,7 @@
             </div>
             <div class="format-icon">👆</div>
         </button>
-
+        
         <button class="format-btn" onclick="startVideo()">
             <div class="format-info">
                 <div>📺 Видео</div>
@@ -296,7 +332,7 @@
             </div>
             <div class="format-icon">▶️</div>
         </button>
-
+        
         <button class="format-btn" onclick="startAudio()">
             <div class="format-info">
                 <div>🎧 Подкаст</div>
@@ -304,11 +340,11 @@
             </div>
             <div class="format-icon">🎵</div>
         </button>
-
+        
         <button class="format-btn pdf-btn" onclick="openPDF()">
             <div class="format-info">
                 <div style="color:#e74c3c">📑 Презентация</div>
-                <div style="color:#e74c3c">Открыть PDF файл</div>
+                <div style="color:#e74c3c">Скачать и читать</div>
             </div>
             <div class="format-icon">📄</div>
         </button>
@@ -316,7 +352,7 @@
 
     <div id="screen-theory-cards" class="screen center">
         <h2>Правила</h2>
-        <div class="swipe-hint">Смахни карточку влево или вправо ↔️</div>
+        <div class="swipe-hint">Смахни влево или вправо ↔️</div>
         <div class="tinder-container" id="tinder-deck"></div>
         <button id="btn-cards-finish" style="display:none" onclick="startQuiz()">К тесту!</button>
         <button style="background:transparent; color:#999; border:none; box-shadow:none; margin-top:10px; font-size:14px;" onclick="showFormats()">Назад</button>
@@ -326,7 +362,7 @@
         <h2>Видеообзор</h2>
         <div class="media-container">
             <div class="video-wrapper">
-                <iframe src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/?p=x-I4ULg0MU6OYQodDqvM4Q" frameBorder="0" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                <iframe src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/?p=x-I4ULg0MU6OYQodDqvM4Q" frameBorder="0" allow="autoplay; fullscreen"></iframe>
             </div>
         </div>
         <button onclick="startQuiz()">Я посмотрел, к тесту!</button>
@@ -340,10 +376,20 @@
             <p style="margin-bottom:15px; font-weight:bold;">Слушай внимательно</p>
             <audio controls style="width: 100%; border-radius: 50px;">
                 <source src="podcast.m4a" type="audio/mp4">
-                Твой браузер не поддерживает аудио.
             </audio>
         </div>
         <button onclick="startQuiz()">Я прослушал, к тесту!</button>
+        <button style="background:#fff; color:#000; border:2px solid #eee; margin-top:10px; font-size:14px; box-shadow:none;" onclick="showFormats()">Назад</button>
+    </div>
+
+    <div id="screen-theory-pdf" class="screen center">
+        <h2>Презентация</h2>
+        <div style="background:#f4f4f4; padding:30px; border-radius:20px; margin-bottom:20px;">
+            <div style="font-size:50px; margin-bottom:10px;">📄</div>
+            <p style="margin-bottom:15px; font-weight:bold; font-size: 16px;">Открой файл, изучи правила, а затем возвращайся сюда для сдачи теста.</p>
+            <button style="background:#e74c3c; color:#fff; box-shadow:0 5px 0 #c0392b; margin-top: 10px;" onclick="window.open('presentation.pdf', '_blank')">📥 Читать PDF</button>
+        </div>
+        <button onclick="startQuiz()">Я прочитал, к тесту!</button>
         <button style="background:#fff; color:#000; border:2px solid #eee; margin-top:10px; font-size:14px; box-shadow:none;" onclick="showFormats()">Назад</button>
     </div>
 
@@ -368,78 +414,70 @@
     </div>
 
     <script>
-        // ВОТ ТВОЯ НОВАЯ ССЫЛКА НА GOOGLE APPS SCRIPT
         const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbxAOyN8XERwNRQRqd80VQOQOXGnujqTpqprFyTMIxa8RM-JzWYA6SYtYTnTKf_AKfAc/exec";
         
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Раскрываем на весь экран
+        tg.expand();
 
-        // Объект для хранения данных пользователя
-        let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
+        let userData = { 
+            name: "", 
+            phone: "", 
+            city: "", 
+            birth: "", 
+            score: 0, 
+            coins: 0 
+        };
+        
         let currentQ = 0;
         let swipedCards = 0;
         const TOTAL_QUESTIONS = 15;
 
-        // --- ГЛАВНАЯ ПРОВЕРКА ПРИ ЗАПУСКЕ ---
-        // Если человек уже вводил данные, мы сразу кидаем его в меню
-        window.addEventListener('DOMContentLoaded', (event) => {
+        // ПРОВЕРКА СОХРАНЕНИЯ
+        window.addEventListener('DOMContentLoaded', () => {
             let savedName = localStorage.getItem('scoutName');
             let savedPhone = localStorage.getItem('scoutPhone');
             let savedCity = localStorage.getItem('scoutCity');
             let savedBirth = localStorage.getItem('scoutBirth');
 
-            // Если нашли сохраненные данные
-            if(savedName && savedPhone && savedName.length > 1) {
-                // Восстанавливаем
+            if (savedName && savedPhone && savedName.length > 1) {
                 userData.name = savedName;
                 userData.phone = savedPhone;
                 userData.city = savedCity || "";
                 userData.birth = savedBirth || "";
                 
-                // Заполняем поля (скрыто)
                 document.getElementById('user-name').value = savedName;
                 document.getElementById('user-phone').value = savedPhone;
                 document.getElementById('user-city').value = savedCity || "";
                 document.getElementById('user-birth').value = savedBirth || "";
-
-                // ПОКАЗЫВАЕМ МЕНЮ СРАЗУ
+                
                 showFormats();
             } else {
-                // ДАННЫХ НЕТ - ПОКАЗЫВАЕМ РЕГИСТРАЦИЮ
                 document.getElementById('screen-reg').classList.add('active');
             }
         });
 
-        // ПРОВЕРКА ВВОДА (Валидация)
         function validateForm() {
             let n = document.getElementById('user-name').value.trim();
             let c = document.getElementById('user-city').value.trim();
             let b = document.getElementById('user-birth').value.trim();
             let p = document.getElementById('user-phone');
             
-            // Форматирование телефона
             let digits = p.value.replace(/\D/g, '');
-            if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);
-            let formatted = '+7';
-            if (digits.length > 0) formatted += ' (' + digits.substring(0, 3);
-            if (digits.length >= 4) formatted += ') ' + digits.substring(3, 6);
-            if (digits.length >= 7) formatted += '-' + digits.substring(6, 8);
-            if (digits.length >= 9) formatted += '-' + digits.substring(8, 10);
-            p.value = formatted;
-
-            // Кнопка активна только если все поля заполнены
+            if (digits.startsWith('7') || digits.startsWith('8')) {
+                digits = digits.substring(1);
+            }
+            p.value = digits.length > 0 ? '+7' + digits : '+7'; 
+            
             let isValid = (n.length > 2 && c.length > 2 && b.length > 5 && digits.length >= 10);
             document.getElementById('btn-start').disabled = !isValid;
         }
 
-        // СОХРАНЕНИЕ ДАННЫХ И ПЕРЕХОД
         function saveAndGo() {
             userData.name = document.getElementById('user-name').value;
             userData.phone = document.getElementById('user-phone').value;
             userData.city = document.getElementById('user-city').value;
             userData.birth = document.getElementById('user-birth').value;
             
-            // Запоминаем в память телефона
             localStorage.setItem('scoutName', userData.name);
             localStorage.setItem('scoutPhone', userData.phone);
             localStorage.setItem('scoutCity', userData.city);
@@ -448,107 +486,208 @@
             showFormats();
         }
 
-        // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
-        function showFormats() {
+        function showFormats() { 
+            showScreen('screen-formats'); 
+        }
+        
+        function startVideo() { 
+            showScreen('screen-theory-video'); 
+        }
+        
+        function startAudio() { 
+            showScreen('screen-theory-audio'); 
+        }
+        
+        function openPDF() { 
+            showScreen('screen-theory-pdf'); 
+        }
+        
+        function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screen-formats').classList.add('active');
+            document.getElementById(id).classList.add('active');
         }
 
-        function startVideo() {
-            document.getElementById('screen-formats').classList.remove('active');
-            document.getElementById('screen-theory-video').classList.add('active');
-        }
-        function startAudio() {
-            document.getElementById('screen-formats').classList.remove('active');
-            document.getElementById('screen-theory-audio').classList.add('active');
-        }
-        function openPDF() {
-            // Открываем PDF в новой вкладке
-            window.open('presentation.pdf', '_blank');
-        }
-
-        // --- ЛОГИКА КАРТОЧЕК (СВАЙПЫ) ---
+        // --- ЛОГИКА КАРТОЧЕК ---
         function startCards() {
-            document.getElementById('screen-formats').classList.remove('active');
-            document.getElementById('screen-theory-cards').classList.add('active');
-            
+            showScreen('screen-theory-cards');
             swipedCards = 0;
             document.getElementById('tinder-deck').innerHTML = '';
             document.getElementById('btn-cards-finish').style.display = 'none';
             document.querySelector('.swipe-hint').style.display = 'block';
 
-            // ДАННЫЕ ДЛЯ КАРТОЧЕК (ТЕКСТ + ФАЙЛ)
             const theory = [
-                { t: "<b>👔 1. СТАНДАРТ</b><br>Запрещено курить, есть или пить на Карете. Мы — премиум бренд.", img: "1.jpg" }, // JPG
-                { t: "<b>🅿️ 2. ПАРКОВКА</b><br>Строго в линию, <b>50 см</b>. Фары ровно, техника сияет.", img: "2.png" }, // PNG
-                { t: "<b>⚖️ 3. БАЛАНС</b><br>Много карет? Увези. Мало? Пригони. Не заставляй людей ждать.", img: "3.jpg" }, // JPG
-                { t: "<b>🤝 4. ЭКСПЕРТ</b><br>Ты — спасательный круг. Знай тарифы и приложение.", img: "4.png" }, // PNG
-                { t: "<b>📱 5. ЗАРПЛАТА</b><br>Через Telegram-бот. Нажал «Старт» + <b>селфи в форме</b>.", img: "5.png" }, // PNG
-                { t: "<b>🛠 6. ИНВЕНТАРЬ</b><br>Ключи 13/15, отвертка, стяжки, микрофибра, щетка.", img: "6.png" }, // PNG
-                { t: "<b>🔧 7. РЕМОНТ</b><br>Мелкое — сам. Сложное — <b>пиши в бот</b>.", img: "7.png" }, // PNG
-                { t: "<b>🎧 8. АУДИОГИД</b><br>Цена — <b>1 рубль</b>. Предлагай каждому клиенту.", img: "8.png" }  // PNG
+                { t: "<b>👔 1. СТАНДАРТ</b><br>Запрещено курить, есть или пить на Карете.", img: "1.jpg" }, 
+                { t: "<b>🅿️ 2. ПАРКОВКА</b><br>Строго в линию, <b>50 см</b>. Фары ровно.", img: "2.png" }, 
+                { t: "<b>⚖️ 3. БАЛАНС</b><br>Много карет? Увези. Мало? Пригони.", img: "3.jpg" }, 
+                { t: "<b>🤝 4. ЭКСПЕРТ</b><br>Ты — спасательный круг. Знай тарифы.", img: "4.png" }, 
+                { t: "<b>📱 5. ЗАРПЛАТА</b><br>Через бот. Старт + <b>селфи в форме</b>.", img: "5.png" }, 
+                { t: "<b>🛠 6. ИНВЕНТАРЬ</b><br>Ключи 13/15, отвертка, стяжки, микрофибра.", img: "6.png" }, 
+                { t: "<b>🔧 7. РЕМОНТ</b><br>Мелкое — сам. Сложное — <b>пиши в бот</b>.", img: "7.png" }, 
+                { t: "<b>🎧 8. АУДИОГИД</b><br>Цена — <b>1 рубль</b>. Предлагай каждому.", img: "8.png" }
             ];
 
-            theory.forEach((item, i) => {
+            // ИСПРАВЛЕНИЕ: Переворачиваем массив перед отрисовкой, чтобы Карточка 1 была сверху
+            let reversedTheory = [...theory].reverse();
+            
+            reversedTheory.forEach((item, i) => {
                 let card = document.createElement('div');
                 card.className = 'tinder-card';
-                card.innerHTML = `<img src="${item.img}" class="card-img" onerror="this.src='https://via.placeholder.com/400x300?text=Нет+картинки'"><div class="card-text">${item.t}</div>`;
+                
+                // ИСПРАВЛЕНИЕ: Умная проверка картинок.
+                let fallbackImg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.png') : item.img.replace('.png', '.jpg');
+                let fallbackImgJpeg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.jpeg') : item.img.replace('.png', '.jpeg');
+                
+                card.innerHTML = `
+                    <img src="${item.img}" class="card-img" onerror="this.onerror=null; this.src='${fallbackImg}'; this.onerror=function(){this.onerror=null; this.src='${fallbackImgJpeg}';};">
+                    <div class="card-text">${item.t}</div>
+                `;
+                
                 document.getElementById('tinder-deck').appendChild(card);
                 setupSwipe(card);
             });
         }
 
-        // ОБРАБОТКА СВАЙПА ПАЛЬЦЕМ
+        let questions = [
+            { 
+                q: "Как считается время?", 
+                a: ["Блокнот", "Бот (геолокация)", "Словами"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Старт смены в боте?", 
+                a: ["Кнопка", "Кнопка + селфи в форме", "Чат"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Где ключи?", 
+                a: ["Дома", "Пилон/Склад", "Купить"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Зачем щетка?", 
+                a: ["Волосы", "Грязь с рамы", "Одежда"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Перебор карет?", 
+                a: ["Ждать", "Угнать лишние", "Уйти"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Ключи для ремонта?", 
+                a: ["10/12", "13/15", "Разводной"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Грузоподъемность?", 
+                a: ["Не знаю", "Назову цифру", "Секрет"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Дистанция?", 
+                a: ["0 см", "50 см", "1 метр"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Курить в карете?", 
+                a: ["Можно", "Запрещено", "Иногда"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Трещина в раме?", 
+                a: ["Скотч", "Бот + ТМ", "Молчать"], 
+                c: 1, 
+                p: true 
+            },
+            { 
+                q: "Цена аудиогида?", 
+                a: ["0", "1 рубль", "500"], 
+                c: 1, 
+                p: false 
+            },
+            { 
+                q: "Чистота — это...", 
+                a: ["Сиденье", "Пыль", "Всё до блеска"], 
+                c: 2, 
+                p: true 
+            },
+            { 
+                q: "Форма?", 
+                a: ["Нет", "Обязательно", "Праздники"], 
+                c: 1, 
+                p: false 
+            },
+            { 
+                q: "Перегон кареты?", 
+                a: ["Грязной", "Чистой", "Быстро"], 
+                c: 0, 
+                p: true 
+            },
+            { 
+                q: "Клиент грубит?", 
+                a: ["Грубить", "Вежливо помочь", "Игнор"], 
+                c: 1, 
+                p: true 
+            }
+        ];
+
         function setupSwipe(card) {
-            let startX = 0;
+            let startX = 0; 
             let isDragging = false;
-            card.ontouchstart = e => { startX = e.touches[0].clientX; isDragging = true; card.style.transition = 'none'; };
-            card.ontouchmove = e => { if (!isDragging) return; let diff = e.touches[0].clientX - startX; card.style.transform = `translateX(${diff}px) rotate(${diff/20}deg)`; };
+            
+            card.ontouchstart = e => { 
+                startX = e.touches[0].clientX; 
+                isDragging = true; 
+                card.style.transition = 'none'; 
+            };
+            
+            card.ontouchmove = e => { 
+                if (!isDragging) return; 
+                let diff = e.touches[0].clientX - startX; 
+                card.style.transform = `translateX(${diff}px) rotate(${diff/20}deg)`; 
+            };
+            
             card.ontouchend = e => {
-                isDragging = false;
+                isDragging = false; 
                 card.style.transition = 'transform 0.5s';
                 let diff = e.changedTouches[0].clientX - startX;
+                
                 if (Math.abs(diff) > 100) {
-                    tg.HapticFeedback.impactOccurred('medium'); // Вибрация
+                    tg.HapticFeedback.impactOccurred('medium');
                     card.classList.add(diff > 0 ? 'swiped-right' : 'swiped-left');
                     swipedCards++;
-                    setTimeout(() => {
-                        card.remove();
-                        if (swipedCards >= 8) { // Если все 8 карточек прошли
-                            document.getElementById('btn-cards-finish').style.display = 'block';
-                            document.querySelector('.swipe-hint').style.display = 'none';
-                        }
+                    
+                    setTimeout(() => { 
+                        card.remove(); 
+                        if (swipedCards >= 8) { 
+                            document.getElementById('btn-cards-finish').style.display = 'block'; 
+                            document.querySelector('.swipe-hint').style.display = 'none'; 
+                        } 
                     }, 300);
-                } else card.style.transform = 'translate(0)';
+                } else {
+                    card.style.transform = 'translate(0)';
+                }
             };
         }
 
-        // --- ВОПРОСЫ ТЕСТА ---
-        let questions = [
-            { q: "Как считается твое рабочее время?", a: ["Записываю в блокнот", "Через Telegram-бот (геолокация)", "Говорю ТМ на словах"], c: 1, p: true },
-            { q: "Что нужно сделать при старте смены в боте?", a: ["Просто нажать старт", "Сделать селфи в форме на фоне Карет", "Написать 'Я тут' в чат"], c: 1, p: true },
-            { q: "Где искать ключи и тряпки?", a: ["Ношу из дома", "В пилоне на парковке или на складе", "Покупаю сам"], c: 1, p: true },
-            { q: "Зачем нужна жесткая щетка?", a: ["Для волос", "Счищать песок и землю с рамы", "Для одежды"], c: 1, p: true },
-            { q: "На твоей точке 0 карет, на соседней — 10 (перебор). Твои действия?", a: ["Ждать, пока привезут", "Пригнать лишние с соседней к себе", "Идти домой"], c: 1, p: true },
-            { q: "Какие ключи нужны для мелкого ремонта?", a: ["На 10 и 12", "На 13 и 15", "Разводной ключ"], c: 1, p: true },
-            { q: "Клиент спрашивает про грузоподъемность. Что ответишь?", a: ["Не знаю, смотрите в приложении", "Назову точную цифру и помогу", "Это секрет"], c: 1, p: true },
-            { q: "Дистанция между Каретами?", a: ["Вплотную", "Ровно 50 см", "1 метр"], c: 1, p: true },
-            { q: "Можно ли курить в Карете?", a: ["Да", "Категорически запрещено", "Если нет людей"], c: 1, p: true },
-            { q: "Сломалась рама (трещина). Твои действия?", a: ["Чинить скотчем", "Заявка в бот + сообщить ТМ", "Скрыть поломку"], c: 1, p: true },
-            { q: "Цена аудиогида?", a: ["Бесплатно", "1 рубль", "500 рублей"], c: 1, p: false },
-            { q: "Правило чистоты — это...", a: ["Только сиденья", "Сбить пыль", "Сиденья, рама, колеса до блеска"], c: 2, p: true },
-            { q: "Фирменная форма — это...", a: ["По желанию", "Обязательно", "Только в праздники"], c: 1, p: false },
-            { q: "Как перегонять Карету?", a: ["Грязной", "Чистой", "Быстро"], c: 0, p: true },
-            { q: "Клиент грубит, но хочет ехать. Твоя реакция?", a: ["Грубить в ответ", "Вежливо помочь и объяснить правила", "Игнорировать"], c: 1, p: true }
-        ];
-
-        // ЗАПУСК ТЕСТА
         function startQuiz() {
-            userData.score = 0; userData.coins = 0; currentQ = 0;
-            questions.sort(() => Math.random() - 0.5); // Перемешиваем вопросы
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            userData.score = 0; 
+            userData.coins = 0; 
+            currentQ = 0;
+            
+            questions.sort(() => Math.random() - 0.5);
+            
+            showScreen('screen-quiz');
             document.getElementById('statusBar').style.display = 'flex';
-            document.getElementById('screen-quiz').classList.add('active');
             renderQ();
         }
 
@@ -556,81 +695,75 @@
             let q = questions[currentQ];
             document.getElementById('q-counter').innerText = `${currentQ+1}/${TOTAL_QUESTIONS}`;
             document.getElementById('q-text').innerText = q.q;
-            document.getElementById('options-box').innerHTML = q.a.map((opt, i) => `<div class="option" onclick="handleAns(${i})">${opt}</div>`).join('');
-            window.scrollTo(0,0);
+            document.getElementById('options-box').innerHTML = q.a.map((opt, i) => `
+                <div class="option" onclick="handleAns(${i})">${opt}</div>
+            `).join('');
         }
 
         function handleAns(idx) {
-            if (idx === questions[currentQ].c) {
-                userData.score++;
-                if (questions[currentQ].p) userData.coins += 100;
-                tg.HapticFeedback.notificationOccurred('success'); // Вибрация успеха
+            if (idx === questions[currentQ].c) { 
+                userData.score++; 
+                if (questions[currentQ].p) {
+                    userData.coins += 100; 
+                }
+                tg.HapticFeedback.notificationOccurred('success'); 
             } else {
-                tg.HapticFeedback.notificationOccurred('error'); // Вибрация ошибки
+                tg.HapticFeedback.notificationOccurred('error');
             }
             
             currentQ++;
-            if (currentQ < TOTAL_QUESTIONS) renderQ(); else showFinish();
+            if (currentQ < TOTAL_QUESTIONS) {
+                renderQ(); 
+            } else {
+                showFinish();
+            }
         }
 
-        // ЭКРАН ФИНИША
         function showFinish() {
-            document.getElementById('screen-quiz').classList.remove('active');
+            showScreen('screen-finish');
             document.getElementById('statusBar').style.display = 'none';
-            document.getElementById('screen-finish').classList.add('active');
-            
             document.getElementById('res-info').innerText = userData.name;
             document.getElementById('res-coins').innerText = userData.coins;
             
             if (userData.score < 12) {
-                // НЕ СДАЛ
                 document.getElementById('finish-title').innerText = "Тест не сдан ❌";
-                document.getElementById('send-status').innerText = `Нужно 12 из 15 (у тебя ${userData.score}).\nПопробуй другой формат обучения!`;
+                document.getElementById('send-status').innerText = `Нужно 12 из 15 (у тебя ${userData.score})`;
                 document.getElementById('send-status').style.color = "#e74c3c";
                 document.getElementById('coin-box').style.display = "none";
                 document.getElementById('btn-close').style.display = "none";
                 document.getElementById('btn-retry').style.display = "block";
             } else {
-                // СДАЛ
-                document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
+                document.getElementById('finish-title').innerText = "Сдано! ✅";
                 document.getElementById('send-status').innerText = "Отправка результатов...";
                 document.getElementById('send-status').style.color = "#2ecc71";
                 document.getElementById('coin-box').style.display = "block";
                 document.getElementById('btn-close').style.display = "block";
                 document.getElementById('btn-retry').style.display = "none";
                 
-                // ОТПРАВКА В GOOGLE
-                sendToGoogle();
+                const payload = JSON.stringify({
+                    name: userData.name, 
+                    phone: userData.phone,
+                    city: userData.city,
+                    birth: userData.birth,
+                    role: "Скаут",
+                    score: userData.score, 
+                    coins: userData.coins,
+                    tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
+                });
+
+                fetch(GOOGLE_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain" },
+                    body: payload
+                }).then(() => {
+                    document.getElementById('send-status').innerText = "✅ ДАННЫЕ В ТАБЛИЦЕ!";
+                    document.getElementById('btn-close').disabled = false;
+                }).catch(err => {
+                    document.getElementById('send-status').innerText = "Ошибка сети, скриншоть экран!";
+                    console.error(err);
+                });
             }
-        }
-
-        // ОТПРАВКА ДАННЫХ В ТАБЛИЦУ
-        function sendToGoogle() {
-            // Формируем пакет данных
-            const payload = JSON.stringify({
-                name: userData.name, 
-                phone: userData.phone,
-                city: userData.city,
-                birth: userData.birth,
-                role: "Скаут",
-                score: userData.score, 
-                coins: userData.coins,
-                tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
-            });
-
-            // Отправляем
-            fetch(GOOGLE_URL, {
-                method: "POST",
-                mode: "no-cors", // Важный режим для отправки из браузера
-                headers: { "Content-Type": "text/plain" },
-                body: payload
-            }).then(() => {
-                document.getElementById('send-status').innerText = "✅ РЕЗУЛЬТАТЫ СОХРАНЕНЫ!";
-                document.getElementById('btn-close').disabled = false;
-            }).catch(err => {
-                document.getElementById('send-status').innerText = "Ошибка сети, скриншоть экран!";
-                console.error(err);
-            });
         }
     </script>
 </body>
