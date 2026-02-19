@@ -6,291 +6,64 @@
     <title>Онбординг: Скаут | Карета Мобилити</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* --- СТИЛИ (ВНЕШНИЙ ВИД) --- */
-        :root { 
-            --bg: #ffffff; 
-            --text: #000; 
-            --yellow: #FFED00; 
-            --black: #000; 
-        }
+        /* --- СТИЛИ --- */
+        :root { --bg: #ffffff; --text: #000; --yellow: #FFED00; --black: #000; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); padding: 15px; text-align: center; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            padding: 15px; 
-            text-align: center; 
-            margin: 0; 
-            overflow-x: hidden; 
-            -webkit-font-smoothing: antialiased; 
-        }
+        .screen { display: none; background: #fff; padding: 20px; border-radius: 24px; margin-top: 10px; border: 3px solid var(--yellow); animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+        .screen.center { text-align: center; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .screen { 
-            display: none; 
-            background: #fff; 
-            padding: 20px; 
-            border-radius: 24px; 
-            margin-top: 10px; 
-            border: 3px solid var(--yellow); 
-            animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-        }
+        h2 { text-transform: uppercase; font-size: 22px; margin-bottom: 10px; letter-spacing: 0.5px; color: var(--black); font-weight: 800; line-height: 1.2; }
+        p { color: #555; font-size: 15px; line-height: 1.4; margin-bottom: 20px; font-weight: 500; }
         
-        .screen.center { 
-            text-align: center; 
-        }
+        input { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid var(--yellow); border-radius: 14px; font-size: 18px; box-sizing: border-box; text-align: center; font-weight: bold; outline: none; transition: 0.3s; background: #fafafa; }
+        input:focus { border-color: var(--black); background: #fff; }
         
-        .active { 
-            display: block; 
-        }
+        button { background: var(--yellow); color: #000; border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; width: 100%; margin-top: 20px; text-transform: uppercase; box-shadow: 0 5px 0 #d4c300; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; display: block; }
+        button:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4c300; }
+        button:disabled { background: #e0e0e0; color: #a0a0a0; box-shadow: none; cursor: not-allowed; transform: none; }
         
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        .logo-main { width: 120px; height: auto; margin-bottom: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         
-        h2 { 
-            text-transform: uppercase; 
-            font-size: 22px; 
-            margin-bottom: 10px; 
-            letter-spacing: 0.5px; 
-            color: var(--black); 
-            font-weight: 800; 
-            line-height: 1.2; 
-        }
-        
-        p { 
-            color: #555; 
-            font-size: 15px; 
-            line-height: 1.4; 
-            margin-bottom: 20px; 
-            font-weight: 500; 
-        }
-        
-        input { 
-            width: 100%; 
-            padding: 16px; 
-            margin-top: 10px; 
-            border: 3px solid var(--yellow); 
-            border-radius: 14px; 
-            font-size: 18px; 
-            box-sizing: border-box; 
-            text-align: center; 
-            font-weight: bold; 
-            outline: none; 
-            transition: 0.3s; 
-            background: #fafafa; 
-        }
-        
-        input:focus { 
-            border-color: var(--black); 
-            background: #fff; 
-        }
-        
-        button { 
-            background: var(--yellow); 
-            color: #000; 
-            border: none; 
-            padding: 18px; 
-            border-radius: 14px; 
-            font-size: 18px; 
-            font-weight: 800; 
-            width: 100%; 
-            margin-top: 20px; 
-            text-transform: uppercase; 
-            box-shadow: 0 5px 0 #d4c300; 
-            cursor: pointer; 
-            transition: transform 0.1s, box-shadow 0.1s; 
-            display: block; 
-        }
-        
-        button:active { 
-            transform: translateY(3px); 
-            box-shadow: 0 2px 0 #d4c300; 
-        }
-        
-        button:disabled { 
-            background: #e0e0e0; 
-            color: #a0a0a0; 
-            box-shadow: none; 
-            cursor: not-allowed; 
-            transform: none; 
-        }
-        
-        .logo-main { 
-            width: 120px; 
-            height: auto; 
-            margin-bottom: 20px; 
-            border-radius: 20px; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
-        }
-        
-        .format-btn { 
-            background: #fff; 
-            border: 3px solid var(--yellow); 
-            color: #000; 
-            margin-bottom: 12px; 
-            padding: 18px; 
-            text-align: left; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            box-shadow: 0 6px 0 #f0f0f0; 
-            transition: 0.2s; 
-        }
-        
-        .format-btn:active { 
-            transform: translateY(3px); 
-            box-shadow: 0 3px 0 #f0f0f0; 
-        }
-        
-        .format-icon { 
-            font-size: 28px; 
-            margin-right: 15px; 
-        }
-        
-        .format-info div:first-child { 
-            font-weight: 800; 
-            font-size: 17px; 
-            text-transform: uppercase; 
-        }
-        
-        .format-info div:last-child { 
-            font-size: 13px; 
-            color: #666; 
-            margin-top: 4px; 
-        }
-        
-        .pdf-btn { 
-            background: #fff; 
-            border: 3px solid #e74c3c; 
-            color: #e74c3c; 
-        }
-        
-        .media-container { 
-            position: relative; 
-            border-radius: 16px; 
-            overflow: hidden; 
-            border: 2px solid var(--yellow); 
-            background: #000; 
-            margin-bottom: 15px; 
-        }
-        
-        .video-wrapper { 
-            position: relative; 
-            padding-bottom: 56.25%; 
-            height: 0; 
-        }
-        
-        .video-wrapper iframe { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-        }
-        
-        .tinder-container { 
-            position: relative; 
-            height: 500px; 
-            width: 100%; 
-            margin-top: 10px; 
-            perspective: 1000px; 
-        }
-        
-        .tinder-card { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: #fff; 
-            border: 3px solid var(--yellow); 
-            border-radius: 20px; 
-            overflow: hidden; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s; 
-            display: flex; 
-            flex-direction: column; 
-            text-align: left; 
-        }
-        
-        .tinder-card.swiped-left { 
-            transform: translateX(-200%) rotate(-30deg) !important; 
-            opacity: 0; 
-        }
-        
-        .tinder-card.swiped-right { 
-            transform: translateX(200%) rotate(30deg) !important; 
-            opacity: 0; 
-        }
-        
-        .card-img { 
-            width: 100%; 
-            height: 45%; 
-            object-fit: cover; 
-            border-bottom: 3px solid var(--yellow); 
-            background: #f0f0f0; 
-        }
-        
-        .card-text { 
-            padding: 20px; 
-            font-size: 15px; 
-            line-height: 1.4; 
-            flex-grow: 1; 
-            background: #fff; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            font-weight: 500; 
-        }
-        
-        .swipe-hint { 
-            font-size: 13px; 
-            color: #999; 
-            margin-top: 10px; 
-            animation: pulse 2s infinite; 
-            font-weight: 600; 
-        }
-        
-        @keyframes pulse { 
-            0% { opacity: 0.6; } 
-            50% { opacity: 1; } 
-            100% { opacity: 0.6; } 
-        }
+        .format-btn { background: #fff; border: 3px solid var(--yellow); color: #000; margin-bottom: 12px; padding: 18px; text-align: left; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 6px 0 #f0f0f0; transition: 0.2s; }
+        .format-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #f0f0f0; }
+        .format-icon { font-size: 28px; margin-right: 15px; }
+        .format-info div:first-child { font-weight: 800; font-size: 17px; text-transform: uppercase; }
+        .format-info div:last-child { font-size: 13px; color: #666; margin-top: 4px; }
+        .pdf-btn { background: #fff; border: 3px solid #e74c3c; color: #e74c3c; }
 
-        .option { 
-            display: flex; 
-            align-items: center; 
-            padding: 15px; 
-            background: #f4f4f4; 
-            margin-bottom: 10px; 
-            border-radius: 14px; 
-            cursor: pointer; 
-            text-align: left; 
-            border: 2px solid transparent; 
-            font-weight: 700; 
-            font-size: 15px; 
-            transition: 0.2s; 
-            -webkit-tap-highlight-color: transparent; 
-        }
+        /* TINDER КАРТОЧКИ: увеличенный размер */
+        .tinder-container { position: relative; height: 65vh; min-height: 500px; max-height: 700px; width: 100%; margin-top: 10px; perspective: 1000px; }
         
-        .option:active { 
-            background: #ececec; 
-            transform: scale(0.98); 
-        }
+        .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid var(--yellow); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s; display: flex; flex-direction: column; text-align: left; }
+        .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
+        .tinder-card.swiped-right { transform: translateX(200%) rotate(30deg) !important; opacity: 0; }
         
-        .status-bar { 
-            display: flex; 
-            justify-content: space-between; 
-            font-weight: 800; 
-            background: var(--yellow); 
-            padding: 12px 20px; 
-            border-radius: 14px; 
-            margin-bottom: 15px; 
-            box-shadow: 0 4px 0 #d4c300; 
-            font-size: 14px; 
-        }
+        /* КАРТИНКА 50% ВЫСОТЫ */
+        .card-img { width: 100%; height: 45%; object-fit: cover; border-bottom: 3px solid var(--yellow); background: #f0f0f0; flex-shrink: 0; }
+        
+        /* ТЕКСТ: со скроллом (overflow-y: auto) */
+        .card-text { padding: 15px 20px; font-size: 15px; line-height: 1.5; flex-grow: 1; background: #fff; display: block; overflow-y: auto; text-align: left; font-weight: 500; }
+        
+        /* СКРОЛЛБАР ДЛЯ КРАСОТЫ */
+        .card-text::-webkit-scrollbar { width: 6px; }
+        .card-text::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .card-text::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        
+        .swipe-hint { font-size: 13px; color: #999; margin-top: 10px; animation: pulse 2s infinite; font-weight: 600; }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        /* КВИЗ */
+        .option { display: flex; align-items: center; padding: 15px; background: #f4f4f4; margin-bottom: 10px; border-radius: 14px; cursor: pointer; text-align: left; border: 2px solid transparent; font-weight: 700; font-size: 15px; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+        .option:active { background: #ececec; transform: scale(0.98); }
+        .status-bar { display: flex; justify-content: space-between; font-weight: 800; background: var(--yellow); padding: 12px 20px; border-radius: 14px; margin-bottom: 15px; box-shadow: 0 4px 0 #d4c300; font-size: 14px; }
+        
+        /* МЕДИА КОНТЕЙНЕРЫ */
+        .media-container { position: relative; border-radius: 16px; overflow: hidden; border: 2px solid var(--yellow); background: #000; margin-bottom: 15px; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
@@ -304,55 +77,25 @@
         <img src="logo.jpg" class="logo-main" alt="Карета Мобилити" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
         <h2>Привет, Скаут! 🚴‍♂️</h2>
         <p>Заполни анкету (сохранится автоматически).</p>
-        
         <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
         <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
         <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
         <input type="text" id="user-birth" placeholder="Дата рождения (ДД.ММ.ГГГГ)" oninput="validateForm()" maxlength="10">
-        
         <button id="btn-start" disabled onclick="saveAndGo()">Далее</button>
     </div>
 
     <div id="screen-formats" class="screen">
         <h2>Формат обучения</h2>
         <p>Выбери, как тебе удобнее:</p>
-        
-        <button class="format-btn" onclick="startCards()">
-            <div class="format-info">
-                <div>📖 Карточки</div>
-                <div>Свайпай текст с фото</div>
-            </div>
-            <div class="format-icon">👆</div>
-        </button>
-        
-        <button class="format-btn" onclick="startVideo()">
-            <div class="format-info">
-                <div>📺 Видео</div>
-                <div>Смотреть обзор</div>
-            </div>
-            <div class="format-icon">▶️</div>
-        </button>
-        
-        <button class="format-btn" onclick="startAudio()">
-            <div class="format-info">
-                <div>🎧 Подкаст</div>
-                <div>Слушать в фоне</div>
-            </div>
-            <div class="format-icon">🎵</div>
-        </button>
-        
-        <button class="format-btn pdf-btn" onclick="openPDF()">
-            <div class="format-info">
-                <div style="color:#e74c3c">📑 Презентация</div>
-                <div style="color:#e74c3c">Скачать и читать</div>
-            </div>
-            <div class="format-icon">📄</div>
-        </button>
+        <button class="format-btn" onclick="startCards()"><div class="format-info"><div>📖 Карточки</div><div>Свайпай текст с фото</div></div><div class="format-icon">👆</div></button>
+        <button class="format-btn" onclick="startVideo()"><div class="format-info"><div>📺 Видео</div><div>Смотреть обзор</div></div><div class="format-icon">▶️</div></button>
+        <button class="format-btn" onclick="startAudio()"><div class="format-info"><div>🎧 Подкаст</div><div>Слушать в фоне</div></div><div class="format-icon">🎵</div></button>
+        <button class="format-btn pdf-btn" onclick="openPDF()"><div class="format-info"><div style="color:#e74c3c">📑 Презентация</div><div style="color:#e74c3c">Скачать и читать</div></div><div class="format-icon">📄</div></button>
     </div>
 
     <div id="screen-theory-cards" class="screen center">
         <h2>Правила</h2>
-        <div class="swipe-hint">Смахни влево или вправо ↔️</div>
+        <div class="swipe-hint">Листай текст вниз ⬇️, смахивай карточку ↔️</div>
         <div class="tinder-container" id="tinder-deck"></div>
         <button id="btn-cards-finish" style="display:none" onclick="startQuiz()">К тесту!</button>
         <button style="background:transparent; color:#999; border:none; box-shadow:none; margin-top:10px; font-size:14px;" onclick="showFormats()">Назад</button>
@@ -360,11 +103,7 @@
 
     <div id="screen-theory-video" class="screen center">
         <h2>Видеообзор</h2>
-        <div class="media-container">
-            <div class="video-wrapper">
-                <iframe src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/?p=x-I4ULg0MU6OYQodDqvM4Q" frameBorder="0" allow="autoplay; fullscreen"></iframe>
-            </div>
-        </div>
+        <div class="media-container"><div class="video-wrapper"><iframe src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/?p=x-I4ULg0MU6OYQodDqvM4Q" frameBorder="0" allow="autoplay; fullscreen"></iframe></div></div>
         <button onclick="startQuiz()">Я посмотрел, к тесту!</button>
         <button style="background:#fff; color:#000; border:2px solid #eee; margin-top:10px; font-size:14px; box-shadow:none;" onclick="showFormats()">Назад</button>
     </div>
@@ -372,11 +111,8 @@
     <div id="screen-theory-audio" class="screen center">
         <h2>Подкаст</h2>
         <div style="background:#f4f4f4; padding:30px; border-radius:20px; margin-bottom:20px;">
-            <div style="font-size:50px; margin-bottom:10px;">🎧</div>
-            <p style="margin-bottom:15px; font-weight:bold;">Слушай внимательно</p>
-            <audio controls style="width: 100%; border-radius: 50px;">
-                <source src="podcast.m4a" type="audio/mp4">
-            </audio>
+            <div style="font-size:50px; margin-bottom:10px;">🎧</div><p style="margin-bottom:15px; font-weight:bold;">Слушай внимательно</p>
+            <audio controls style="width: 100%; border-radius: 50px;"><source src="podcast.m4a" type="audio/mp4"></audio>
         </div>
         <button onclick="startQuiz()">Я прослушал, к тесту!</button>
         <button style="background:#fff; color:#000; border:2px solid #eee; margin-top:10px; font-size:14px; box-shadow:none;" onclick="showFormats()">Назад</button>
@@ -402,13 +138,10 @@
         <img src="logo.jpg" class="logo-main" alt="Успех" onerror="this.src='https://via.placeholder.com/150?text=WIN'">
         <h2 id="finish-title">Результат</h2>
         <p id="res-info" style="font-size:18px; font-weight:bold; color:#000; margin-bottom: 15px;"></p>
-        
         <div id="coin-box" style="background:var(--yellow); padding:20px; border-radius: 18px; margin: 20px 0; box-shadow: 0 6px 0 #d4c300;">
             <h3 style="margin:0; font-size: 28px; font-weight: 900;">💰 <span id="res-coins">0</span></h3>
         </div>
-        
         <p id="send-status" style="font-weight: bold; font-size: 16px;"></p>
-        
         <button id="btn-close" disabled onclick="tg.close()" style="display:none; background:#2ecc71; box-shadow: 0 6px 0 #27ae60; color:white;">Закрыть обучение</button>
         <button id="btn-retry" onclick="showFormats()" style="display:none; background:#e74c3c; box-shadow: 0 6px 0 #c0392b; color:white;">На пересдачу</button>
     </div>
@@ -419,20 +152,11 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        let userData = { 
-            name: "", 
-            phone: "", 
-            city: "", 
-            birth: "", 
-            score: 0, 
-            coins: 0 
-        };
-        
+        let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
         let currentQ = 0;
         let swipedCards = 0;
         const TOTAL_QUESTIONS = 15;
 
-        // ПРОВЕРКА СОХРАНЕНИЯ
         window.addEventListener('DOMContentLoaded', () => {
             let savedName = localStorage.getItem('scoutName');
             let savedPhone = localStorage.getItem('scoutPhone');
@@ -463,9 +187,7 @@
             let p = document.getElementById('user-phone');
             
             let digits = p.value.replace(/\D/g, '');
-            if (digits.startsWith('7') || digits.startsWith('8')) {
-                digits = digits.substring(1);
-            }
+            if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);
             p.value = digits.length > 0 ? '+7' + digits : '+7'; 
             
             let isValid = (n.length > 2 && c.length > 2 && b.length > 5 && digits.length >= 10);
@@ -486,21 +208,10 @@
             showFormats();
         }
 
-        function showFormats() { 
-            showScreen('screen-formats'); 
-        }
-        
-        function startVideo() { 
-            showScreen('screen-theory-video'); 
-        }
-        
-        function startAudio() { 
-            showScreen('screen-theory-audio'); 
-        }
-        
-        function openPDF() { 
-            showScreen('screen-theory-pdf'); 
-        }
+        function showFormats() { showScreen('screen-formats'); }
+        function startVideo() { showScreen('screen-theory-video'); }
+        function startAudio() { showScreen('screen-theory-audio'); }
+        function openPDF() { showScreen('screen-theory-pdf'); }
         
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -515,25 +226,24 @@
             document.getElementById('btn-cards-finish').style.display = 'none';
             document.querySelector('.swipe-hint').style.display = 'block';
 
+            // ПОДРОБНЫЕ ОБУЧАЮЩИЕ ТЕКСТЫ ДЛЯ КАРТОЧЕК
             const theory = [
-                { t: "<b>👔 1. СТАНДАРТ</b><br>Запрещено курить, есть или пить на Карете.", img: "1.jpg" }, 
-                { t: "<b>🅿️ 2. ПАРКОВКА</b><br>Строго в линию, <b>50 см</b>. Фары ровно.", img: "2.png" }, 
-                { t: "<b>⚖️ 3. БАЛАНС</b><br>Много карет? Увези. Мало? Пригони.", img: "3.jpg" }, 
-                { t: "<b>🤝 4. ЭКСПЕРТ</b><br>Ты — спасательный круг. Знай тарифы.", img: "4.png" }, 
-                { t: "<b>📱 5. ЗАРПЛАТА</b><br>Через бот. Старт + <b>селфи в форме</b>.", img: "5.png" }, 
-                { t: "<b>🛠 6. ИНВЕНТАРЬ</b><br>Ключи 13/15, отвертка, стяжки, микрофибра.", img: "6.png" }, 
-                { t: "<b>🔧 7. РЕМОНТ</b><br>Мелкое — сам. Сложное — <b>пиши в бот</b>.", img: "7.png" }, 
-                { t: "<b>🎧 8. АУДИОГИД</b><br>Цена — <b>1 рубль</b>. Предлагай каждому.", img: "8.png" }
+                { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.<br>• Поддерживай чистоту техники. Пыль на сиденьях недопустима.", img: "1.jpg" }, 
+                { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Парковка — это наша витрина. Как стоят Кареты, так люди воспринимают наш сервис.<br><br><b>Правила:</b><br>• Ставь Кареты строго в одну ровную линию.<br>• Расстояние между ними — ровно <b>50 см</b>.<br>• Руль и фары должны смотреть строго прямо.<br>• Техника должна сиять, никаких перекосов на станции.", img: "2.png" }, 
+                { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>Техника должна быть там, где она нужна людям. Не создавай пустых точек или «свалок» из карет.<br><br><b>Твои действия:</b><br>• Много карет на точке? Угони лишние на соседнюю пустую.<br>• Точка опустела? Быстро пригони технику.<br>• Клиенты не должны ждать в очереди из-за плохой логистики.", img: "3.jpg" }, 
+                { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Для туриста ты — главный помощник в парке. Будь готов ответить на любой вопрос с улыбкой.<br><br><b>Что нужно знать:</b><br>• Все актуальные тарифы и правила аренды.<br>• Как работает приложение (помоги скачать, привязать карту).<br>• Куда лучше поехать (маршруты и красивые места).", img: "4.png" }, 
+                { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br><br>Всё управление сменой происходит строго через нашего Telegram-бота.<br><br><b>Алгоритм:</b><br>• Пришел на точку -> нажал «Старт смены».<br>• Обязательно сделай <b>селфи в фирменной форме</b> на фоне парковки.<br>• Нет отметки в боте = нет зарплаты. Бот фиксирует твое рабочее время.", img: "5.png" }, 
+                { t: "<b>🛠 6. РАБОЧИЙ ИНВЕНТАРЬ</b><br><br>Ты должен уметь быстро подготовить Карету к поездке. Весь инвентарь лежит в пилоне на парковке или на складе.<br><br><b>Твой набор:</b><br>• Гаечные ключи на 13 и 15, отвертка.<br>• Пластиковые стяжки.<br>• Яркая микрофибра для протирки.<br>• Жесткая щетка для счистки песка с рамы.", img: "6.png" }, 
+                { t: "<b>🔧 7. ПОЛОМКИ И РЕМОНТ</b><br><br>Техника иногда ломается. Главное — быстро и правильно среагировать.<br><br><b>Твои действия:</b><br>• Мелкий ремонт (подкрутить болт) — делай сам на месте.<br>• Серьезная поломка (трещина в раме, спустило колесо) — немедленно <b>пиши заявку в бот</b>.<br>• Сломанную Карету обязательно сними с линии.", img: "7.png" }, 
+                { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — это уникальная фишка наших Карет, которая повышает лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.<br>• Помоги туристам включить и надеть наушники.", img: "8.png" }
             ];
 
-            // ИСПРАВЛЕНИЕ: Переворачиваем массив перед отрисовкой, чтобы Карточка 1 была сверху
             let reversedTheory = [...theory].reverse();
             
             reversedTheory.forEach((item, i) => {
                 let card = document.createElement('div');
                 card.className = 'tinder-card';
                 
-                // ИСПРАВЛЕНИЕ: Умная проверка картинок.
                 let fallbackImg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.png') : item.img.replace('.png', '.jpg');
                 let fallbackImgJpeg = item.img.includes('.jpg') ? item.img.replace('.jpg', '.jpeg') : item.img.replace('.png', '.jpeg');
                 
@@ -547,118 +257,50 @@
             });
         }
 
-        let questions = [
-            { 
-                q: "Как считается время?", 
-                a: ["Блокнот", "Бот (геолокация)", "Словами"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Старт смены в боте?", 
-                a: ["Кнопка", "Кнопка + селфи в форме", "Чат"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Где ключи?", 
-                a: ["Дома", "Пилон/Склад", "Купить"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Зачем щетка?", 
-                a: ["Волосы", "Грязь с рамы", "Одежда"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Перебор карет?", 
-                a: ["Ждать", "Угнать лишние", "Уйти"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Ключи для ремонта?", 
-                a: ["10/12", "13/15", "Разводной"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Грузоподъемность?", 
-                a: ["Не знаю", "Назову цифру", "Секрет"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Дистанция?", 
-                a: ["0 см", "50 см", "1 метр"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Курить в карете?", 
-                a: ["Можно", "Запрещено", "Иногда"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Трещина в раме?", 
-                a: ["Скотч", "Бот + ТМ", "Молчать"], 
-                c: 1, 
-                p: true 
-            },
-            { 
-                q: "Цена аудиогида?", 
-                a: ["0", "1 рубль", "500"], 
-                c: 1, 
-                p: false 
-            },
-            { 
-                q: "Чистота — это...", 
-                a: ["Сиденье", "Пыль", "Всё до блеска"], 
-                c: 2, 
-                p: true 
-            },
-            { 
-                q: "Форма?", 
-                a: ["Нет", "Обязательно", "Праздники"], 
-                c: 1, 
-                p: false 
-            },
-            { 
-                q: "Перегон кареты?", 
-                a: ["Грязной", "Чистой", "Быстро"], 
-                c: 0, 
-                p: true 
-            },
-            { 
-                q: "Клиент грубит?", 
-                a: ["Грубить", "Вежливо помочь", "Игнор"], 
-                c: 1, 
-                p: true 
-            }
-        ];
-
+        // --- УМНЫЙ СВАЙП: РАЗДЕЛЯЕТ СКРОЛЛ И СВАЙП ---
         function setupSwipe(card) {
             let startX = 0; 
+            let startY = 0;
             let isDragging = false;
+            let isScrolling = false;
             
             card.ontouchstart = e => { 
                 startX = e.touches[0].clientX; 
+                startY = e.touches[0].clientY;
                 isDragging = true; 
+                isScrolling = false;
                 card.style.transition = 'none'; 
             };
             
             card.ontouchmove = e => { 
                 if (!isDragging) return; 
-                let diff = e.touches[0].clientX - startX; 
-                card.style.transform = `translateX(${diff}px) rotate(${diff/20}deg)`; 
+                
+                let diffX = e.touches[0].clientX - startX; 
+                let diffY = e.touches[0].clientY - startY;
+                
+                // Если тянем вверх/вниз сильнее, чем вбок — значит человек читает текст
+                if (!isScrolling && Math.abs(diffY) > Math.abs(diffX)) {
+                    isScrolling = true;
+                    isDragging = false;
+                    card.style.transform = 'translate(0)'; // Возвращаем карточку на место
+                    return; // Разрешаем родной скролл браузера
+                }
+                
+                // Если мы уже поняли, что это скролл текста, не двигаем карточку
+                if (isScrolling) return;
+
+                // Если тянем вбок — это свайп карточки
+                card.style.transform = `translateX(${diffX}px) rotate(${diffX/25}deg)`; 
             };
             
             card.ontouchend = e => {
+                if (isScrolling) {
+                    isScrolling = false;
+                    return;
+                }
+                
                 isDragging = false; 
-                card.style.transition = 'transform 0.5s';
+                card.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
                 let diff = e.changedTouches[0].clientX - startX;
                 
                 if (Math.abs(diff) > 100) {
@@ -679,13 +321,29 @@
             };
         }
 
+        let questions = [
+            { q: "Как считается время?", a: ["Блокнот", "Бот (геолокация)", "Словами"], c: 1, p: true },
+            { q: "Старт смены в боте?", a: ["Кнопка", "Кнопка + селфи в форме", "Чат"], c: 1, p: true },
+            { q: "Где ключи?", a: ["Дома", "Пилон/Склад", "Купить"], c: 1, p: true },
+            { q: "Зачем щетка?", a: ["Волосы", "Грязь с рамы", "Одежда"], c: 1, p: true },
+            { q: "Перебор карет?", a: ["Ждать", "Угнать лишние", "Уйти"], c: 1, p: true },
+            { q: "Ключи для ремонта?", a: ["10/12", "13/15", "Разводной"], c: 1, p: true },
+            { q: "Грузоподъемность?", a: ["Не знаю", "Назову цифру", "Секрет"], c: 1, p: true },
+            { q: "Дистанция?", a: ["0 см", "50 см", "1 метр"], c: 1, p: true },
+            { q: "Курить в карете?", a: ["Можно", "Запрещено", "Иногда"], c: 1, p: true },
+            { q: "Трещина в раме?", a: ["Скотч", "Бот + ТМ", "Молчать"], c: 1, p: true },
+            { q: "Цена аудиогида?", a: ["0", "1 рубль", "500"], c: 1, p: false },
+            { q: "Чистота — это...", a: ["Сиденье", "Пыль", "Всё до блеска"], c: 2, p: true },
+            { q: "Форма?", a: ["Нет", "Обязательно", "Праздники"], c: 1, p: false },
+            { q: "Перегон кареты?", a: ["Грязной", "Чистой", "Быстро"], c: 0, p: true },
+            { q: "Клиент грубит?", a: ["Грубить", "Вежливо помочь", "Игнор"], c: 1, p: true }
+        ];
+
         function startQuiz() {
             userData.score = 0; 
             userData.coins = 0; 
             currentQ = 0;
-            
             questions.sort(() => Math.random() - 0.5);
-            
             showScreen('screen-quiz');
             document.getElementById('statusBar').style.display = 'flex';
             renderQ();
@@ -703,20 +361,13 @@
         function handleAns(idx) {
             if (idx === questions[currentQ].c) { 
                 userData.score++; 
-                if (questions[currentQ].p) {
-                    userData.coins += 100; 
-                }
+                if (questions[currentQ].p) userData.coins += 100; 
                 tg.HapticFeedback.notificationOccurred('success'); 
             } else {
                 tg.HapticFeedback.notificationOccurred('error');
             }
-            
             currentQ++;
-            if (currentQ < TOTAL_QUESTIONS) {
-                renderQ(); 
-            } else {
-                showFinish();
-            }
+            if (currentQ < TOTAL_QUESTIONS) renderQ(); else showFinish();
         }
 
         function showFinish() {
