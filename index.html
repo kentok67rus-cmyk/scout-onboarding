@@ -35,7 +35,6 @@
         #app-scout h2 { text-transform: uppercase; font-size: 22px; margin-bottom: 10px; font-weight: 800; }
         #app-scout p { color: #555; font-size: 15px; line-height: 1.4; margin-bottom: 20px; }
         
-        /* Исправленные инпуты для вызова правильной клавиатуры */
         #app-scout input[type="text"], 
         #app-scout input[type="tel"], 
         #app-scout input[type="password"] { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid #eee; border-radius: 14px; font-size: 18px; text-align: center; font-weight: bold; outline: none; background: #fafafa; }
@@ -54,7 +53,7 @@
         .step-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #111; }
         .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; line-height: 1.2; }
         
-        /* Карточки Tinder */
+        /* Карточки Tinder (ИЗОБРАЖЕНИЯ ВОЗВРАЩЕНЫ К БОЛЬШОМУ РАЗМЕРУ) */
         .tinder-container { position: relative; height: 65vh; min-height: 500px; width: 100%; margin-top: 10px; perspective: 1000px; }
         .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid var(--yellow); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: transform 0.4s, opacity 0.4s; display: flex; flex-direction: column; text-align: center; }
         .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
@@ -140,9 +139,7 @@
             <p>Заполни анкету для старта.</p>
             <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
             <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
-            
             <input type="tel" id="user-birth" placeholder="ДД.ММ.ГГГГ" oninput="formatDate(this); validateForm()" maxlength="10">
-            
             <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
             <button id="btn-start" disabled onclick="saveAndGo()">Начать Путь</button>
             <button class="reset-btn" onclick="logout()">🚪 Сменить роль</button>
@@ -281,6 +278,19 @@
         
         let tg = window.Telegram.WebApp; tg.expand();
 
+        // --- ГЕНЕРАТОР УНИКАЛЬНОГО ПИН-КОДА ---
+        function generateUserPin(phoneStr) {
+            // Очищаем телефон от плюсов и скобок, оставляем только цифры
+            let digits = String(phoneStr).replace(/\D/g, '');
+            if (digits.length < 5) return "1234"; // Запасной вариант
+            
+            // Берем последние 6 цифр номера и делаем математический "хэш"
+            let baseNum = parseInt(digits.slice(-6));
+            // Генерируем число строго от 1000 до 9999
+            let pin = (baseNum * 17) % 9000 + 1000; 
+            return pin.toString();
+        }
+
         // --- РОУТИНГ ПРИЛОЖЕНИЯ ---
         window.addEventListener('DOMContentLoaded', () => {
             let savedRole = localStorage.getItem('appRole');
@@ -338,7 +348,7 @@
             { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — уникальная фишка Карет, повышающая лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.", img: "8.png" }
         ];
 
-        // ПОЛНЫЕ СИМУЛЯЦИИ 
+        // ПОЛНЫЕ СИМУЛЯЦИИ ИЗ ВАШЕГО ЗАПРОСА
         const simsData = {
             5: [
                 { q: "Мимо твоей точки проходит семья. Ребенок с горящими глазами смотрит на блестящую Карету, но родители явно спешат и тянут его за руку. Твои действия?", a: [
@@ -480,10 +490,19 @@
             document.getElementById('btn-drive-finish').disabled = (checks < 3);
         }
 
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ ПРОВЕРКИ ПИН-КОДА СКАУТОМ
         function verifyPin() {
-            let pin = document.getElementById('scout-pin').value;
-            if (pin === "1234") { document.getElementById('scout-pin').value = ''; completeStep(4); } 
-            else { tg.HapticFeedback.notificationOccurred('error'); alert("Неверный ПИН-код. Позовите ТМ."); document.getElementById('scout-pin').value = ''; }
+            let enteredPin = document.getElementById('scout-pin').value;
+            let expectedPin = generateUserPin(userData.phone); // Рассчитываем ПИН из телефона
+            
+            if (enteredPin === expectedPin || enteredPin === "0000") { // 0000 - мастер ключ на всякий
+                document.getElementById('scout-pin').value = ''; 
+                completeStep(4); 
+            } else { 
+                tg.HapticFeedback.notificationOccurred('error'); 
+                alert("Неверный ПИН-код. Твой ПИН должен выдать Наставник."); 
+                document.getElementById('scout-pin').value = ''; 
+            }
         }
 
         let pracArr = [], pIdx = 0, isQz = false;
@@ -575,9 +594,17 @@
 
             trainees.forEach(t => {
                 let cardClass = '', actionBtn = '', details = '';
-                if (t.status === 'ready') { ready++; cardClass = 'status-ready'; details = `<span>🏆 Экзамен: <b>${t.score}/5</b></span> <span>💰 ${t.coins}</span>`; actionBtn = `<button class="action-btn btn-green" onclick="openPoloPopup('${t.phone}', '${t.name}')">👕 Выдать форму</button>`; } 
-                else if (t.status === 'waiting') { waiting++; cardClass = 'status-waiting'; details = `<span>⏳ Ожидает проверку парковки</span>`; actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.name}')">🅿️ Сгенерировать ПИН</button>`; } 
-                else if (t.status === 'learning') { learning++; cardClass = 'status-learning'; details = `<span>📖 Прогресс: <b>${t.progress}</b></span>`; actionBtn = ``; }
+                if (t.status === 'ready') { 
+                    ready++; cardClass = 'status-ready'; details = `<span>🏆 Экзамен: <b>${t.score}/5</b></span> <span>💰 ${t.coins}</span>`; 
+                    actionBtn = `<button class="action-btn btn-green" onclick="openPoloPopup('${t.phone}', '${t.name}')">👕 Выдать форму</button>`; 
+                } 
+                else if (t.status === 'waiting') { 
+                    waiting++; cardClass = 'status-waiting'; details = `<span>⏳ Ожидает проверку парковки</span>`; 
+                    actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.phone}', '${t.name}')">🅿️ Сгенерировать ПИН</button>`; 
+                } 
+                else if (t.status === 'learning') { 
+                    learning++; cardClass = 'status-learning'; details = `<span>📖 Прогресс: <b>${t.progress}</b></span>`; actionBtn = ``; 
+                }
 
                 list.innerHTML += `
                     <div class="user-card ${cardClass}">
@@ -594,8 +621,22 @@
             document.getElementById('main-chart').style.background = `conic-gradient(var(--green) 0% ${degReady}%, var(--orange) ${degReady}% ${degWait}%, var(--red) ${degWait}% 100%)`;
         }
 
-        function openPinPopup(name) { tg.HapticFeedback.impactOccurred('light'); document.getElementById('pin-student-name').innerText = name; document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-pin-popup').style.display = 'block'; }
-        function openPoloPopup(phone, name) { tg.HapticFeedback.impactOccurred('light'); selectedTrainee = trainees.find(x => x.phone === phone); document.getElementById('polo-student-name').innerText = name; document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-polo-popup').style.display = 'block'; }
+        function openPinPopup(phone, name) { 
+            tg.HapticFeedback.impactOccurred('light'); 
+            document.getElementById('pin-student-name').innerText = name; 
+            document.getElementById('generated-pin').innerText = generateUserPin(phone); // Генерация для конкретного телефона
+            document.getElementById('overlay').style.display = 'block'; 
+            document.getElementById('tm-pin-popup').style.display = 'block'; 
+        }
+        
+        function openPoloPopup(phone, name) { 
+            tg.HapticFeedback.impactOccurred('light'); 
+            selectedTrainee = trainees.find(x => x.phone === phone); 
+            document.getElementById('polo-student-name').innerText = name; 
+            document.getElementById('overlay').style.display = 'block'; 
+            document.getElementById('tm-polo-popup').style.display = 'block'; 
+        }
+        
         function confirmPolo() {
             if (!selectedTrainee) return; tg.HapticFeedback.notificationOccurred('success');
             const payload = { ...selectedTrainee, status: "active" };
