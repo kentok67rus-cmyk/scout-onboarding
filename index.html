@@ -304,32 +304,32 @@
         let currentProgressStep = 1;
 
         const roadmapData = [
-            { level: 1, levelTitle: "Уровень 1: Старт" },
+            { level: 1, levelTitle: "Уровень 1: Старт (Бейдж)" },
             { id: 1, icon: '📺', title: 'Основы культуры', desc: 'Видео-введение' },
             { id: 2, icon: '📖', title: 'Стандарты', desc: 'Правила парковки' },
-            { level: 2, levelTitle: "Уровень 2: Поле" },
+            { level: 2, levelTitle: "Уровень 2: Поле (Допуск)" },
             { id: 3, icon: '🚴', title: 'Тест-драйв', desc: 'Почувствуй продукт' },
             { id: 4, icon: '🅿️', title: 'Парковка (ПИН ТМ)', desc: 'Сдай парковку ТМ' },
             { id: 5, icon: '🤝', title: 'Симуляция 1', desc: 'Работа с гостями' },
-            { level: 3, levelTitle: "Уровень 3: Бой" },
+            { level: 3, levelTitle: "Уровень 3: Бой (Поло)" },
             { id: 6, icon: '🎧', title: 'Подкаст', desc: 'Слушай ТМ' },
             { id: 7, icon: '🛠', title: 'Симуляция 2', desc: 'Сложные ситуации' },
             { id: 8, icon: '🏆', title: 'Экзамен', desc: 'Финальный тест' }
         ];
 
-        // ПОЛНЫЕ 8 КАРТОЧЕК С ПОДРОБНЫМ ТЕКСТОМ
+        // ЗДЕСЬ ИСПРАВЛЕНЫ РАСШИРЕНИЯ КАРТИНОК ИЗ ПАПКИ (1.jpeg, 3.jpeg, 4.jpeg)
         const theoryCards = [
-            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.", img: "1.png" }, 
+            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.", img: "1.jpeg" }, 
             { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Парковка — это наша витрина. Как стоят Кареты, так люди воспринимают наш сервис.<br><br><b>Правила:</b><br>• Ставь Кареты строго в одну ровную линию.<br>• Расстояние между ними — ровно <b>50 см</b>.<br>• Руль и фары должны смотреть строго прямо.", img: "2.png" },
-            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>Техника должна быть там, где она нужна людям. Не создавай пустых точек.<br><br><b>Твои действия:</b><br>• Много карет на точке? Угони лишние на соседнюю пустую.<br>• Точка опустела? Быстро пригони технику. Клиенты не должны ждать.", img: "3.png" },
-            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Для туриста ты — главный помощник в парке. Будь готов ответить на любой вопрос.<br><br><b>Что нужно знать:</b><br>• Все актуальные тарифы и правила аренды.<br>• Как работает приложение (помоги скачать).<br>• Куда лучше поехать (маршруты парка).", img: "4.png" },
+            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>Техника должна быть там, где она нужна людям. Не создавай пустых точек.<br><br><b>Твои действия:</b><br>• Много карет на точке? Угони лишние на соседнюю пустую.<br>• Точка опустела? Быстро пригони технику. Клиенты не должны ждать.", img: "3.jpeg" },
+            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Для туриста ты — главный помощник в парке. Будь готов ответить на любой вопрос.<br><br><b>Что нужно знать:</b><br>• Все актуальные тарифы и правила аренды.<br>• Как работает приложение (помоги скачать).<br>• Куда лучше поехать (маршруты парка).", img: "4.jpeg" },
             { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br><br>Всё управление сменой происходит строго через Telegram-бота.<br><br><b>Алгоритм:</b><br>• Пришел на точку -> нажал «Старт смены».<br>• Обязательно сделай <b>селфи в форме</b> на фоне парковки.<br>• Нет отметки = нет зарплаты.", img: "5.png" },
             { t: "<b>🛠 6. РАБОЧИЙ ИНВЕНТАРЬ</b><br><br>Ты должен уметь подготовить Карету. Инвентарь лежит в пилоне.<br><br><b>Твой набор:</b><br>• Ключи на 13 и 15, отвертка.<br>• Пластиковые стяжки.<br>• Микрофибра для протирки.<br>• Жесткая щетка для счистки песка.", img: "6.png" },
             { t: "<b>🔧 7. ПОЛОМКИ И РЕМОНТ</b><br><br>Техника иногда ломается. Главное — быстро среагировать.<br><br><b>Твои действия:</b><br>• Мелкое (подкрутить болт) — делай сам.<br>• Серьезная поломка (трещина, спустило колесо) — немедленно <b>заявка в бот</b> и сними Карету с линии.", img: "7.png" },
             { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — уникальная фишка Карет, повышающая лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.", img: "8.png" }
         ];
 
-        // ПОЛНЫЕ, НЕ СОКРАЩЕННЫЕ СИМУЛЯЦИИ ИЗ ВАШЕГО ЗАПРОСА
+        // ПОЛНЫЕ СИМУЛЯЦИИ ИЗ ВАШЕГО ЗАПРОСА
         const simsData = {
             5: [
                 { q: "Мимо твоей точки проходит семья. Ребенок с горящими глазами смотрит на блестящую Карету, но родители явно спешат и тянут его за руку. Твои действия?", a: [
@@ -514,7 +514,6 @@
         function renderCard() {
             const d = document.getElementById('tinder-deck'); d.innerHTML = ''; 
             let it = theoryCards[cIdx], c = document.createElement('div'); c.className = 'tinder-card';
-            // Используем мощный генератор плейсхолдеров, если локальной картинки нет. Цвета: Желтый фон, черный текст.
             let fallbackUrl = `https://placehold.co/600x400/FFED00/000000?text=Правило+${cIdx + 1}`;
             c.innerHTML = `<div style="position:absolute; top:12px; right:12px; font-weight:900; background:var(--yellow); padding:5px 12px; border-radius:10px; font-size:14px;">${cIdx + 1}/${theoryCards.length}</div>
             <img src="${it.img}" class="card-img" onerror="this.src='${fallbackUrl}';"><div class="card-text">${it.t}</div>`;
@@ -540,8 +539,27 @@
             } else {
                 document.getElementById('res-coins').innerText = userData.coins; document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
                 document.getElementById('send-status').innerText = "Отправка в базу..."; document.getElementById('send-status').style.color = "var(--green)";
-                syncScoutProgress('ready'); // Финальное сохранение
-                setTimeout(() => { document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!"; document.getElementById('btn-close').style.display = "block"; document.getElementById('btn-close').disabled = false; }, 1000);
+                
+                const payload = {
+                    name: userData.name, phone: userData.phone, city: userData.city, birth: userData.birth,
+                    role: "Скаут", score: userData.score, coins: userData.coins,
+                    tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
+                };
+
+                fetch(GOOGLE_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify(payload)
+                }).then(() => {
+                    document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!";
+                    document.getElementById('btn-close').style.display = "block";
+                    document.getElementById('btn-close').disabled = false;
+                }).catch(err => {
+                    document.getElementById('send-status').innerText = "Ошибка сети. Сделай скриншот.";
+                    document.getElementById('btn-close').style.display = "block";
+                    document.getElementById('btn-close').disabled = false;
+                });
             }
         }
 
@@ -553,7 +571,6 @@
 
         function initTM() { fetchTrainees(); }
 
-        // Загрузка реальных стажеров из Google Таблицы
         function fetchTrainees() {
             const list = document.getElementById('users-list');
             list.innerHTML = `<div class="loader">⏳ Загрузка стажёров из базы...</div>`;
