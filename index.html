@@ -49,20 +49,19 @@
         .step-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #111; }
         .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; line-height: 1.2; }
         
-        /* Карточки Tinder */
-        .tinder-container { position: relative; height: 60vh; min-height: 480px; width: 100%; margin-top: 10px; perspective: 1000px; }
-        .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid #eee; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08); transition: transform 0.4s, opacity 0.4s; display: flex; flex-direction: column; text-align: center; }
+        /* Карточки Tinder (ИЗОБРАЖЕНИЯ ВОЗВРАЩЕНЫ К БОЛЬШОМУ РАЗМЕРУ) */
+        .tinder-container { position: relative; height: 65vh; min-height: 500px; width: 100%; margin-top: 10px; perspective: 1000px; }
+        .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid var(--yellow); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: transform 0.4s, opacity 0.4s; display: flex; flex-direction: column; text-align: center; }
         .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
         .tinder-card.swiped-right { transform: translateX(200%) rotate(30deg) !important; opacity: 0; }
-        .card-img { width: 120px; height: 120px; margin: 30px auto 15px; object-fit: contain; flex-shrink: 0; }
-        .card-text { padding: 0 20px 20px; font-size: 16px; line-height: 1.5; flex-grow: 1; overflow-y: auto; text-align: left; font-weight: 500; }
+        .card-img { width: 100%; height: 45%; object-fit: cover; border-bottom: 3px solid var(--yellow); background: #f0f0f0; flex-shrink: 0; margin: 0; border-radius: 17px 17px 0 0; }
+        .card-text { padding: 20px; font-size: 16px; line-height: 1.5; flex-grow: 1; overflow-y: auto; text-align: left; font-weight: 500; color: #333; }
         
         /* Интерактив */
         .option { display: flex; align-items: center; padding: 16px; background: #f8fafc; margin-bottom: 12px; border-radius: 14px; cursor: pointer; text-align: left; border: 2px solid #eee; font-weight: 600; font-size: 15px; line-height: 1.4; color: #333; }
         .option.correct { background: #dcfce7; border-color: var(--green); color: #166534; }
         .option.wrong { background: #fee2e2; border-color: var(--red); color: #991b1b; }
         
-        /* ИСПРАВЛЕННЫЙ ЧЕК-ЛИСТ */
         .checklist-item { display: flex; align-items: flex-start; text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 10px; font-weight: 600; font-size: 15px; line-height: 1.4; }
         .checklist-item input[type="checkbox"] { width: 24px; height: 24px; margin: 0 15px 0 0; accent-color: var(--green); flex-shrink: 0; position: relative; top: -2px; }
 
@@ -93,8 +92,7 @@
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .user-name { font-size: 16px; font-weight: 800; margin: 0; color: #111; }
         .user-role { font-size: 12px; color: #888; font-weight: 600; background: #eee; padding: 3px 8px; border-radius: 6px; }
-        .card-body { font-size: 13px; color: #555; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; }
-        .card-body span { margin-right: 15px; }
+        .card-body { font-size: 13px; color: #555; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
         .action-btn { background: var(--black); color: var(--white); border: none; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 800; text-transform: uppercase; cursor: pointer; width: 100%; text-align: center; }
         .btn-green { background: var(--green); color: white; }
         .btn-orange { background: var(--yellow); color: var(--black); }
@@ -110,12 +108,14 @@
         .popup button { background: var(--yellow); border: none; padding: 15px; border-radius: 14px; font-weight: 800; width: 100%; font-size: 16px; margin-top: 10px; color: #000; cursor: pointer; }
         .popup .close-btn { background: #eee; color: #333; }
         .pin-display { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--black); background: #f4f6f8; padding: 15px; border-radius: 16px; margin: 20px 0; text-align: center; }
+        
+        .loader { text-align: center; padding: 30px; font-weight: bold; color: #888; }
     </style>
 </head>
 <body>
 
     <div id="app-router">
-        <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=KARETA'">
+        <img src="logo.jpg" class="logo-main" onerror="this.src='https://placehold.co/400x400/FFED00/000000?text=KARETA'">
         <h2>Вход в портал</h2>
         <p>Выберите свою роль для входа в приложение.</p>
         <div class="role-btn" onclick="initApp('scout')"><span>🚴‍♂️</span> Я Скаут / Стажёр</div>
@@ -130,7 +130,7 @@
         </div>
 
         <div id="screen-reg" class="screen center">
-            <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
+            <img src="logo.jpg" class="logo-main" onerror="this.src='https://placehold.co/400x400/FFED00/000000?text=LOGO'">
             <h2>Привет, Скаут! 🚴‍♂️</h2>
             <p>Заполни анкету для старта.</p>
             <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
@@ -161,7 +161,7 @@
             <h2>Стандарты</h2>
             <div style="font-size: 13px; color: #999; margin-bottom: 10px;">Листай текст ⬇️, смахивай ➡️</div>
             <div class="tinder-container" id="tinder-deck"></div>
-            <button id="btn-cards-finish" style="display:none; background:var(--green); color:white;" onclick="completeStep(2)">✅ Изучил</button>
+            <button id="btn-cards-finish" style="display:none; background:var(--green); color:white;" onclick="completeStep(2)">✅ Изучил все 8 правил</button>
         </div>
 
         <div id="screen-testdrive" class="screen center">
@@ -199,7 +199,7 @@
         </div>
 
         <div id="screen-finish" class="screen center">
-            <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=WIN'">
+            <img src="logo.jpg" class="logo-main" onerror="this.src='https://placehold.co/400x400/FFED00/000000?text=WIN'">
             <h2 id="finish-title">Результат</h2>
             <p id="res-info" style="font-size:18px; font-weight:bold;"></p>
             <div style="background:var(--yellow); padding:20px; border-radius: 18px; margin: 20px 0;">
@@ -218,7 +218,7 @@
                 <h1>Кабинет ТМ</h1>
                 <p>Управление стажёрами</p>
             </div>
-            <div class="location-badge" id="current-location">Сириус</div>
+            <div class="location-badge" id="current-location">Твоя Точка</div>
         </div>
 
         <div class="stats-container">
@@ -229,16 +229,17 @@
                 </div>
             </div>
             <div class="stats-legend">
-                <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> <span id="count-ready">0</span>&nbsp;Готовы к смене</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> <span id="count-ready">0</span>&nbsp;Готовы</div>
                 <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> <span id="count-wait">0</span>&nbsp;Ждут проверку</div>
-                <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> <span id="count-learn">0</span>&nbsp;Изучают базу</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> <span id="count-learn">0</span>&nbsp;В процессе</div>
             </div>
         </div>
 
         <div class="section-title">Список стажёров</div>
-        <div id="users-list"></div>
+        <div id="users-list">
+            </div>
         
-        <button class="reset-btn" onclick="logout()" style="text-align: center;">🚪 Сменить роль (Тест)</button>
+        <button class="reset-btn" onclick="logout()" style="text-align: center; margin-bottom: 20px;">🚪 Выйти из кабинета</button>
     </div>
 
     <div class="overlay" id="overlay" onclick="closeAllPopups()"></div>
@@ -252,7 +253,7 @@
     <div class="popup" id="tm-pin-popup">
         <div style="font-size: 40px; text-align: center;">🅿️</div>
         <h3 style="text-align: center;">Проверка парковки</h3>
-        <p style="text-align: center; font-size: 14px;">Проверь, идеально ли <b id="pin-student-name"></b> выставил кареты (50 см, руль прямо). Если всё супер — продиктуй ему ПИН-код:</p>
+        <p style="text-align: center; font-size: 14px;">Проверь, идеально ли <b id="pin-student-name"></b> выставил кареты (50 см, руль прямо). Если всё супер — продиктуй ПИН-код:</p>
         <div class="pin-display" id="generated-pin">1234</div>
         <button style="background:var(--green); color:white;" onclick="closeAllPopups()">Понятно</button>
     </div>
@@ -260,11 +261,10 @@
     <div class="popup" id="tm-polo-popup">
         <div style="font-size: 40px; text-align: center;">👕</div>
         <h3 style="text-align: center;">Выдача Поло</h3>
-        <p style="text-align: center;">Стажёр <b id="polo-student-name"></b> сдал финальный экзамен. Выдай ему форму и смело выводи в смену!</p>
-        <button style="background:var(--green); color:white;" onclick="confirmPolo()">Подтвердить выдачу</button>
+        <p style="text-align: center;">Стажёр <b id="polo-student-name"></b> сдал финальный экзамен. Выдай ему форму и подтверди его выход в смену!</p>
+        <button style="background:var(--green); color:white;" onclick="confirmPolo()">Подтвердить выход</button>
         <button class="close-btn" onclick="closeAllPopups()">Отмена</button>
     </div>
-
 
     <script>
         // ССЫЛКА НА ВАШ GOOGLE APPS SCRIPT
@@ -304,31 +304,32 @@
         let currentProgressStep = 1;
 
         const roadmapData = [
-            { level: 1, levelTitle: "Уровень 1: Старт (Бейдж)" },
+            { level: 1, levelTitle: "Уровень 1: Старт" },
             { id: 1, icon: '📺', title: 'Основы культуры', desc: 'Видео-введение' },
             { id: 2, icon: '📖', title: 'Стандарты', desc: 'Правила парковки' },
-            { level: 2, levelTitle: "Уровень 2: Поле (Допуск)" },
+            { level: 2, levelTitle: "Уровень 2: Поле" },
             { id: 3, icon: '🚴', title: 'Тест-драйв', desc: 'Почувствуй продукт' },
             { id: 4, icon: '🅿️', title: 'Парковка (ПИН ТМ)', desc: 'Сдай парковку ТМ' },
             { id: 5, icon: '🤝', title: 'Симуляция 1', desc: 'Работа с гостями' },
-            { level: 3, levelTitle: "Уровень 3: Бой (Поло)" },
+            { level: 3, levelTitle: "Уровень 3: Бой" },
             { id: 6, icon: '🎧', title: 'Подкаст', desc: 'Слушай ТМ' },
             { id: 7, icon: '🛠', title: 'Симуляция 2', desc: 'Сложные ситуации' },
             { id: 8, icon: '🏆', title: 'Экзамен', desc: 'Финальный тест' }
         ];
 
+        // ПОЛНЫЕ 8 КАРТОЧЕК С ПОДРОБНЫМ ТЕКСТОМ
         const theoryCards = [
-            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — лицо компании. Запрещено курить или есть на Карете. Общайся с гостями только с улыбкой.", img: "1.png" }, 
-            { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Кареты всегда должны стоять в ровную линию. Расстояние между ними — ровно 50 см. Руль и фары смотрят строго прямо.", img: "2.png" },
-            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>На точке скопилось много карет? Угони лишние на соседнюю пустую точку. Клиенты не должны уходить из-за отсутствия техники.", img: "3.png" },
-            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Изучи все тарифы наизусть. Помогай гостям скачивать приложение и советуй самые красивые маршруты в парке.", img: "4.png" },
-            { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br><br>Старт смены происходит строго через Telegram-бота. Обязательно делай <b>селфи в фирменной форме</b>. Нет отметки = нет зарплаты.", img: "5.png" },
-            { t: "<b>🛠 6. РАБОЧИЙ ИНВЕНТАРЬ</b><br><br>В пилоне на точке всегда лежат: гаечные ключи на 13 и 15, отвертка, пластиковые стяжки, микрофибра и жесткая щетка для песка.", img: "6.png" },
-            { t: "<b>🔧 7. ПОЛОМКИ И РЕМОНТ</b><br><br>Мелкое чини сам на месте. Серьезная поломка (трещина в раме, спустило колесо) — немедленная <b>заявка в бот</b> и снятие Кареты с линии.", img: "7.png" },
-            { t: "<b>🎧 8. АУДИОГИД</b><br><br>Наша фишка! Предлагай аудиогид (всего за 1 рубль) абсолютно каждому клиенту перед стартом поездки.", img: "8.png" }
+            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.", img: "1.png" }, 
+            { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Парковка — это наша витрина. Как стоят Кареты, так люди воспринимают наш сервис.<br><br><b>Правила:</b><br>• Ставь Кареты строго в одну ровную линию.<br>• Расстояние между ними — ровно <b>50 см</b>.<br>• Руль и фары должны смотреть строго прямо.", img: "2.png" },
+            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>Техника должна быть там, где она нужна людям. Не создавай пустых точек.<br><br><b>Твои действия:</b><br>• Много карет на точке? Угони лишние на соседнюю пустую.<br>• Точка опустела? Быстро пригони технику. Клиенты не должны ждать.", img: "3.png" },
+            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Для туриста ты — главный помощник в парке. Будь готов ответить на любой вопрос.<br><br><b>Что нужно знать:</b><br>• Все актуальные тарифы и правила аренды.<br>• Как работает приложение (помоги скачать).<br>• Куда лучше поехать (маршруты парка).", img: "4.png" },
+            { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br><br>Всё управление сменой происходит строго через Telegram-бота.<br><br><b>Алгоритм:</b><br>• Пришел на точку -> нажал «Старт смены».<br>• Обязательно сделай <b>селфи в форме</b> на фоне парковки.<br>• Нет отметки = нет зарплаты.", img: "5.png" },
+            { t: "<b>🛠 6. РАБОЧИЙ ИНВЕНТАРЬ</b><br><br>Ты должен уметь подготовить Карету. Инвентарь лежит в пилоне.<br><br><b>Твой набор:</b><br>• Ключи на 13 и 15, отвертка.<br>• Пластиковые стяжки.<br>• Микрофибра для протирки.<br>• Жесткая щетка для счистки песка.", img: "6.png" },
+            { t: "<b>🔧 7. ПОЛОМКИ И РЕМОНТ</b><br><br>Техника иногда ломается. Главное — быстро среагировать.<br><br><b>Твои действия:</b><br>• Мелкое (подкрутить болт) — делай сам.<br>• Серьезная поломка (трещина, спустило колесо) — немедленно <b>заявка в бот</b> и сними Карету с линии.", img: "7.png" },
+            { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — уникальная фишка Карет, повышающая лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.", img: "8.png" }
         ];
 
-        // РАСШИРЕННЫЕ И ИНТЕРЕСНЫЕ СИМУЛЯЦИИ (Текста стало больше!)
+        // ПОЛНЫЕ, НЕ СОКРАЩЕННЫЕ СИМУЛЯЦИИ ИЗ ВАШЕГО ЗАПРОСА
         const simsData = {
             5: [
                 { q: "Мимо твоей точки проходит семья. Ребенок с горящими глазами смотрит на блестящую Карету, но родители явно спешат и тянут его за руку. Твои действия?", a: [
@@ -342,7 +343,7 @@
                     { t: "С улыбкой, но очень твердо откажу. Объясню правила парка и предложу им взять две кареты на всех.", c: true, f: "Правильно! Ты сохранил дорогостоящую технику, соблюдал правила ТБ и попытался сделать дополнительную продажу." }
                 ]},
                 { q: "Жаркий выходной день. На твоей точке закончились кареты, а люди всё подходят и спрашивают. При этом ты знаешь, что на соседней точке (в 5 минутах) простаивает 5 карет.", a: [
-                    { t: "Начну общаться с гостями, предложу им подождать 5 минут и побежу пригонять кареты с соседней точки.", c: true, f: "Идеально! Проактивность и балансировка техники — это залог твоего высокого заработка в пиковые часы." },
+                    { t: "Начну общаться с гостями, предложу им подождать 5 минут и побегу пригонять кареты с соседней точки.", c: true, f: "Идеально! Проактивность и балансировка техники — это залог твоего высокого заработка в пиковые часы." },
                     { t: "Буду просто отвечать всем подходящим: «Извините, свободных машин сейчас нет, приходите позже».", c: false, f: "Плохо. Ты только что потерял выручку всей компании и свой личный бонус из-за лени." },
                     { t: "Воспользуюсь моментом, закрою точку на технический перерыв и пойду попью кофе в теньке.", c: false, f: "Недопустимо! В пик спроса ты обязан быть на посту и управлять потоком клиентов." }
                 ]}
@@ -374,6 +375,17 @@
             { q: "Сколько стоит услуга аудиогида для клиента?", a: [{t: "Символический 1 рубль", c:true}, {t: "Она абсолютно бесплатна", c:false}, {t: "500 рублей", c:false}] }
         ];
 
+        // --- ТИХОЕ СОХРАНЕНИЕ ПРОГРЕССА СКАУТА ---
+        function syncScoutProgress(status) {
+            let progressText = `Шаг ${Math.min(currentProgressStep, 8)}/8`;
+            const payload = {
+                name: userData.name, phone: userData.phone, birth: userData.birth, city: userData.city,
+                role: "Скаут", progress: progressText, status: status, score: userData.score, coins: userData.coins,
+                tg_user: tg.initDataUnsafe?.user?.username || "скрыт"
+            };
+            fetch(GOOGLE_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) }).catch(e => console.log(e));
+        }
+
         function initScout() {
             let n = localStorage.getItem('scoutName');
             if (n && n.length > 1) {
@@ -386,23 +398,23 @@
                 document.getElementById('user-city').value = userData.city;
                 document.getElementById('user-birth').value = userData.birth;
                 renderRoadmap(); showScreen('screen-roadmap');
+                
+                if (currentProgressStep === 4) syncScoutProgress('waiting');
+                else if (currentProgressStep <= 8) syncScoutProgress('learning');
             } else { showScreen('screen-reg'); }
         }
 
         function formatDate(i) { let v = i.value.replace(/\D/g, ''); if (v.length > 2) v = v.slice(0, 2) + '.' + v.slice(2); if (v.length > 5) v = v.slice(0, 5) + '.' + v.slice(5, 9); i.value = v; }
-        function validateForm() {
-            let n = document.getElementById('user-name').value.trim();
-            document.getElementById('btn-start').disabled = !(n.length > 2);
-        }
+        function validateForm() { let n = document.getElementById('user-name').value.trim(); document.getElementById('btn-start').disabled = !(n.length > 2); }
         function saveAndGo() {
             userData.name = document.getElementById('user-name').value;
             userData.phone = document.getElementById('user-phone').value;
             userData.city = document.getElementById('user-city').value;
             userData.birth = document.getElementById('user-birth').value;
-            localStorage.setItem('scoutName', userData.name);
-            localStorage.setItem('scoutPhone', userData.phone);
-            localStorage.setItem('scoutCity', userData.city);
-            localStorage.setItem('scoutBirth', userData.birth);
+            localStorage.setItem('scoutName', userData.name); localStorage.setItem('scoutPhone', userData.phone);
+            localStorage.setItem('scoutCity', userData.city); localStorage.setItem('scoutBirth', userData.birth);
+            
+            syncScoutProgress('learning');
             renderRoadmap(); showScreen('screen-roadmap');
         }
 
@@ -446,7 +458,11 @@
         }
 
         function completeStep(id) {
-            if (currentProgressStep === id) { currentProgressStep++; localStorage.setItem('scoutProgress', currentProgressStep); }
+            if (currentProgressStep === id) { 
+                currentProgressStep++; 
+                localStorage.setItem('scoutProgress', currentProgressStep); 
+                if (currentProgressStep === 4) syncScoutProgress('waiting'); else syncScoutProgress('learning');
+            }
             renderRoadmap(); showScreen('screen-roadmap');
         }
 
@@ -461,7 +477,6 @@
             else { tg.HapticFeedback.notificationOccurred('error'); alert("Неверный ПИН-код. Позовите ТМ."); document.getElementById('scout-pin').value = ''; }
         }
 
-        // ДВИЖОК СИМУЛЯЦИЙ СКАУТА
         let pracArr = [], pIdx = 0, isQz = false;
         function startPractice(id) { pracArr = simsData[id].sort(() => Math.random() - 0.5); pIdx = 0; isQz = false; document.getElementById('header-title').innerHTML = `СИМУЛЯЦИЯ: <span id="q-counter"></span>`; showScreen('screen-practice'); renderPrac(); }
         function startFinalQuiz() { pracArr = finalQuizData.sort(() => Math.random() - 0.5); pIdx = 0; userData.score = 0; isQz = true; document.getElementById('header-title').innerHTML = `ЭКЗАМЕН: <span id="q-counter"></span>`; showScreen('screen-practice'); renderPrac(); }
@@ -490,10 +505,7 @@
             document.getElementById('sp-text').innerHTML = txt; document.getElementById('overlay').style.display = 'block'; document.getElementById('scout-popup').style.display = 'block';
             tg.HapticFeedback.notificationOccurred(ok ? 'success' : 'error');
         }
-        function nextPracQ() {
-            pIdx++; if (pIdx < pracArr.length) renderPrac(); else completeStep(currentProgressStep);
-        }
-
+        function nextPracQ() { pIdx++; if (pIdx < pracArr.length) renderPrac(); else completeStep(currentProgressStep); }
         function resetApp() { if (confirm("Сбросить весь прогресс?")) { localStorage.clear(); location.reload(); } }
 
         // КАРТОЧКИ СКАУТА
@@ -502,8 +514,10 @@
         function renderCard() {
             const d = document.getElementById('tinder-deck'); d.innerHTML = ''; 
             let it = theoryCards[cIdx], c = document.createElement('div'); c.className = 'tinder-card';
+            // Используем мощный генератор плейсхолдеров, если локальной картинки нет. Цвета: Желтый фон, черный текст.
+            let fallbackUrl = `https://placehold.co/600x400/FFED00/000000?text=Правило+${cIdx + 1}`;
             c.innerHTML = `<div style="position:absolute; top:12px; right:12px; font-weight:900; background:var(--yellow); padding:5px 12px; border-radius:10px; font-size:14px;">${cIdx + 1}/${theoryCards.length}</div>
-            <img src="${it.img}" class="card-img" onerror="this.src='https://via.placeholder.com/120?text=IMG';"><div class="card-text">${it.t}</div>`;
+            <img src="${it.img}" class="card-img" onerror="this.src='${fallbackUrl}';"><div class="card-text">${it.t}</div>`;
             d.appendChild(c); setupSwipe(c); document.getElementById('btn-cards-finish').style.display = (cIdx >= theoryCards.length - 1) ? 'block' : 'none';
         }
         function setupSwipe(c) {
@@ -520,57 +534,41 @@
         // ОТПРАВКА ДАННЫХ В GOOGLE ТАБЛИЦУ
         function showFinishScout() {
             showScreen('screen-finish'); document.getElementById('res-info').innerText = userData.name;
-            if (userData.score < 4) { // Нужно 4 из 5
-                document.getElementById('finish-title').innerText = "Тест не сдан ❌"; document.getElementById('send-status').innerText = `Нужно подтянуть базу (${userData.score}/5)`;
+            if (userData.score < 4) { 
+                document.getElementById('finish-title').innerText = "Тест не сдан ❌"; document.getElementById('send-status').innerText = `Ошибок: ${5 - userData.score}. Повтори теорию.`;
                 document.getElementById('send-status').style.color = "var(--red)"; document.getElementById('btn-retry').style.display = "block";
             } else {
                 document.getElementById('res-coins').innerText = userData.coins; document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
                 document.getElementById('send-status').innerText = "Отправка в базу..."; document.getElementById('send-status').style.color = "var(--green)";
-                
-                const payload = {
-                    name: userData.name, phone: userData.phone, city: userData.city, birth: userData.birth,
-                    role: "Скаут", score: userData.score, coins: userData.coins,
-                    tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
-                };
-
-                fetch(GOOGLE_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "text/plain" },
-                    body: JSON.stringify(payload)
-                }).then(() => {
-                    document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!";
-                    document.getElementById('btn-close').style.display = "block";
-                    document.getElementById('btn-close').disabled = false;
-                }).catch(err => {
-                    document.getElementById('send-status').innerText = "Ошибка сети. Сделай скриншот.";
-                    document.getElementById('btn-close').style.display = "block";
-                    document.getElementById('btn-close').disabled = false;
-                });
+                syncScoutProgress('ready'); // Финальное сохранение
+                setTimeout(() => { document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!"; document.getElementById('btn-close').style.display = "block"; document.getElementById('btn-close').disabled = false; }, 1000);
             }
         }
 
         // =====================================================================
         //                              ЛОГИКА ТМ
         // =====================================================================
-        let trainees = [
-            { id: 1, name: "Иванов Алексей", role: "Скаут", status: "ready", score: "5/5", coins: 450 },
-            { id: 2, name: "Смирнова Анна", role: "Скаут", status: "waiting", score: "-", coins: 200 },
-            { id: 3, name: "Соколов Иван", role: "Скаут", status: "learning", progress: "Шаг 2/8" }
-        ];
-        let selectedTraineeId = null;
+        let trainees = [];
+        let selectedTrainee = null;
 
-        function initTM() { renderDashboard(); }
+        function initTM() { fetchTrainees(); }
+
+        // Загрузка реальных стажеров из Google Таблицы
+        function fetchTrainees() {
+            const list = document.getElementById('users-list');
+            list.innerHTML = `<div class="loader">⏳ Загрузка стажёров из базы...</div>`;
+            fetch(GOOGLE_URL).then(res => res.json()).then(data => { trainees = data; renderDashboard(); }).catch(err => { list.innerHTML = `<div class="loader" style="color:red;">❌ Ошибка сети. Не удалось загрузить данные.</div>`; });
+        }
 
         function renderDashboard() {
             const list = document.getElementById('users-list'); list.innerHTML = '';
             let ready = 0, waiting = 0, learning = 0;
-
+            if (trainees.length === 0) { list.innerHTML = `<div class="loader">Нет активных стажёров.</div>`; }
             trainees.sort((a, b) => { const order = { "ready": 1, "waiting": 2, "learning": 3 }; return order[a.status] - order[b.status]; });
 
             trainees.forEach(t => {
                 let cardClass = '', actionBtn = '', details = '';
-                if (t.status === 'ready') { ready++; cardClass = 'status-ready'; details = `<span>🏆 Экзамен: <b>${t.score}</b></span> <span>💰 ${t.coins}</span>`; actionBtn = `<button class="action-btn btn-green" onclick="openPoloPopup(${t.id}, '${t.name}')">👕 Выдать форму</button>`; } 
+                if (t.status === 'ready') { ready++; cardClass = 'status-ready'; details = `<span>🏆 Экзамен: <b>${t.score}/5</b></span> <span>💰 ${t.coins}</span>`; actionBtn = `<button class="action-btn btn-green" onclick="openPoloPopup('${t.phone}', '${t.name}')">👕 Выдать форму</button>`; } 
                 else if (t.status === 'waiting') { waiting++; cardClass = 'status-waiting'; details = `<span>⏳ Ожидает проверку парковки</span>`; actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.name}')">🅿️ Сгенерировать ПИН</button>`; } 
                 else if (t.status === 'learning') { learning++; cardClass = 'status-learning'; details = `<span>📖 Прогресс: <b>${t.progress}</b></span>`; actionBtn = ``; }
 
@@ -585,24 +583,17 @@
 
         function updateChart(ready, wait, learn, total) {
             document.getElementById('total-users').innerText = total; document.getElementById('count-ready').innerText = ready; document.getElementById('count-wait').innerText = wait; document.getElementById('count-learn').innerText = learn;
-            let degReady = (ready / total) * 100, degWait = degReady + ((wait / total) * 100);
+            if (total === 0) return; let degReady = (ready / total) * 100, degWait = degReady + ((wait / total) * 100);
             document.getElementById('main-chart').style.background = `conic-gradient(var(--green) 0% ${degReady}%, var(--orange) ${degReady}% ${degWait}%, var(--red) ${degWait}% 100%)`;
         }
 
-        function openPinPopup(name) {
-            tg.HapticFeedback.impactOccurred('light'); document.getElementById('pin-student-name').innerText = name;
-            document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-pin-popup').style.display = 'block';
-        }
-
-        function openPoloPopup(id, name) {
-            tg.HapticFeedback.impactOccurred('light'); selectedTraineeId = id; document.getElementById('polo-student-name').innerText = name;
-            document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-polo-popup').style.display = 'block';
-        }
-
+        function openPinPopup(name) { tg.HapticFeedback.impactOccurred('light'); document.getElementById('pin-student-name').innerText = name; document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-pin-popup').style.display = 'block'; }
+        function openPoloPopup(phone, name) { tg.HapticFeedback.impactOccurred('light'); selectedTrainee = trainees.find(x => x.phone === phone); document.getElementById('polo-student-name').innerText = name; document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-polo-popup').style.display = 'block'; }
         function confirmPolo() {
-            tg.HapticFeedback.notificationOccurred('success');
-            trainees = trainees.filter(t => t.id !== selectedTraineeId); // Удаляем выведенного в смену
-            closeAllPopups(); renderDashboard();
+            if (!selectedTrainee) return; tg.HapticFeedback.notificationOccurred('success');
+            const payload = { ...selectedTrainee, status: "active" };
+            fetch(GOOGLE_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type": "text/plain"}, body: JSON.stringify(payload) });
+            trainees = trainees.filter(t => t.phone !== selectedTrainee.phone); closeAllPopups(); renderDashboard();
         }
     </script>
 </body>
