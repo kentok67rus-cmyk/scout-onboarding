@@ -34,7 +34,12 @@
         
         #app-scout h2 { text-transform: uppercase; font-size: 22px; margin-bottom: 10px; font-weight: 800; }
         #app-scout p { color: #555; font-size: 15px; line-height: 1.4; margin-bottom: 20px; }
-        #app-scout input[type="text"], #app-scout input[type="tel"], #app-scout input[type="password"] { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid #eee; border-radius: 14px; font-size: 18px; text-align: center; font-weight: bold; outline: none; background: #fafafa; }
+        
+        /* Исправленные инпуты для вызова правильной клавиатуры */
+        #app-scout input[type="text"], 
+        #app-scout input[type="tel"], 
+        #app-scout input[type="password"] { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid #eee; border-radius: 14px; font-size: 18px; text-align: center; font-weight: bold; outline: none; background: #fafafa; }
+        
         #app-scout input:focus { border-color: var(--yellow); background: #fff; }
         #app-scout button { background: var(--yellow); color: #000; border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; width: 100%; margin-top: 20px; text-transform: uppercase; box-shadow: 0 5px 0 #d4c300; cursor: pointer; transition: 0.1s; }
         #app-scout button:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4c300; }
@@ -49,7 +54,7 @@
         .step-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #111; }
         .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; line-height: 1.2; }
         
-        /* Карточки Tinder (ИЗОБРАЖЕНИЯ ВОЗВРАЩЕНЫ К БОЛЬШОМУ РАЗМЕРУ) */
+        /* Карточки Tinder */
         .tinder-container { position: relative; height: 65vh; min-height: 500px; width: 100%; margin-top: 10px; perspective: 1000px; }
         .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid var(--yellow); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: transform 0.4s, opacity 0.4s; display: flex; flex-direction: column; text-align: center; }
         .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
@@ -135,7 +140,9 @@
             <p>Заполни анкету для старта.</p>
             <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
             <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
-            <input type="text" id="user-birth" placeholder="ДД.ММ.ГГГГ" oninput="formatDate(this); validateForm()" maxlength="10">
+            
+            <input type="tel" id="user-birth" placeholder="ДД.ММ.ГГГГ" oninput="formatDate(this); validateForm()" maxlength="10">
+            
             <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
             <button id="btn-start" disabled onclick="saveAndGo()">Начать Путь</button>
             <button class="reset-btn" onclick="logout()">🚪 Сменить роль</button>
@@ -180,7 +187,9 @@
             <div style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:bold; text-align:left; font-size: 14px; line-height: 1.4;">
                 ⚠️ Позови своего Наставника (ТМ). Он должен лично проверить твою работу и продиктовать секретный ПИН-код.
             </div>
-            <input type="password" id="scout-pin" placeholder="PIN-код ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;">
+            
+            <input type="password" id="scout-pin" inputmode="numeric" pattern="[0-9]*" placeholder="PIN-код ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;">
+            
             <button style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">ПОДТВЕРДИТЬ</button>
             <button class="reset-btn" onclick="showScreen('screen-roadmap')">Отмена</button>
         </div>
@@ -329,7 +338,7 @@
             { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — уникальная фишка Карет, повышающая лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.", img: "8.png" }
         ];
 
-        // ПОЛНЫЕ СИМУЛЯЦИИ ИЗ ВАШЕГО ЗАПРОСА
+        // ПОЛНЫЕ СИМУЛЯЦИИ 
         const simsData = {
             5: [
                 { q: "Мимо твоей точки проходит семья. Ребенок с горящими глазами смотрит на блестящую Карету, но родители явно спешат и тянут его за руку. Твои действия?", a: [
@@ -539,27 +548,8 @@
             } else {
                 document.getElementById('res-coins').innerText = userData.coins; document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
                 document.getElementById('send-status').innerText = "Отправка в базу..."; document.getElementById('send-status').style.color = "var(--green)";
-                
-                const payload = {
-                    name: userData.name, phone: userData.phone, city: userData.city, birth: userData.birth,
-                    role: "Скаут", score: userData.score, coins: userData.coins,
-                    tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
-                };
-
-                fetch(GOOGLE_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "text/plain" },
-                    body: JSON.stringify(payload)
-                }).then(() => {
-                    document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!";
-                    document.getElementById('btn-close').style.display = "block";
-                    document.getElementById('btn-close').disabled = false;
-                }).catch(err => {
-                    document.getElementById('send-status').innerText = "Ошибка сети. Сделай скриншот.";
-                    document.getElementById('btn-close').style.display = "block";
-                    document.getElementById('btn-close').disabled = false;
-                });
+                syncScoutProgress('ready'); 
+                setTimeout(() => { document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!"; document.getElementById('btn-close').style.display = "block"; document.getElementById('btn-close').disabled = false; }, 1000);
             }
         }
 
