@@ -34,7 +34,7 @@
         
         #app-scout h2 { text-transform: uppercase; font-size: 22px; margin-bottom: 10px; font-weight: 800; }
         #app-scout p { color: #555; font-size: 15px; line-height: 1.4; margin-bottom: 20px; }
-        #app-scout input { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid #eee; border-radius: 14px; font-size: 18px; text-align: center; font-weight: bold; outline: none; background: #fafafa; }
+        #app-scout input[type="text"], #app-scout input[type="tel"], #app-scout input[type="password"] { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid #eee; border-radius: 14px; font-size: 18px; text-align: center; font-weight: bold; outline: none; background: #fafafa; }
         #app-scout input:focus { border-color: var(--yellow); background: #fff; }
         #app-scout button { background: var(--yellow); color: #000; border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; width: 100%; margin-top: 20px; text-transform: uppercase; box-shadow: 0 5px 0 #d4c300; cursor: pointer; transition: 0.1s; }
         #app-scout button:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4c300; }
@@ -47,7 +47,7 @@
         .completed-step { border-color: var(--green); background: #f0fdf4; cursor: pointer; }
         .step-icon { font-size: 30px; margin-right: 15px; width: 40px; text-align: center; }
         .step-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #111; }
-        .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; }
+        .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; line-height: 1.2; }
         
         /* Карточки Tinder */
         .tinder-container { position: relative; height: 60vh; min-height: 480px; width: 100%; margin-top: 10px; perspective: 1000px; }
@@ -58,12 +58,13 @@
         .card-text { padding: 0 20px 20px; font-size: 16px; line-height: 1.5; flex-grow: 1; overflow-y: auto; text-align: left; font-weight: 500; }
         
         /* Интерактив */
-        .option { display: flex; align-items: center; padding: 16px; background: #f8fafc; margin-bottom: 12px; border-radius: 14px; cursor: pointer; text-align: left; border: 2px solid #eee; font-weight: 700; font-size: 15px; }
+        .option { display: flex; align-items: center; padding: 16px; background: #f8fafc; margin-bottom: 12px; border-radius: 14px; cursor: pointer; text-align: left; border: 2px solid #eee; font-weight: 600; font-size: 15px; line-height: 1.4; color: #333; }
         .option.correct { background: #dcfce7; border-color: var(--green); color: #166534; }
         .option.wrong { background: #fee2e2; border-color: var(--red); color: #991b1b; }
         
-        .checklist-item { display: flex; align-items: center; text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 10px; font-weight: 700; }
-        .checklist-item input[type="checkbox"] { width: 24px; height: 24px; margin: 0 15px 0 0; accent-color: var(--green); }
+        /* ИСПРАВЛЕННЫЙ ЧЕК-ЛИСТ */
+        .checklist-item { display: flex; align-items: flex-start; text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 10px; font-weight: 600; font-size: 15px; line-height: 1.4; }
+        .checklist-item input[type="checkbox"] { width: 24px; height: 24px; margin: 0 15px 0 0; accent-color: var(--green); flex-shrink: 0; position: relative; top: -2px; }
 
         .scout-status-bar { display: flex; justify-content: space-between; font-weight: 800; background: var(--yellow); padding: 12px 20px; border-radius: 14px; margin-bottom: 15px; font-size: 14px; box-shadow: 0 4px 0 #d4c300; }
         .reset-btn { background: transparent !important; color: #999 !important; border: none; box-shadow: none !important; margin-top: 25px !important; font-size: 14px !important; text-decoration: underline; width: 100%; }
@@ -102,10 +103,10 @@
         /* ПОП-АПЫ                                   */
         /* ========================================= */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
-        .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 85%; max-width: 350px; background: #fff; border-radius: 24px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1000; display: none; text-align: center; animation: popIn 0.3s forwards; }
+        .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 90%; max-width: 380px; max-height: 85vh; overflow-y: auto; background: #fff; border-radius: 24px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1000; display: none; text-align: center; animation: popIn 0.3s forwards; }
         @keyframes popIn { to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
         .popup h3 { margin-top: 10px; font-size: 22px; }
-        .popup p { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 15px; line-height: 1.4; text-align: left; }
+        .popup p { font-size: 15px; font-weight: 500; color: #444; margin-bottom: 15px; line-height: 1.5; text-align: left; }
         .popup button { background: var(--yellow); border: none; padding: 15px; border-radius: 14px; font-weight: 800; width: 100%; font-size: 16px; margin-top: 10px; color: #000; cursor: pointer; }
         .popup .close-btn { background: #eee; color: #333; }
         .pin-display { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--black); background: #f4f6f8; padding: 15px; border-radius: 16px; margin: 20px 0; text-align: center; }
@@ -165,19 +166,19 @@
 
         <div id="screen-testdrive" class="screen center">
             <h2>Тест-драйв 🚴</h2>
-            <p>Возьми свободную Карету и сделай 2 круга. Почувствуй габариты.</p>
-            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Проверил тормоза</div>
-            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Понял габариты</div>
-            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Сделал селфи за рулем</div>
-            <button id="btn-drive-finish" disabled style="background:var(--green); color:white;" onclick="completeStep(3)">ГОТОВО</button>
+            <p style="text-align: left;">Ты не сможешь сдавать кареты, пока сам не почувствуешь габариты. Возьми свободную Карету и сделай 2 полноценных круга по парку.</p>
+            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> <span>Я разогнался и проверил, как работают тормоза.</span></div>
+            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> <span>Я понял габариты и попробовал развернуться.</span></div>
+            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> <span>Я сделал классное селфи за рулем!</span></div>
+            <button id="btn-drive-finish" disabled style="background:var(--green); color:white;" onclick="completeStep(3)">✅ МИССИЯ ВЫПОЛНЕНА</button>
         </div>
 
         <div id="screen-mentor" class="screen center">
             <div style="font-size: 60px;">🅿️</div>
             <h2>Идеальная Парковка</h2>
-            <p>Выстави всю парковку идеально (50 см между каретами, руль прямо).</p>
-            <div style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:bold; text-align:left;">
-                ⚠️ Позови ТМ. Он проверит работу и продиктует ПИН-код.
+            <p style="text-align: left;">Выстави всю парковку идеально: ровная линия, ровно 50 см между каретами, руль и фары смотрят прямо. Протри пыль.</p>
+            <div style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:bold; text-align:left; font-size: 14px; line-height: 1.4;">
+                ⚠️ Позови своего Наставника (ТМ). Он должен лично проверить твою работу и продиктовать секретный ПИН-код.
             </div>
             <input type="password" id="scout-pin" placeholder="PIN-код ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;">
             <button style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">ПОДТВЕРДИТЬ</button>
@@ -185,7 +186,7 @@
         </div>
 
         <div id="screen-practice" class="screen">
-            <h3 id="prac-text" style="font-size: 19px; line-height: 1.4; margin-bottom: 20px;"></h3>
+            <h3 id="prac-text" style="font-size: 18px; line-height: 1.4; margin-bottom: 20px; font-weight: 800; color: #111;"></h3>
             <div id="prac-options"></div>
         </div>
 
@@ -205,9 +206,9 @@
                 <p style="margin:0; font-weight: bold;">ЗАРАБОТАНО МОНЕТ:</p>
                 <h3 style="margin:5px 0 0 0; font-size: 38px;">💰 <span id="res-coins">0</span></h3>
             </div>
-            <p id="send-status" style="font-weight: bold;"></p>
+            <p id="send-status" style="font-weight: bold; font-size: 15px;"></p>
             <button id="btn-close" disabled onclick="tg.close()" style="display:none; background:var(--green); color:white;">Получить Поло 👕</button>
-            <button id="btn-retry" onclick="showScreen('screen-roadmap')" style="display:none; background:var(--red); color:white;">Пересдать</button>
+            <button id="btn-retry" onclick="showScreen('screen-roadmap')" style="display:none; background:var(--red); color:white;">Пересдать экзамен</button>
         </div>
     </div>
 
@@ -245,13 +246,13 @@
     <div class="popup" id="scout-popup">
         <h3 id="sp-title"></h3>
         <p id="sp-text"></p>
-        <button onclick="closeAllPopups()">ПОНЯТНО</button>
+        <button onclick="closeAllPopups()">ПОНЯТНО, ДАЛЬШЕ</button>
     </div>
 
     <div class="popup" id="tm-pin-popup">
         <div style="font-size: 40px; text-align: center;">🅿️</div>
         <h3 style="text-align: center;">Проверка парковки</h3>
-        <p style="text-align: center;">Проверь, ровно ли <b id="pin-student-name"></b> выставил кареты. Если всё идеально — продиктуй ему ПИН-код:</p>
+        <p style="text-align: center; font-size: 14px;">Проверь, идеально ли <b id="pin-student-name"></b> выставил кареты (50 см, руль прямо). Если всё супер — продиктуй ему ПИН-код:</p>
         <div class="pin-display" id="generated-pin">1234</div>
         <button style="background:var(--green); color:white;" onclick="closeAllPopups()">Понятно</button>
     </div>
@@ -259,7 +260,7 @@
     <div class="popup" id="tm-polo-popup">
         <div style="font-size: 40px; text-align: center;">👕</div>
         <h3 style="text-align: center;">Выдача Поло</h3>
-        <p style="text-align: center;">Стажёр <b id="polo-student-name"></b> сдал экзамен. Выдай форму и выводи в смену!</p>
+        <p style="text-align: center;">Стажёр <b id="polo-student-name"></b> сдал финальный экзамен. Выдай ему форму и смело выводи в смену!</p>
         <button style="background:var(--green); color:white;" onclick="confirmPolo()">Подтвердить выдачу</button>
         <button class="close-btn" onclick="closeAllPopups()">Отмена</button>
     </div>
@@ -317,35 +318,60 @@
         ];
 
         const theoryCards = [
-            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br>Запрещено курить/есть на Карете. Общайся с улыбкой.", img: "1.png" }, 
-            { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br>Расстояние — ровно 50 см. Руль и фары прямо.", img: "2.png" },
-            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br>Много карет? Угони лишние на соседнюю пустую точку.", img: "3.png" },
-            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br>Знай тарифы, советуй маршруты в парке.", img: "4.png" },
-            { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br>Обязательно делай <b>селфи в форме</b> при старте.", img: "5.png" },
-            { t: "<b>🛠 6. ИНВЕНТАРЬ</b><br>Ключи на 13 и 15, отвертка, стяжки, жесткая щетка.", img: "6.png" },
-            { t: "<b>🔧 7. РЕМОНТ</b><br>Серьезное (трещина) — заявка в бот и снимай Карету.", img: "7.png" },
-            { t: "<b>🎧 8. АУДИОГИД</b><br>Предлагай всем за 1 рубль.", img: "8.png" }
+            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — лицо компании. Запрещено курить или есть на Карете. Общайся с гостями только с улыбкой.", img: "1.png" }, 
+            { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Кареты всегда должны стоять в ровную линию. Расстояние между ними — ровно 50 см. Руль и фары смотрят строго прямо.", img: "2.png" },
+            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br><br>На точке скопилось много карет? Угони лишние на соседнюю пустую точку. Клиенты не должны уходить из-за отсутствия техники.", img: "3.png" },
+            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br><br>Изучи все тарифы наизусть. Помогай гостям скачивать приложение и советуй самые красивые маршруты в парке.", img: "4.png" },
+            { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br><br>Старт смены происходит строго через Telegram-бота. Обязательно делай <b>селфи в фирменной форме</b>. Нет отметки = нет зарплаты.", img: "5.png" },
+            { t: "<b>🛠 6. РАБОЧИЙ ИНВЕНТАРЬ</b><br><br>В пилоне на точке всегда лежат: гаечные ключи на 13 и 15, отвертка, пластиковые стяжки, микрофибра и жесткая щетка для песка.", img: "6.png" },
+            { t: "<b>🔧 7. ПОЛОМКИ И РЕМОНТ</b><br><br>Мелкое чини сам на месте. Серьезная поломка (трещина в раме, спустило колесо) — немедленная <b>заявка в бот</b> и снятие Кареты с линии.", img: "7.png" },
+            { t: "<b>🎧 8. АУДИОГИД</b><br><br>Наша фишка! Предлагай аудиогид (всего за 1 рубль) абсолютно каждому клиенту перед стартом поездки.", img: "8.png" }
         ];
 
+        // РАСШИРЕННЫЕ И ИНТЕРЕСНЫЕ СИМУЛЯЦИИ (Текста стало больше!)
         const simsData = {
             5: [
-                { q: "Семья смотрит на карету, но идет дальше.", a: [ { t: "Молчать", c: false, f: "Теряем клиентов." }, { t: "Предложить фото за рулем", c: true, f: "Идеально вовлекает." }, { t: "Крикнуть про скидку", c: false, f: "Агрессивно." } ] },
-                { q: "6 человек хотят сесть в 4-местную карету.", a: [ { t: "Сдать им.", c: false, f: "Риск поломки." }, { t: "Предложить две кареты.", c: true, f: "Соблюдаем ТБ." }, { t: "Под двойной залог.", c: false, f: "Залог не спасет от травм." } ] },
-                { q: "На точке нет карет, а люди подходят.", a: [ { t: "Пригнать с соседней точки.", c: true, f: "Проактивность." }, { t: "Сказать, что нет.", c: false, f: "Теряем выручку." }, { t: "Уйти на перерыв.", c: false, f: "Ты должен быть на посту." } ] }
+                { q: "Мимо твоей точки проходит семья. Ребенок с горящими глазами смотрит на блестящую Карету, но родители явно спешат и тянут его за руку. Твои действия?", a: [
+                    { t: "Сделаю шаг навстречу, улыбнусь и предложу: «Здравствуйте! Хотите, малыш посидит за рулем, а вы сделаете классное фото? Это бесплатно!»", c: true, f: "Блестяще! Это лучший способ вовлечь родителей через эмоции ребенка абсолютно без давления." },
+                    { t: "Буду стоять молча у пилона. Если им действительно нужно покататься, сами подойдут и спросят цену.", c: false, f: "Грубая ошибка. Так мы теряем огромную часть клиентов. Скаут должен быть проактивным и приветливым." },
+                    { t: "Громко крикну им вслед: «Эй, ребята, прокатитесь! Только сегодня дам вам персональную скидку 50%!»", c: false, f: "Это звучит слишком агрессивно. К тому же, мы никогда не раздаем скидки просто так — это обесценивает премиум-статус сервиса." }
+                ]},
+                { q: "К тебе подбегает шумная компания из 6 подростков. Они хотят взять одну 4-местную карету, смеются и говорят: «Да мы худенькие, все поместимся, погнали!»", a: [
+                    { t: "Сдам им карету. Какая разница, главное, что они платят деньги за час аренды.", c: false, f: "Критическая ошибка! Это грубое нарушение техники безопасности. Огромный риск травм для клиентов и поломки осей кареты." },
+                    { t: "Скажу: «Ладно, садитесь, но если что-то сломаете по дороге — будете платить втройне из своего кармана».", c: false, f: "Неверно. Мы вообще не должны допускать таких ситуаций на старте, даже под угрозой штрафа." },
+                    { t: "С улыбкой, но очень твердо откажу. Объясню правила парка и предложу им взять две кареты на всех.", c: true, f: "Правильно! Ты сохранил дорогостоящую технику, соблюдал правила ТБ и попытался сделать дополнительную продажу." }
+                ]},
+                { q: "Жаркий выходной день. На твоей точке закончились кареты, а люди всё подходят и спрашивают. При этом ты знаешь, что на соседней точке (в 5 минутах) простаивает 5 карет.", a: [
+                    { t: "Начну общаться с гостями, предложу им подождать 5 минут и побежу пригонять кареты с соседней точки.", c: true, f: "Идеально! Проактивность и балансировка техники — это залог твоего высокого заработка в пиковые часы." },
+                    { t: "Буду просто отвечать всем подходящим: «Извините, свободных машин сейчас нет, приходите позже».", c: false, f: "Плохо. Ты только что потерял выручку всей компании и свой личный бонус из-за лени." },
+                    { t: "Воспользуюсь моментом, закрою точку на технический перерыв и пойду попью кофе в теньке.", c: false, f: "Недопустимо! В пик спроса ты обязан быть на посту и управлять потоком клиентов." }
+                ]}
             ],
             7: [
-                { q: "Дождь. Клиенты сомневаются.", a: [ { t: "Показать крышу-тент.", c: true, f: "Карета — зонт на колесах." }, { t: "Отпустить их.", c: false, f: "Потеря продажи." }, { t: "Дать скидку.", c: false, f: "Не демпингуем." } ] },
-                { q: "Подходит пьяный гость.", a: [ { t: "Вежливо отказать по ТБ.", c: true, f: "Мы несем ответственность." }, { t: "Взять двойной залог.", c: false, f: "Риск ДТП." }, { t: "Проигнорировать.", c: false, f: "Агрессия." } ] },
-                { q: "Звонок: Слетела цепь.", a: [ { t: "Отправить скаута на помощь.", c: true, f: "Это сервис!" }, { t: "Сказать чинить самим.", c: false, f: "Клиент не пачкает руки." }, { t: "Бросать карету.", c: false, f: "Украдут." } ] }
+                { q: "Погода внезапно портится, начинает накрапывать мелкий дождь. Пара клиентов подходит к точке, но сомневается: «Наверное, мы не поедем, промокнем до нитки».", a: [
+                    { t: "Покажу им на нашу крышу-тент и объясню, что внутри всегда сухо, а кататься под шум дождя — это отдельная романтика.", c: true, f: "В точку! Наша карета — это зонт на колесах. Ты отлично отработал возражение и закрыл сделку." },
+                    { t: "Соглашусь с ними: «Да, погодка так себе, лучше приходите завтра, когда выйдет солнышко».", c: false, f: "Ты только что добровольно отпустил «горячих» клиентов и лишился выручки." },
+                    { t: "Предложу им поехать сейчас, но за полцены в качестве компенсации за плохую погоду.", c: false, f: "Неверно. Мы не занимаемся демпингом. У нашего продукта есть защитные свойства, о которых нужно просто рассказать." }
+                ]},
+                { q: "К парковке подходит очень шумная компания. От них сильно пахнет алкоголем, они шатаются и агрессивно требуют выдать им «самую большую тачку».", a: [
+                    { t: "Выдам карету, но попрошу оставить в залог два паспорта и 5000 рублей на случай серьезной аварии.", c: false, f: "Никакие деньги не покроют риск ДТП с участием детей в парке. Пьяный водитель — угроза для всех." },
+                    { t: "Постараюсь отвернуться в телефон и сделать вид, что очень занят, надеясь, что они сами уйдут.", c: false, f: "Игнорирование пьяной компании часто провоцирует еще большую агрессию с их стороны." },
+                    { t: "Вежливо, спокойно, но максимально твердо откажу в услуге, сославшись на строгие правила безопасности.", c: true, f: "Верно. Мы несем ответственность за безопасность. Людям в состоянии опьянения услуга не оказывается." }
+                ]},
+                { q: "У тебя звонит рабочий телефон. Взволнованный клиент кричит: «Мы уехали в самый дальний конец парка, и у нас слетела цепь! Педали крутятся вхолостую!»", a: [
+                    { t: "Скажу: «Попробуйте натянуть её сами, там ничего сложного, как на обычном велосипеде».", c: false, f: "Огромный минус к сервису. Клиент пришел отдыхать в чистой одежде, а не ковыряться в мазуте и чинить технику." },
+                    { t: "Скажу: «Тогда бросайте карету прямо там, но залог я вам не верну, вы сломали имущество компании».", c: false, f: "Конфликт на ровном месте. Цепь могла слететь не по вине клиента. К тому же брошенную технику могут украсть." },
+                    { t: "Быстро успокою клиента, узнаю точную геопозицию и сразу отправлю туда свободного скаута на помощь.", c: true, f: "Отличная работа! Это и есть премиум-сервис. Мы обязаны максимально быстро и без нервов вернуть гостя на маршрут." }
+                ]}
             ]
         };
 
         const finalQuizData = [
-            { q: "Расстояние между каретами?", a: [{t: "Ровно 50 см", c:true}, {t: "Вплотную", c:false}, {t: "1 метр", c:false}] },
-            { q: "Сломалась рама. Что делать?", a: [{t: "Снять с линии + заявка в бот", c:true}, {t: "Ждать", c:false}, {t: "Замотать скотчем", c:false}] },
-            { q: "Правило чистоты — это...", a: [{t: "Сиденья, рама, колеса до блеска", c:true}, {t: "Только руль", c:false}, {t: "Сбить пыль", c:false}] },
-            { q: "Зарплата фиксируется через:", a: [{t: "Селфи в TG-боте", c:true}, {t: "Блокнот", c:false}, {t: "Звонок ТМ", c:false}] },
-            { q: "Цена аудиогида?", a: [{t: "1 рубль", c:true}, {t: "Бесплатно", c:false}, {t: "500 рублей", c:false}] }
+            { q: "Какое точное расстояние должно быть между припаркованными каретами?", a: [{t: "Ровно 50 см", c:true}, {t: "Вплотную друг к другу", c:false}, {t: "Около 1 метра", c:false}] },
+            { q: "У кареты треснула рама. Твои первые действия?", a: [{t: "Немедленно снять с линии и оставить заявку в боте", c:true}, {t: "Ждать вечера, чтобы сказать ТМ", c:false}, {t: "Замотать скотчем и сдать клиенту", c:false}] },
+            { q: "Правило идеальной чистоты — это когда...", a: [{t: "Сиденья, рама, крыша и колеса вымыты до блеска", c:true}, {t: "Чистый только руль и панель", c:false}, {t: "Слегка сбита пыль тряпкой", c:false}] },
+            { q: "Как правильно фиксировать свое рабочее время для получения зарплаты?", a: [{t: "Только через селфи в Telegram-боте", c:true}, {t: "Записывать в блокнот на точке", c:false}, {t: "Звонить ТМ в начале смены", c:false}] },
+            { q: "Сколько стоит услуга аудиогида для клиента?", a: [{t: "Символический 1 рубль", c:true}, {t: "Она абсолютно бесплатна", c:false}, {t: "500 рублей", c:false}] }
         ];
 
         function initScout() {
@@ -432,7 +458,7 @@
         function verifyPin() {
             let pin = document.getElementById('scout-pin').value;
             if (pin === "1234") { document.getElementById('scout-pin').value = ''; completeStep(4); } 
-            else { tg.HapticFeedback.notificationOccurred('error'); alert("Неверный ПИН-код."); document.getElementById('scout-pin').value = ''; }
+            else { tg.HapticFeedback.notificationOccurred('error'); alert("Неверный ПИН-код. Позовите ТМ."); document.getElementById('scout-pin').value = ''; }
         }
 
         // ДВИЖОК СИМУЛЯЦИЙ СКАУТА
@@ -452,7 +478,7 @@
             document.querySelectorAll('#prac-options .option').forEach(btn => btn.style.pointerEvents = 'none');
             if (isQz) {
                 if (o.c) { el.classList.add('correct'); userData.score++; } else el.classList.add('wrong');
-                setTimeout(() => { pIdx++; if (pIdx < pracArr.length) renderPrac(); else showFinishScout(); }, 500);
+                setTimeout(() => { pIdx++; if (pIdx < pracArr.length) renderPrac(); else showFinishScout(); }, 600);
             } else {
                 if (o.c) { el.classList.add('correct'); userData.coins += 50; localStorage.setItem('scoutCoins', userData.coins); showScoutPopup("✅ ВЕРНО!", o.f, true); } 
                 else { el.classList.add('wrong'); showScoutPopup("❌ ОШИБКА!", o.f, false); }
@@ -507,14 +533,13 @@
                     tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
                 };
 
-                // ВАЖНО: ОТПРАВКА FETCH
                 fetch(GOOGLE_URL, {
                     method: "POST",
                     mode: "no-cors",
                     headers: { "Content-Type": "text/plain" },
                     body: JSON.stringify(payload)
                 }).then(() => {
-                    document.getElementById('send-status').innerText = "✅ ДАННЫЕ В ТАБЛИЦЕ!";
+                    document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!";
                     document.getElementById('btn-close').style.display = "block";
                     document.getElementById('btn-close').disabled = false;
                 }).catch(err => {
@@ -535,9 +560,7 @@
         ];
         let selectedTraineeId = null;
 
-        function initTM() {
-            renderDashboard();
-        }
+        function initTM() { renderDashboard(); }
 
         function renderDashboard() {
             const list = document.getElementById('users-list'); list.innerHTML = '';
