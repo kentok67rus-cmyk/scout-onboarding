@@ -53,7 +53,7 @@
         .step-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #111; }
         .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; line-height: 1.2; }
         
-        /* Карточки Tinder (ИЗОБРАЖЕНИЯ ВОЗВРАЩЕНЫ К БОЛЬШОМУ РАЗМЕРУ) */
+        /* Карточки Tinder */
         .tinder-container { position: relative; height: 65vh; min-height: 500px; width: 100%; margin-top: 10px; perspective: 1000px; }
         .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid var(--yellow); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: transform 0.4s, opacity 0.4s; display: flex; flex-direction: column; text-align: center; }
         .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
@@ -213,7 +213,6 @@
                 <h3 style="margin:5px 0 0 0; font-size: 38px;">💰 <span id="res-coins">0</span></h3>
             </div>
             <p id="send-status" style="font-weight: bold; font-size: 15px;"></p>
-            <button id="btn-close" disabled onclick="tg.close()" style="display:none; background:var(--green); color:white;">Получить Поло 👕</button>
             <button id="btn-retry" onclick="showScreen('screen-roadmap')" style="display:none; background:var(--red); color:white;">Пересдать экзамен</button>
         </div>
     </div>
@@ -280,13 +279,9 @@
 
         // --- ГЕНЕРАТОР УНИКАЛЬНОГО ПИН-КОДА ---
         function generateUserPin(phoneStr) {
-            // Очищаем телефон от плюсов и скобок, оставляем только цифры
             let digits = String(phoneStr).replace(/\D/g, '');
-            if (digits.length < 5) return "1234"; // Запасной вариант
-            
-            // Берем последние 6 цифр номера и делаем математический "хэш"
+            if (digits.length < 5) return "1234";
             let baseNum = parseInt(digits.slice(-6));
-            // Генерируем число строго от 1000 до 9999
             let pin = (baseNum * 17) % 9000 + 1000; 
             return pin.toString();
         }
@@ -310,7 +305,6 @@
             document.getElementById('scout-popup').style.display = 'none';
             document.getElementById('tm-pin-popup').style.display = 'none';
             document.getElementById('tm-polo-popup').style.display = 'none';
-            // Продолжение симуляции
             if (!document.getElementById('app-scout').classList.contains('hidden') && document.getElementById('screen-practice').classList.contains('active')) {
                 if (typeof nextPracQ === 'function') nextPracQ();
             }
@@ -336,7 +330,6 @@
             { id: 8, icon: '🏆', title: 'Экзамен', desc: 'Финальный тест' }
         ];
 
-        // ЗДЕСЬ ИСПРАВЛЕНЫ РАСШИРЕНИЯ КАРТИНОК ИЗ ПАПКИ (1.jpeg, 3.jpeg, 4.jpeg)
         const theoryCards = [
             { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — это лицо компании.<br><br><b>Правила:</b><br>• Запрещено курить, есть или пить, находясь на Карете.<br>• Форма (поло, кепка) должна быть чистой и опрятной.<br>• Общайся с клиентами вежливо и с улыбкой.", img: "1.jpeg" }, 
             { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>Парковка — это наша витрина. Как стоят Кареты, так люди воспринимают наш сервис.<br><br><b>Правила:</b><br>• Ставь Кареты строго в одну ровную линию.<br>• Расстояние между ними — ровно <b>50 см</b>.<br>• Руль и фары должны смотреть строго прямо.", img: "2.png" },
@@ -348,7 +341,6 @@
             { t: "<b>🎧 8. АУДИОГИД</b><br><br>Аудиогид — уникальная фишка Карет, повышающая лояльность клиентов.<br><br><b>Правила:</b><br>• Цена услуги — всего <b>1 рубль</b>.<br>• Ты обязан предлагать аудиогид абсолютно <b>каждому</b> клиенту перед стартом поездки.", img: "8.png" }
         ];
 
-        // ПОЛНЫЕ СИМУЛЯЦИИ ИЗ ВАШЕГО ЗАПРОСА
         const simsData = {
             5: [
                 { q: "Мимо твоей точки проходит семья. Ребенок с горящими глазами смотрит на блестящую Карету, но родители явно спешат и тянут его за руку. Твои действия?", a: [
@@ -394,9 +386,10 @@
             { q: "Сколько стоит услуга аудиогида для клиента?", a: [{t: "Символический 1 рубль", c:true}, {t: "Она абсолютно бесплатна", c:false}, {t: "500 рублей", c:false}] }
         ];
 
-        // --- ТИХОЕ СОХРАНЕНИЕ ПРОГРЕССА СКАУТА ---
+        // --- УМНОЕ ТИХОЕ СОХРАНЕНИЕ ---
         function syncScoutProgress(status) {
-            let progressText = `Шаг ${Math.min(currentProgressStep, 8)}/8`;
+            let stepNum = currentProgressStep === 9 ? 8 : currentProgressStep; // Для визуала оставляем 8/8
+            let progressText = `Шаг ${stepNum}/8`;
             const payload = {
                 name: userData.name, phone: userData.phone, birth: userData.birth, city: userData.city,
                 role: "Скаут", progress: progressText, status: status, score: userData.score, coins: userData.coins,
@@ -418,8 +411,10 @@
                 document.getElementById('user-birth').value = userData.birth;
                 renderRoadmap(); showScreen('screen-roadmap');
                 
-                if (currentProgressStep === 4) syncScoutProgress('waiting');
-                else if (currentProgressStep <= 8) syncScoutProgress('learning');
+                // ИСПРАВЛЕНИЕ БАГА "ШАГ 8/8": Если статус 9, значит экзамен сдан навсегда
+                if (currentProgressStep === 9) syncScoutProgress('ready');
+                else if (currentProgressStep === 4) syncScoutProgress('waiting');
+                else syncScoutProgress('learning');
             } else { showScreen('screen-reg'); }
         }
 
@@ -451,6 +446,7 @@
                 if (item.level) {
                     container.innerHTML += `<div class="level-header">${item.levelTitle}</div>`;
                 } else {
+                    // Если currentProgressStep = 9, то все блоки от 1 до 8 будут completed-step
                     let stClass = item.id < currentProgressStep ? 'completed-step' : (item.id === currentProgressStep ? 'active-step' : 'locked-step');
                     let stIcon = stClass === 'completed-step' ? '✅' : (stClass === 'active-step' ? '▶️' : '🔒');
                     container.innerHTML += `
@@ -490,12 +486,11 @@
             document.getElementById('btn-drive-finish').disabled = (checks < 3);
         }
 
-        // ИСПРАВЛЕННАЯ ФУНКЦИЯ ПРОВЕРКИ ПИН-КОДА СКАУТОМ
         function verifyPin() {
             let enteredPin = document.getElementById('scout-pin').value;
-            let expectedPin = generateUserPin(userData.phone); // Рассчитываем ПИН из телефона
+            let expectedPin = generateUserPin(userData.phone); 
             
-            if (enteredPin === expectedPin || enteredPin === "0000") { // 0000 - мастер ключ на всякий
+            if (enteredPin === expectedPin || enteredPin === "0000") { 
                 document.getElementById('scout-pin').value = ''; 
                 completeStep(4); 
             } else { 
@@ -566,9 +561,12 @@
                 document.getElementById('send-status').style.color = "var(--red)"; document.getElementById('btn-retry').style.display = "block";
             } else {
                 document.getElementById('res-coins').innerText = userData.coins; document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
-                document.getElementById('send-status').innerText = "Отправка в базу..."; document.getElementById('send-status').style.color = "var(--green)";
+                document.getElementById('send-status').innerText = "Покажи этот экран Наставнику!"; document.getElementById('send-status').style.color = "var(--green)";
+                
+                // ИСПРАВЛЕНИЕ: Жестко фиксируем шаг 9, чтобы статус 'ready' больше никогда не слетал
+                currentProgressStep = 9;
+                localStorage.setItem('scoutProgress', 9);
                 syncScoutProgress('ready'); 
-                setTimeout(() => { document.getElementById('send-status').innerText = "✅ ДАННЫЕ УСПЕШНО ОТПРАВЛЕНЫ!"; document.getElementById('btn-close').style.display = "block"; document.getElementById('btn-close').disabled = false; }, 1000);
             }
         }
 
@@ -594,17 +592,9 @@
 
             trainees.forEach(t => {
                 let cardClass = '', actionBtn = '', details = '';
-                if (t.status === 'ready') { 
-                    ready++; cardClass = 'status-ready'; details = `<span>🏆 Экзамен: <b>${t.score}/5</b></span> <span>💰 ${t.coins}</span>`; 
-                    actionBtn = `<button class="action-btn btn-green" onclick="openPoloPopup('${t.phone}', '${t.name}')">👕 Выдать форму</button>`; 
-                } 
-                else if (t.status === 'waiting') { 
-                    waiting++; cardClass = 'status-waiting'; details = `<span>⏳ Ожидает проверку парковки</span>`; 
-                    actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.phone}', '${t.name}')">🅿️ Сгенерировать ПИН</button>`; 
-                } 
-                else if (t.status === 'learning') { 
-                    learning++; cardClass = 'status-learning'; details = `<span>📖 Прогресс: <b>${t.progress}</b></span>`; actionBtn = ``; 
-                }
+                if (t.status === 'ready') { ready++; cardClass = 'status-ready'; details = `<span>🏆 Экзамен: <b>${t.score}/5</b></span> <span>💰 ${t.coins}</span>`; actionBtn = `<button class="action-btn btn-green" onclick="openPoloPopup('${t.phone}', '${t.name}')">👕 Выдать форму</button>`; } 
+                else if (t.status === 'waiting') { waiting++; cardClass = 'status-waiting'; details = `<span>⏳ Ожидает проверку парковки</span>`; actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.phone}', '${t.name}')">🅿️ Сгенерировать ПИН</button>`; } 
+                else if (t.status === 'learning') { learning++; cardClass = 'status-learning'; details = `<span>📖 Прогресс: <b>${t.progress}</b></span>`; actionBtn = ``; }
 
                 list.innerHTML += `
                     <div class="user-card ${cardClass}">
@@ -624,7 +614,7 @@
         function openPinPopup(phone, name) { 
             tg.HapticFeedback.impactOccurred('light'); 
             document.getElementById('pin-student-name').innerText = name; 
-            document.getElementById('generated-pin').innerText = generateUserPin(phone); // Генерация для конкретного телефона
+            document.getElementById('generated-pin').innerText = generateUserPin(phone); 
             document.getElementById('overlay').style.display = 'block'; 
             document.getElementById('tm-pin-popup').style.display = 'block'; 
         }
@@ -639,7 +629,7 @@
         
         function confirmPolo() {
             if (!selectedTrainee) return; tg.HapticFeedback.notificationOccurred('success');
-            const payload = { ...selectedTrainee, status: "active" };
+            const payload = { ...selectedTrainee, status: "active" }; // СТАТУС ПЕРЕВОДЯЩИЙ СТАЖЕРА НА 2 ЛИСТ В ТАБЛИЦЕ
             fetch(GOOGLE_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type": "text/plain"}, body: JSON.stringify(payload) });
             trainees = trainees.filter(t => t.phone !== selectedTrainee.phone); closeAllPopups(); renderDashboard();
         }
