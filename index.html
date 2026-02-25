@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Карета Мобилити | Portal</title>
+    <title>Portal | Карета Мобилити</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* --- ГЛОБАЛЬНЫЕ СТИЛИ --- */
+        /* ========================================= */
+        /* ГЛОБАЛЬНЫЕ СТИЛИ                          */
+        /* ========================================= */
         :root { 
             --bg: #f4f6f8; --text: #1a1a1a; --yellow: #FFED00; --black: #000; 
             --green: #2ecc71; --red: #e74c3c; --orange: #f39c12; --blue: #3498db; --white: #fff;
@@ -17,14 +19,14 @@
         .logo-main { width: 120px; height: auto; margin-bottom: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .hidden { display: none !important; }
 
-        /* --- ЭКРАН ВЫБОРА РОЛИ --- */
-        #app-router { margin-top: 20vh; animation: fadeIn 0.5s; }
+        /* РОУТЕР (ВЫБОР РОЛИ) */
+        #app-router { margin-top: 15vh; animation: fadeIn 0.5s; }
         .role-btn { background: #fff; border: 3px solid var(--yellow); padding: 25px; border-radius: 20px; margin-bottom: 15px; font-size: 18px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; justify-content: center; width: 100%; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.2s; cursor: pointer; color: var(--black); }
         .role-btn:active { transform: scale(0.97); }
         .role-btn span { font-size: 28px; margin-right: 15px; }
 
         /* ========================================= */
-        /* СТИЛИ СКАУТА                  */
+        /* СТИЛИ СКАУТА                              */
         /* ========================================= */
         #app-scout .screen { display: none; background: #fff; padding: 20px; border-radius: 24px; margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); animation: fadeIn 0.4s; }
         #app-scout .screen.active { display: block; }
@@ -47,6 +49,7 @@
         .step-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #111; }
         .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; }
         
+        /* Карточки Tinder */
         .tinder-container { position: relative; height: 60vh; min-height: 480px; width: 100%; margin-top: 10px; perspective: 1000px; }
         .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid #eee; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08); transition: transform 0.4s, opacity 0.4s; display: flex; flex-direction: column; text-align: center; }
         .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
@@ -54,6 +57,7 @@
         .card-img { width: 120px; height: 120px; margin: 30px auto 15px; object-fit: contain; flex-shrink: 0; }
         .card-text { padding: 0 20px 20px; font-size: 16px; line-height: 1.5; flex-grow: 1; overflow-y: auto; text-align: left; font-weight: 500; }
         
+        /* Интерактив */
         .option { display: flex; align-items: center; padding: 16px; background: #f8fafc; margin-bottom: 12px; border-radius: 14px; cursor: pointer; text-align: left; border: 2px solid #eee; font-weight: 700; font-size: 15px; }
         .option.correct { background: #dcfce7; border-color: var(--green); color: #166534; }
         .option.wrong { background: #fee2e2; border-color: var(--red); color: #991b1b; }
@@ -65,7 +69,7 @@
         .reset-btn { background: transparent !important; color: #999 !important; border: none; box-shadow: none !important; margin-top: 25px !important; font-size: 14px !important; text-decoration: underline; width: 100%; }
 
         /* ========================================= */
-        /* СТИЛИ ТМ                    */
+        /* СТИЛИ ТМ                                  */
         /* ========================================= */
         .tm-header { display: flex; justify-content: space-between; align-items: center; background: var(--black); color: var(--white); padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: left; }
         .tm-header h1 { margin: 0; font-size: 20px; font-weight: 900; }
@@ -95,16 +99,16 @@
         .btn-orange { background: var(--yellow); color: var(--black); }
 
         /* ========================================= */
-        /* ПОП-АПЫ                      */
+        /* ПОП-АПЫ                                   */
         /* ========================================= */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
         .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 85%; max-width: 350px; background: #fff; border-radius: 24px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1000; display: none; text-align: center; animation: popIn 0.3s forwards; }
         @keyframes popIn { to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
         .popup h3 { margin-top: 10px; font-size: 22px; }
-        .popup p { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 15px; line-height: 1.4; }
+        .popup p { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 15px; line-height: 1.4; text-align: left; }
         .popup button { background: var(--yellow); border: none; padding: 15px; border-radius: 14px; font-weight: 800; width: 100%; font-size: 16px; margin-top: 10px; color: #000; cursor: pointer; }
         .popup .close-btn { background: #eee; color: #333; }
-        .pin-display { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--black); background: #f4f6f8; padding: 15px; border-radius: 16px; margin: 20px 0; }
+        .pin-display { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--black); background: #f4f6f8; padding: 15px; border-radius: 16px; margin: 20px 0; text-align: center; }
     </style>
 </head>
 <body>
@@ -112,10 +116,9 @@
     <div id="app-router">
         <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=KARETA'">
         <h2>Вход в портал</h2>
-        <p>Выберите свою должность для входа в рабочее пространство.</p>
+        <p>Выберите свою роль для входа в приложение.</p>
         <div class="role-btn" onclick="initApp('scout')"><span>🚴‍♂️</span> Я Скаут / Стажёр</div>
         <div class="role-btn" onclick="initApp('tm')"><span>👔</span> Я Наставник / ТМ</div>
-        <div style="margin-top: 30px; font-size: 12px; color: #aaa;">*В рабочей версии выбор будет происходить автоматически по ID Telegram</div>
     </div>
 
     <div id="app-scout" class="hidden">
@@ -155,6 +158,7 @@
 
         <div id="screen-cards" class="screen center">
             <h2>Стандарты</h2>
+            <div style="font-size: 13px; color: #999; margin-bottom: 10px;">Листай текст ⬇️, смахивай ➡️</div>
             <div class="tinder-container" id="tinder-deck"></div>
             <button id="btn-cards-finish" style="display:none; background:var(--green); color:white;" onclick="completeStep(2)">✅ Изучил</button>
         </div>
@@ -173,7 +177,7 @@
             <h2>Идеальная Парковка</h2>
             <p>Выстави всю парковку идеально (50 см между каретами, руль прямо).</p>
             <div style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:bold; text-align:left;">
-                ⚠️ Позови ТМ. Он проверит работу и продиктует ПИН-код (Зайди как ТМ, чтобы узнать ПИН).
+                ⚠️ Позови ТМ. Он проверит работу и продиктует ПИН-код.
             </div>
             <input type="password" id="scout-pin" placeholder="PIN-код ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;">
             <button style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">ПОДТВЕРДИТЬ</button>
@@ -240,71 +244,55 @@
     
     <div class="popup" id="scout-popup">
         <h3 id="sp-title"></h3>
-        <p id="sp-text" style="text-align: left;"></p>
+        <p id="sp-text"></p>
         <button onclick="closeAllPopups()">ПОНЯТНО</button>
     </div>
 
     <div class="popup" id="tm-pin-popup">
-        <div style="font-size: 40px;">🅿️</div>
-        <h3>Проверка парковки</h3>
-        <p>Проверь, ровно ли <b id="pin-student-name"></b> выставил кареты. Если всё идеально — продиктуй ему ПИН-код:</p>
+        <div style="font-size: 40px; text-align: center;">🅿️</div>
+        <h3 style="text-align: center;">Проверка парковки</h3>
+        <p style="text-align: center;">Проверь, ровно ли <b id="pin-student-name"></b> выставил кареты. Если всё идеально — продиктуй ему ПИН-код:</p>
         <div class="pin-display" id="generated-pin">1234</div>
         <button style="background:var(--green); color:white;" onclick="closeAllPopups()">Понятно</button>
     </div>
 
     <div class="popup" id="tm-polo-popup">
-        <div style="font-size: 40px;">👕</div>
-        <h3>Выдача Поло</h3>
-        <p>Стажёр <b id="polo-student-name"></b> сдал экзамен. Выдай форму и выводи в смену!</p>
+        <div style="font-size: 40px; text-align: center;">👕</div>
+        <h3 style="text-align: center;">Выдача Поло</h3>
+        <p style="text-align: center;">Стажёр <b id="polo-student-name"></b> сдал экзамен. Выдай форму и выводи в смену!</p>
         <button style="background:var(--green); color:white;" onclick="confirmPolo()">Подтвердить выдачу</button>
         <button class="close-btn" onclick="closeAllPopups()">Отмена</button>
     </div>
 
 
     <script>
+        // ССЫЛКА НА ВАШ GOOGLE APPS SCRIPT
+        const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbztUcsreMEKKZ4QfjmKWgkYmZTfBx1WRZRdQQjIcnjryp29vKYN9PbrzJ8lxG6jFK86/exec";
+        
         let tg = window.Telegram.WebApp; tg.expand();
 
         // --- РОУТИНГ ПРИЛОЖЕНИЯ ---
         window.addEventListener('DOMContentLoaded', () => {
             let savedRole = localStorage.getItem('appRole');
-            if (savedRole) {
-                initApp(savedRole);
-            }
+            if (savedRole) initApp(savedRole);
         });
 
         function initApp(role) {
             localStorage.setItem('appRole', role);
             document.getElementById('app-router').classList.add('hidden');
-            
-            if (role === 'scout') {
-                document.getElementById('app-scout').classList.remove('hidden');
-                initScout();
-            } else if (role === 'tm') {
-                document.getElementById('app-tm').classList.remove('hidden');
-                initTM();
-            }
+            if (role === 'scout') { document.getElementById('app-scout').classList.remove('hidden'); initScout(); } 
+            else if (role === 'tm') { document.getElementById('app-tm').classList.remove('hidden'); initTM(); }
         }
+        function logout() { localStorage.removeItem('appRole'); location.reload(); }
 
-        function logout() {
-            localStorage.removeItem('appRole');
-            location.reload();
-        }
-
-        // --- ГЛОБАЛЬНЫЕ УТИЛИТЫ ---
         function closeAllPopups() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('scout-popup').style.display = 'none';
             document.getElementById('tm-pin-popup').style.display = 'none';
             document.getElementById('tm-polo-popup').style.display = 'none';
-            
-            // Если закрыли поп-ап скаута в симуляции, идем дальше
-            if (document.getElementById('app-scout').classList.contains('hidden') === false) {
-                if (typeof nextPracQ === 'function' && document.getElementById('scout-popup').style.display === 'none') {
-                    // Костыль для безопасного вызова только из симуляции
-                    if(document.getElementById('screen-practice').classList.contains('active')) {
-                        nextPracQ();
-                    }
-                }
+            // Продолжение симуляции
+            if (!document.getElementById('app-scout').classList.contains('hidden') && document.getElementById('screen-practice').classList.contains('active')) {
+                if (typeof nextPracQ === 'function') nextPracQ();
             }
         }
 
@@ -331,26 +319,33 @@
         const theoryCards = [
             { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br>Запрещено курить/есть на Карете. Общайся с улыбкой.", img: "1.png" }, 
             { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br>Расстояние — ровно 50 см. Руль и фары прямо.", img: "2.png" },
-            { t: "<b>📱 3. БОТ И ЗАРПЛАТА</b><br>Нет отметки с селфи в боте = нет зарплаты.", img: "5.png" }
+            { t: "<b>⚖️ 3. БАЛАНС ПАРКОВКИ</b><br>Много карет? Угони лишние на соседнюю пустую точку.", img: "3.png" },
+            { t: "<b>🤝 4. ТЫ — ЭКСПЕРТ</b><br>Знай тарифы, советуй маршруты в парке.", img: "4.png" },
+            { t: "<b>📱 5. ЗАРПЛАТА И СМЕНА</b><br>Обязательно делай <b>селфи в форме</b> при старте.", img: "5.png" },
+            { t: "<b>🛠 6. ИНВЕНТАРЬ</b><br>Ключи на 13 и 15, отвертка, стяжки, жесткая щетка.", img: "6.png" },
+            { t: "<b>🔧 7. РЕМОНТ</b><br>Серьезное (трещина) — заявка в бот и снимай Карету.", img: "7.png" },
+            { t: "<b>🎧 8. АУДИОГИД</b><br>Предлагай всем за 1 рубль.", img: "8.png" }
         ];
 
         const simsData = {
             5: [
-                { q: "Семья смотрит на карету, но идет дальше.", a: [ { t: "Молчать", c: false, f: "Теряем клиентов." }, { t: "Предложить бесплатное фото за рулем", c: true, f: "Идеально вовлекает." }, { t: "Крикнуть про скидку", c: false, f: "Агрессивно." } ] },
-                { q: "6 человек хотят сесть в 4-местную карету.", a: [ { t: "Сдать им.", c: false, f: "Риск поломки." }, { t: "Предложить две кареты.", c: true, f: "Соблюдаем ТБ." } ] },
-                { q: "На точке нет карет, а люди подходят.", a: [ { t: "Пригнать с соседней точки.", c: true, f: "Проактивность." }, { t: "Сказать, что карет нет.", c: false, f: "Теряем выручку." } ] }
+                { q: "Семья смотрит на карету, но идет дальше.", a: [ { t: "Молчать", c: false, f: "Теряем клиентов." }, { t: "Предложить фото за рулем", c: true, f: "Идеально вовлекает." }, { t: "Крикнуть про скидку", c: false, f: "Агрессивно." } ] },
+                { q: "6 человек хотят сесть в 4-местную карету.", a: [ { t: "Сдать им.", c: false, f: "Риск поломки." }, { t: "Предложить две кареты.", c: true, f: "Соблюдаем ТБ." }, { t: "Под двойной залог.", c: false, f: "Залог не спасет от травм." } ] },
+                { q: "На точке нет карет, а люди подходят.", a: [ { t: "Пригнать с соседней точки.", c: true, f: "Проактивность." }, { t: "Сказать, что нет.", c: false, f: "Теряем выручку." }, { t: "Уйти на перерыв.", c: false, f: "Ты должен быть на посту." } ] }
             ],
             7: [
-                { q: "Дождь. Клиенты сомневаются.", a: [ { t: "Показать защиту крыши-тента.", c: true, f: "Карета — зонт на колесах." }, { t: "Отпустить их.", c: false, f: "Потеря продажи." } ] },
-                { q: "Подходит пьяный гость.", a: [ { t: "Вежливо отказать по ТБ.", c: true, f: "Мы несем ответственность." }, { t: "Взять двойной залог.", c: false, f: "Риск ДТП." } ] },
-                { q: "Звонок: Слетела цепь.", a: [ { t: "Отправить скаута на помощь.", c: true, f: "Это сервис!" }, { t: "Сказать чинить самим.", c: false, f: "Клиент не пачкает руки." } ] }
+                { q: "Дождь. Клиенты сомневаются.", a: [ { t: "Показать крышу-тент.", c: true, f: "Карета — зонт на колесах." }, { t: "Отпустить их.", c: false, f: "Потеря продажи." }, { t: "Дать скидку.", c: false, f: "Не демпингуем." } ] },
+                { q: "Подходит пьяный гость.", a: [ { t: "Вежливо отказать по ТБ.", c: true, f: "Мы несем ответственность." }, { t: "Взять двойной залог.", c: false, f: "Риск ДТП." }, { t: "Проигнорировать.", c: false, f: "Агрессия." } ] },
+                { q: "Звонок: Слетела цепь.", a: [ { t: "Отправить скаута на помощь.", c: true, f: "Это сервис!" }, { t: "Сказать чинить самим.", c: false, f: "Клиент не пачкает руки." }, { t: "Бросать карету.", c: false, f: "Украдут." } ] }
             ]
         };
 
         const finalQuizData = [
-            { q: "Расстояние между каретами?", a: [{t: "Ровно 50 см", c:true}, {t: "Вплотную", c:false}] },
-            { q: "Сломалась рама. Что делать?", a: [{t: "Снять с линии + заявка в бот", c:true}, {t: "Ждать", c:false}] },
-            { q: "Правило чистоты — это...", a: [{t: "Сиденья, рама, колеса до блеска", c:true}, {t: "Только руль", c:false}] }
+            { q: "Расстояние между каретами?", a: [{t: "Ровно 50 см", c:true}, {t: "Вплотную", c:false}, {t: "1 метр", c:false}] },
+            { q: "Сломалась рама. Что делать?", a: [{t: "Снять с линии + заявка в бот", c:true}, {t: "Ждать", c:false}, {t: "Замотать скотчем", c:false}] },
+            { q: "Правило чистоты — это...", a: [{t: "Сиденья, рама, колеса до блеска", c:true}, {t: "Только руль", c:false}, {t: "Сбить пыль", c:false}] },
+            { q: "Зарплата фиксируется через:", a: [{t: "Селфи в TG-боте", c:true}, {t: "Блокнот", c:false}, {t: "Звонок ТМ", c:false}] },
+            { q: "Цена аудиогида?", a: [{t: "1 рубль", c:true}, {t: "Бесплатно", c:false}, {t: "500 рублей", c:false}] }
         ];
 
         function initScout() {
@@ -361,6 +356,9 @@
                 currentProgressStep = parseInt(localStorage.getItem('scoutProgress') || 1);
                 userData.coins = parseInt(localStorage.getItem('scoutCoins') || 0);
                 document.getElementById('user-name').value = userData.name;
+                document.getElementById('user-phone').value = userData.phone;
+                document.getElementById('user-city').value = userData.city;
+                document.getElementById('user-birth').value = userData.birth;
                 renderRoadmap(); showScreen('screen-roadmap');
             } else { showScreen('screen-reg'); }
         }
@@ -372,7 +370,13 @@
         }
         function saveAndGo() {
             userData.name = document.getElementById('user-name').value;
+            userData.phone = document.getElementById('user-phone').value;
+            userData.city = document.getElementById('user-city').value;
+            userData.birth = document.getElementById('user-birth').value;
             localStorage.setItem('scoutName', userData.name);
+            localStorage.setItem('scoutPhone', userData.phone);
+            localStorage.setItem('scoutCity', userData.city);
+            localStorage.setItem('scoutBirth', userData.birth);
             renderRoadmap(); showScreen('screen-roadmap');
         }
 
@@ -428,7 +432,7 @@
         function verifyPin() {
             let pin = document.getElementById('scout-pin').value;
             if (pin === "1234") { document.getElementById('scout-pin').value = ''; completeStep(4); } 
-            else { tg.HapticFeedback.notificationOccurred('error'); alert("Неверный ПИН-код. Позовите ТМ."); document.getElementById('scout-pin').value = ''; }
+            else { tg.HapticFeedback.notificationOccurred('error'); alert("Неверный ПИН-код."); document.getElementById('scout-pin').value = ''; }
         }
 
         // ДВИЖОК СИМУЛЯЦИЙ СКАУТА
@@ -487,18 +491,39 @@
             };
         }
 
+        // ОТПРАВКА ДАННЫХ В GOOGLE ТАБЛИЦУ
         function showFinishScout() {
             showScreen('screen-finish'); document.getElementById('res-info').innerText = userData.name;
-            if (userData.score < 2) {
-                document.getElementById('finish-title').innerText = "Тест не сдан ❌"; document.getElementById('send-status').innerText = `Нужно подтянуть базу`;
+            if (userData.score < 4) { // Нужно 4 из 5
+                document.getElementById('finish-title').innerText = "Тест не сдан ❌"; document.getElementById('send-status').innerText = `Нужно подтянуть базу (${userData.score}/5)`;
                 document.getElementById('send-status').style.color = "var(--red)"; document.getElementById('btn-retry').style.display = "block";
             } else {
                 document.getElementById('res-coins').innerText = userData.coins; document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
                 document.getElementById('send-status').innerText = "Отправка в базу..."; document.getElementById('send-status').style.color = "var(--green)";
-                document.getElementById('btn-close').style.display = "block"; document.getElementById('btn-retry').style.display = "none";
+                
+                const payload = {
+                    name: userData.name, phone: userData.phone, city: userData.city, birth: userData.birth,
+                    role: "Скаут", score: userData.score, coins: userData.coins,
+                    tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
+                };
+
+                // ВАЖНО: ОТПРАВКА FETCH
+                fetch(GOOGLE_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify(payload)
+                }).then(() => {
+                    document.getElementById('send-status').innerText = "✅ ДАННЫЕ В ТАБЛИЦЕ!";
+                    document.getElementById('btn-close').style.display = "block";
+                    document.getElementById('btn-close').disabled = false;
+                }).catch(err => {
+                    document.getElementById('send-status').innerText = "Ошибка сети. Сделай скриншот.";
+                    document.getElementById('btn-close').style.display = "block";
+                    document.getElementById('btn-close').disabled = false;
+                });
             }
         }
-
 
         // =====================================================================
         //                              ЛОГИКА ТМ
