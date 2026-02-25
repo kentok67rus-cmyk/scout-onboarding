@@ -3,224 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Онбординг: Скаут | Карета Мобилити</title>
+    <title>Карета Мобилити | Portal</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* --- БАЗОВЫЕ СТИЛИ --- */
+        /* --- ГЛОБАЛЬНЫЕ СТИЛИ --- */
         :root { 
-            --bg: #f4f6f8; 
-            --text: #1a1a1a; 
-            --yellow: #FFED00; 
-            --black: #000; 
-            --green: #2ecc71;
-            --red: #e74c3c;
-            --blue: #3498db;
+            --bg: #f4f6f8; --text: #1a1a1a; --yellow: #FFED00; --black: #000; 
+            --green: #2ecc71; --red: #e74c3c; --orange: #f39c12; --blue: #3498db; --white: #fff;
         }
-        
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--bg); color: var(--text); padding: 15px; margin: 0; 
-            text-align: center; overflow-x: hidden; -webkit-font-smoothing: antialiased; 
-        }
-        
-        /* --- ЭКРАНЫ --- */
-        .screen { 
-            display: none; background: #fff; padding: 20px; border-radius: 24px; 
-            margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
-            animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
-        }
-        .screen.active { display: block; }
-        .center { text-align: center; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* --- ТИПОГРАФИКА И ФОРМЫ --- */
-        h2 { text-transform: uppercase; font-size: 22px; margin-bottom: 10px; font-weight: 800; line-height: 1.2; }
-        p { color: #555; font-size: 15px; line-height: 1.4; margin-bottom: 20px; }
-        
-        input { 
-            width: 100%; padding: 16px; margin-top: 10px; border: 3px solid #eee; 
-            border-radius: 14px; font-size: 18px; box-sizing: border-box; 
-            text-align: center; font-weight: bold; outline: none; transition: 0.3s; background: #fafafa; 
-        }
-        input:focus { border-color: var(--yellow); background: #fff; }
-        
-        button { 
-            background: var(--yellow); color: #000; border: none; padding: 18px; 
-            border-radius: 14px; font-size: 18px; font-weight: 800; width: 100%; 
-            margin-top: 20px; text-transform: uppercase; box-shadow: 0 5px 0 #d4c300; 
-            cursor: pointer; transition: transform 0.1s; display: block; 
-        }
-        button:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4c300; }
-        button:disabled { background: #e0e0e0 !important; color: #a0a0a0 !important; box-shadow: none !important; cursor: not-allowed; transform: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); padding: 15px; margin: 0; text-align: center; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        * { box-sizing: border-box; }
         
         .logo-main { width: 120px; height: auto; margin-bottom: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .hidden { display: none !important; }
 
-        /* --- ROADMAP --- */
-        .level-header {
-            font-weight: 900; font-size: 14px; text-transform: uppercase; color: #888;
-            margin: 25px 0 10px 0; text-align: left; padding-left: 5px; letter-spacing: 1px;
-        }
-        .step-card {
-            background: #fff; border: 3px solid #eee; border-radius: 16px; padding: 15px; 
-            margin-bottom: 10px; text-align: left; display: flex; align-items: center; transition: 0.3s;
-        }
-        .step-card.active-step { border-color: var(--yellow); box-shadow: 0 4px 15px rgba(255, 237, 0, 0.3); cursor: pointer; }
-        .step-card.locked-step { opacity: 0.5; background: #fafafa; filter: grayscale(1); cursor: not-allowed; }
-        .step-card.completed-step { border-color: var(--green); background: #f0fdf4; cursor: pointer; }
+        /* --- ЭКРАН ВЫБОРА РОЛИ --- */
+        #app-router { margin-top: 20vh; animation: fadeIn 0.5s; }
+        .role-btn { background: #fff; border: 3px solid var(--yellow); padding: 25px; border-radius: 20px; margin-bottom: 15px; font-size: 18px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; justify-content: center; width: 100%; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.2s; cursor: pointer; color: var(--black); }
+        .role-btn:active { transform: scale(0.97); }
+        .role-btn span { font-size: 28px; margin-right: 15px; }
+
+        /* ========================================= */
+        /* СТИЛИ СКАУТА                  */
+        /* ========================================= */
+        #app-scout .screen { display: none; background: #fff; padding: 20px; border-radius: 24px; margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); animation: fadeIn 0.4s; }
+        #app-scout .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        #app-scout h2 { text-transform: uppercase; font-size: 22px; margin-bottom: 10px; font-weight: 800; }
+        #app-scout p { color: #555; font-size: 15px; line-height: 1.4; margin-bottom: 20px; }
+        #app-scout input { width: 100%; padding: 16px; margin-top: 10px; border: 3px solid #eee; border-radius: 14px; font-size: 18px; text-align: center; font-weight: bold; outline: none; background: #fafafa; }
+        #app-scout input:focus { border-color: var(--yellow); background: #fff; }
+        #app-scout button { background: var(--yellow); color: #000; border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 800; width: 100%; margin-top: 20px; text-transform: uppercase; box-shadow: 0 5px 0 #d4c300; cursor: pointer; transition: 0.1s; }
+        #app-scout button:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4c300; }
+        #app-scout button:disabled { background: #e0e0e0 !important; color: #a0a0a0 !important; box-shadow: none !important; cursor: not-allowed; }
+        
+        .level-header { font-weight: 900; font-size: 14px; text-transform: uppercase; color: #888; margin: 25px 0 10px 0; text-align: left; padding-left: 5px; letter-spacing: 1px; }
+        .step-card { background: #fff; border: 3px solid #eee; border-radius: 16px; padding: 15px; margin-bottom: 10px; text-align: left; display: flex; align-items: center; }
+        .active-step { border-color: var(--yellow); box-shadow: 0 4px 15px rgba(255, 237, 0, 0.3); cursor: pointer; }
+        .locked-step { opacity: 0.5; background: #fafafa; filter: grayscale(1); cursor: not-allowed; }
+        .completed-step { border-color: var(--green); background: #f0fdf4; cursor: pointer; }
         .step-icon { font-size: 30px; margin-right: 15px; width: 40px; text-align: center; }
         .step-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #111; }
         .step-info p { margin: 0; font-size: 13px; color: #666; font-weight: 600; }
-        .step-status { margin-left: auto; font-size: 20px; }
-
-        /* --- ЧЕК-ЛИСТ (ТЕСТ-ДРАЙВ) --- */
-        .checklist-item {
-            display: flex; align-items: center; text-align: left; background: #f8fafc;
-            padding: 15px; border-radius: 12px; margin-bottom: 10px; font-weight: 700;
-        }
-        .checklist-item input[type="checkbox"] {
-            width: 24px; height: 24px; margin: 0 15px 0 0; accent-color: var(--green);
-        }
-
-        /* --- TINDER КАРТОЧКИ --- */
+        
         .tinder-container { position: relative; height: 60vh; min-height: 480px; width: 100%; margin-top: 10px; perspective: 1000px; }
-        .tinder-card { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #fff; border: 3px solid #eee; border-radius: 20px; 
-            overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08); 
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s; 
-            display: flex; flex-direction: column; text-align: center; 
-        }
+        .tinder-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; border: 3px solid #eee; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08); transition: transform 0.4s, opacity 0.4s; display: flex; flex-direction: column; text-align: center; }
         .tinder-card.swiped-left { transform: translateX(-200%) rotate(-30deg) !important; opacity: 0; }
         .tinder-card.swiped-right { transform: translateX(200%) rotate(30deg) !important; opacity: 0; }
         .card-img { width: 120px; height: 120px; margin: 30px auto 15px; object-fit: contain; flex-shrink: 0; }
         .card-text { padding: 0 20px 20px; font-size: 16px; line-height: 1.5; flex-grow: 1; overflow-y: auto; text-align: left; font-weight: 500; }
-
-        /* --- ИНТЕРАКТИВ И ПОП-АПЫ --- */
-        .option { 
-            display: flex; align-items: center; padding: 16px; background: #f8fafc; 
-            margin-bottom: 12px; border-radius: 14px; cursor: pointer; text-align: left; 
-            border: 2px solid #eee; font-weight: 700; font-size: 15px; transition: 0.2s; 
-        }
+        
+        .option { display: flex; align-items: center; padding: 16px; background: #f8fafc; margin-bottom: 12px; border-radius: 14px; cursor: pointer; text-align: left; border: 2px solid #eee; font-weight: 700; font-size: 15px; }
         .option.correct { background: #dcfce7; border-color: var(--green); color: #166534; }
         .option.wrong { background: #fee2e2; border-color: var(--red); color: #991b1b; }
+        
+        .checklist-item { display: flex; align-items: center; text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 10px; font-weight: 700; }
+        .checklist-item input[type="checkbox"] { width: 24px; height: 24px; margin: 0 15px 0 0; accent-color: var(--green); }
 
+        .scout-status-bar { display: flex; justify-content: space-between; font-weight: 800; background: var(--yellow); padding: 12px 20px; border-radius: 14px; margin-bottom: 15px; font-size: 14px; box-shadow: 0 4px 0 #d4c300; }
+        .reset-btn { background: transparent !important; color: #999 !important; border: none; box-shadow: none !important; margin-top: 25px !important; font-size: 14px !important; text-decoration: underline; width: 100%; }
+
+        /* ========================================= */
+        /* СТИЛИ ТМ                    */
+        /* ========================================= */
+        .tm-header { display: flex; justify-content: space-between; align-items: center; background: var(--black); color: var(--white); padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: left; }
+        .tm-header h1 { margin: 0; font-size: 20px; font-weight: 900; }
+        .tm-header p { margin: 5px 0 0 0; font-size: 13px; color: #aaa; }
+        .location-badge { background: var(--yellow); color: var(--black); padding: 5px 12px; border-radius: 10px; font-weight: 800; font-size: 12px; text-transform: uppercase; }
+
+        .stats-container { background: var(--white); padding: 20px; border-radius: 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 15px rgba(0,0,0,0.04); margin-bottom: 25px; }
+        .chart-box { position: relative; width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--green) 0% 30%, var(--orange) 30% 60%, var(--red) 60% 100%); display: flex; justify-content: center; align-items: center; }
+        .chart-inner { width: 75px; height: 75px; background: var(--white); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .chart-inner span { font-size: 22px; font-weight: 900; color: #000; }
+        .stats-legend { flex-grow: 1; padding-left: 20px; text-align: left; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #555; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 4px; margin-right: 10px; }
+
+        .section-title { font-size: 18px; font-weight: 900; margin: 0 0 15px 5px; text-transform: uppercase; color: #333; text-align: left; }
+        .user-card { background: var(--white); border-radius: 18px; padding: 16px; margin-bottom: 12px; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border-left: 6px solid #eee; text-align: left; }
+        .status-ready { border-left-color: var(--green); background: #f0fdf4; }
+        .status-waiting { border-left-color: var(--orange); background: #fffcf0; }
+        .status-learning { border-left-color: var(--red); opacity: 0.8; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .user-name { font-size: 16px; font-weight: 800; margin: 0; color: #111; }
+        .user-role { font-size: 12px; color: #888; font-weight: 600; background: #eee; padding: 3px 8px; border-radius: 6px; }
+        .card-body { font-size: 13px; color: #555; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; }
+        .card-body span { margin-right: 15px; }
+        .action-btn { background: var(--black); color: var(--white); border: none; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 800; text-transform: uppercase; cursor: pointer; width: 100%; text-align: center; }
+        .btn-green { background: var(--green); color: white; }
+        .btn-orange { background: var(--yellow); color: var(--black); }
+
+        /* ========================================= */
+        /* ПОП-АПЫ                      */
+        /* ========================================= */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
-        .popup {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
-            width: 85%; max-width: 350px; background: #fff; border-radius: 24px; padding: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1000; display: none;
-            text-align: left; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
+        .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 85%; max-width: 350px; background: #fff; border-radius: 24px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1000; display: none; text-align: center; animation: popIn 0.3s forwards; }
         @keyframes popIn { to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
-
-        /* --- ОБЩЕЕ --- */
-        .status-bar { display: flex; justify-content: space-between; font-weight: 800; background: var(--yellow); padding: 12px 20px; border-radius: 14px; margin-bottom: 15px; font-size: 14px; box-shadow: 0 4px 0 #d4c300; }
-        .media-container { position: relative; border-radius: 16px; overflow: hidden; border: 2px solid #eee; background: #000; margin-bottom: 15px; }
-        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .reset-btn { background: transparent; color: #999; border: none; box-shadow: none; margin-top: 25px; font-size: 14px; text-decoration: underline; }
+        .popup h3 { margin-top: 10px; font-size: 22px; }
+        .popup p { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 15px; line-height: 1.4; }
+        .popup button { background: var(--yellow); border: none; padding: 15px; border-radius: 14px; font-weight: 800; width: 100%; font-size: 16px; margin-top: 10px; color: #000; cursor: pointer; }
+        .popup .close-btn { background: #eee; color: #333; }
+        .pin-display { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--black); background: #f4f6f8; padding: 15px; border-radius: 16px; margin: 20px 0; }
     </style>
 </head>
 <body>
 
-    <div id="statusBar" class="status-bar" style="display: none;">
-        <span id="header-title">ВОПРОС: <span id="q-counter">1/3</span></span>
-        <span>💰 <span id="coins">0</span></span>
+    <div id="app-router">
+        <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=KARETA'">
+        <h2>Вход в портал</h2>
+        <p>Выберите свою должность для входа в рабочее пространство.</p>
+        <div class="role-btn" onclick="initApp('scout')"><span>🚴‍♂️</span> Я Скаут / Стажёр</div>
+        <div class="role-btn" onclick="initApp('tm')"><span>👔</span> Я Наставник / ТМ</div>
+        <div style="margin-top: 30px; font-size: 12px; color: #aaa;">*В рабочей версии выбор будет происходить автоматически по ID Telegram</div>
     </div>
 
-    <div id="overlay" class="overlay"></div>
-    <div id="popup" class="popup">
-        <h3 id="popup-title" style="margin-top:0;"></h3>
-        <p id="popup-text" style="font-size:16px; font-weight:500;"></p>
-        <button onclick="closePopup()">ПОНЯТНО</button>
-    </div>
-
-    <div id="screen-reg" class="screen center active">
-        <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
-        <h2>Привет, Скаут! 🚴‍♂️</h2>
-        <p>Заполни анкету для старта.</p>
-        <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
-        <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
-        <input type="text" id="user-birth" placeholder="ДД.ММ.ГГГГ" oninput="formatDate(this); validateForm()" maxlength="10">
-        <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
-        <button id="btn-start" disabled onclick="saveAndGo()">Начать Путь</button>
-    </div>
-
-    <div id="screen-roadmap" class="screen">
-        <h2>Твоё обучение</h2>
-        <p style="margin-bottom: 10px;">Пройди все этапы, чтобы получить Поло.</p>
-        <div id="roadmap-container"></div>
-        <button class="reset-btn" onclick="resetApp()">🔄 Начать всё заново</button>
-    </div>
-
-    <div id="screen-video" class="screen center">
-        <h2>Культура и База</h2>
-        <div class="media-container"><div class="video-wrapper">
-            <iframe id="vid-player" src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/" frameBorder="0" allow="autoplay; fullscreen"></iframe>
-        </div></div>
-        <button style="background:var(--green); color:white;" onclick="completeStep(1)">✅ Посмотрел</button>
-    </div>
-
-    <div id="screen-cards" class="screen center">
-        <h2>Стандарты</h2>
-        <div class="tinder-container" id="tinder-deck"></div>
-        <button id="btn-cards-finish" style="display:none; background:var(--green); color:white;" onclick="completeStep(2)">✅ Изучил</button>
-    </div>
-
-    <div id="screen-testdrive" class="screen center">
-        <h2>Тест-драйв 🚴</h2>
-        <p>Возьми свободную Карету и сделай 2 круга. Ты должен понимать свой продукт.</p>
-        <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Проверил тормоза</div>
-        <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Понял габариты</div>
-        <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Сделал селфи за рулем</div>
-        <button id="btn-drive-finish" disabled style="background:var(--green); color:white;" onclick="completeStep(3)">ГОТОВО</button>
-    </div>
-
-    <div id="screen-mentor" class="screen center">
-        <div style="font-size: 60px;">🅿️</div>
-        <h2>Идеальная Парковка</h2>
-        <p>Выстави <b>всю парковку</b> идеально: ровная линия, 50 см между каретами, руль прямо, ни пылинки.</p>
-        <div style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:bold; text-align:left;">
-            ⚠️ Позови своего ТМ. Он проверит работу и введет секретный PIN-код.
+    <div id="app-scout" class="hidden">
+        
+        <div id="statusBar" class="scout-status-bar" style="display: none;">
+            <span id="header-title">ВОПРОС: <span id="q-counter">1/3</span></span>
+            <span>💰 <span id="coins">0</span></span>
         </div>
-        <input type="password" id="mentor-pin" placeholder="PIN-код ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;">
-        <button style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">ПОДТВЕРДИТЬ</button>
-        <button class="reset-btn" onclick="showScreen('screen-roadmap')">Отмена</button>
-    </div>
 
-    <div id="screen-practice" class="screen">
-        <h3 id="prac-text" style="font-size: 19px; line-height: 1.4; margin-bottom: 20px;"></h3>
-        <div id="prac-options"></div>
-    </div>
-
-    <div id="screen-audio" class="screen center">
-        <h2>Напутствие ТМ</h2>
-        <div style="background:#f4f4f4; padding:30px; border-radius:20px;"><div style="font-size:50px;">🎧</div>
-            <audio id="aud-player" controls style="width: 100%; margin-top:15px;"><source src="podcast.m4a" type="audio/mp4"></audio>
+        <div id="screen-reg" class="screen center">
+            <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=LOGO'">
+            <h2>Привет, Скаут! 🚴‍♂️</h2>
+            <p>Заполни анкету для старта.</p>
+            <input type="text" id="user-name" placeholder="ФИО" oninput="validateForm()">
+            <input type="tel" id="user-phone" value="+7 " maxlength="18" oninput="validateForm()">
+            <input type="text" id="user-birth" placeholder="ДД.ММ.ГГГГ" oninput="formatDate(this); validateForm()" maxlength="10">
+            <input type="text" id="user-city" placeholder="Город (например, Ростов)" oninput="validateForm()">
+            <button id="btn-start" disabled onclick="saveAndGo()">Начать Путь</button>
+            <button class="reset-btn" onclick="logout()">🚪 Сменить роль</button>
         </div>
-        <button style="background:var(--green); color:white; margin-top:20px;" onclick="completeStep(6)">✅ Прослушал</button>
+
+        <div id="screen-roadmap" class="screen">
+            <h2>Твоё обучение</h2>
+            <p style="margin-bottom: 10px;">Пройди все этапы, чтобы получить Поло.</p>
+            <div id="roadmap-container"></div>
+            <button class="reset-btn" onclick="resetApp()">🔄 Начать всё заново</button>
+            <button class="reset-btn" style="margin-top:5px !important;" onclick="logout()">🚪 Сменить роль</button>
+        </div>
+
+        <div id="screen-video" class="screen center">
+            <h2>Культура и База</h2>
+            <div style="border-radius:16px; overflow:hidden; background:#000; margin-bottom:15px; position:relative; padding-bottom:56.25%; height:0;">
+                <iframe id="vid-player" style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://rutube.ru/play/embed/900cde7cfae7ff125a6a7da1d8d9ce96/" frameBorder="0" allow="autoplay; fullscreen"></iframe>
+            </div>
+            <button style="background:var(--green); color:white;" onclick="completeStep(1)">✅ Посмотрел</button>
+        </div>
+
+        <div id="screen-cards" class="screen center">
+            <h2>Стандарты</h2>
+            <div class="tinder-container" id="tinder-deck"></div>
+            <button id="btn-cards-finish" style="display:none; background:var(--green); color:white;" onclick="completeStep(2)">✅ Изучил</button>
+        </div>
+
+        <div id="screen-testdrive" class="screen center">
+            <h2>Тест-драйв 🚴</h2>
+            <p>Возьми свободную Карету и сделай 2 круга. Почувствуй габариты.</p>
+            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Проверил тормоза</div>
+            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Понял габариты</div>
+            <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"> Сделал селфи за рулем</div>
+            <button id="btn-drive-finish" disabled style="background:var(--green); color:white;" onclick="completeStep(3)">ГОТОВО</button>
+        </div>
+
+        <div id="screen-mentor" class="screen center">
+            <div style="font-size: 60px;">🅿️</div>
+            <h2>Идеальная Парковка</h2>
+            <p>Выстави всю парковку идеально (50 см между каретами, руль прямо).</p>
+            <div style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:bold; text-align:left;">
+                ⚠️ Позови ТМ. Он проверит работу и продиктует ПИН-код (Зайди как ТМ, чтобы узнать ПИН).
+            </div>
+            <input type="password" id="scout-pin" placeholder="PIN-код ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;">
+            <button style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">ПОДТВЕРДИТЬ</button>
+            <button class="reset-btn" onclick="showScreen('screen-roadmap')">Отмена</button>
+        </div>
+
+        <div id="screen-practice" class="screen">
+            <h3 id="prac-text" style="font-size: 19px; line-height: 1.4; margin-bottom: 20px;"></h3>
+            <div id="prac-options"></div>
+        </div>
+
+        <div id="screen-audio" class="screen center">
+            <h2>Напутствие ТМ</h2>
+            <div style="background:#f4f4f4; padding:30px; border-radius:20px;"><div style="font-size:50px;">🎧</div>
+                <audio id="aud-player" controls style="width: 100%; margin-top:15px;"><source src="podcast.m4a" type="audio/mp4"></audio>
+            </div>
+            <button style="background:var(--green); color:white; margin-top:20px;" onclick="completeStep(6)">✅ Прослушал</button>
+        </div>
+
+        <div id="screen-finish" class="screen center">
+            <img src="logo.jpg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=WIN'">
+            <h2 id="finish-title">Результат</h2>
+            <p id="res-info" style="font-size:18px; font-weight:bold;"></p>
+            <div style="background:var(--yellow); padding:20px; border-radius: 18px; margin: 20px 0;">
+                <p style="margin:0; font-weight: bold;">ЗАРАБОТАНО МОНЕТ:</p>
+                <h3 style="margin:5px 0 0 0; font-size: 38px;">💰 <span id="res-coins">0</span></h3>
+            </div>
+            <p id="send-status" style="font-weight: bold;"></p>
+            <button id="btn-close" disabled onclick="tg.close()" style="display:none; background:var(--green); color:white;">Получить Поло 👕</button>
+            <button id="btn-retry" onclick="showScreen('screen-roadmap')" style="display:none; background:var(--red); color:white;">Пересдать</button>
+        </div>
     </div>
 
-    <div id="screen-finish" class="screen center">
-        <h2 id="finish-title">Результат</h2>
-        <p id="res-info" style="font-size:18px; font-weight:bold;"></p>
-        <div style="background:var(--yellow); padding:20px; border-radius: 18px; margin: 20px 0;">
-            <p style="margin:0; font-weight: bold;">ЗАРАБОТАНО МОНЕТ:</p>
-            <h3 style="margin:5px 0 0 0; font-size: 38px;">💰 <span id="res-coins">0</span></h3>
+    <div id="app-tm" class="hidden">
+        <div class="tm-header">
+            <div>
+                <h1>Кабинет ТМ</h1>
+                <p>Управление стажёрами</p>
+            </div>
+            <div class="location-badge" id="current-location">Сириус</div>
         </div>
-        <p id="send-status" style="font-weight: bold; font-size: 16px;"></p>
-        <button id="btn-close" disabled onclick="tg.close()" style="display:none; background:var(--green); color:white;">Получить Поло 👕</button>
-        <button id="btn-retry" onclick="showScreen('screen-roadmap')" style="display:none; background:var(--red); color:white;">Пересдать</button>
+
+        <div class="stats-container">
+            <div class="chart-box" id="main-chart">
+                <div class="chart-inner">
+                    <span id="total-users">0</span>
+                    <small>Всего</small>
+                </div>
+            </div>
+            <div class="stats-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> <span id="count-ready">0</span>&nbsp;Готовы к смене</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> <span id="count-wait">0</span>&nbsp;Ждут проверку</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> <span id="count-learn">0</span>&nbsp;Изучают базу</div>
+            </div>
+        </div>
+
+        <div class="section-title">Список стажёров</div>
+        <div id="users-list"></div>
+        
+        <button class="reset-btn" onclick="logout()" style="text-align: center;">🚪 Сменить роль (Тест)</button>
     </div>
+
+    <div class="overlay" id="overlay" onclick="closeAllPopups()"></div>
+    
+    <div class="popup" id="scout-popup">
+        <h3 id="sp-title"></h3>
+        <p id="sp-text" style="text-align: left;"></p>
+        <button onclick="closeAllPopups()">ПОНЯТНО</button>
+    </div>
+
+    <div class="popup" id="tm-pin-popup">
+        <div style="font-size: 40px;">🅿️</div>
+        <h3>Проверка парковки</h3>
+        <p>Проверь, ровно ли <b id="pin-student-name"></b> выставил кареты. Если всё идеально — продиктуй ему ПИН-код:</p>
+        <div class="pin-display" id="generated-pin">1234</div>
+        <button style="background:var(--green); color:white;" onclick="closeAllPopups()">Понятно</button>
+    </div>
+
+    <div class="popup" id="tm-polo-popup">
+        <div style="font-size: 40px;">👕</div>
+        <h3>Выдача Поло</h3>
+        <p>Стажёр <b id="polo-student-name"></b> сдал экзамен. Выдай форму и выводи в смену!</p>
+        <button style="background:var(--green); color:white;" onclick="confirmPolo()">Подтвердить выдачу</button>
+        <button class="close-btn" onclick="closeAllPopups()">Отмена</button>
+    </div>
+
 
     <script>
-        const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbxAOyN8XERwNRQRqd80VQOQOXGnujqTpqprFyTMIxa8RM-JzWYA6SYtYTnTKf_AKfAc/exec";
         let tg = window.Telegram.WebApp; tg.expand();
 
+        // --- РОУТИНГ ПРИЛОЖЕНИЯ ---
+        window.addEventListener('DOMContentLoaded', () => {
+            let savedRole = localStorage.getItem('appRole');
+            if (savedRole) {
+                initApp(savedRole);
+            }
+        });
+
+        function initApp(role) {
+            localStorage.setItem('appRole', role);
+            document.getElementById('app-router').classList.add('hidden');
+            
+            if (role === 'scout') {
+                document.getElementById('app-scout').classList.remove('hidden');
+                initScout();
+            } else if (role === 'tm') {
+                document.getElementById('app-tm').classList.remove('hidden');
+                initTM();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('appRole');
+            location.reload();
+        }
+
+        // --- ГЛОБАЛЬНЫЕ УТИЛИТЫ ---
+        function closeAllPopups() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('scout-popup').style.display = 'none';
+            document.getElementById('tm-pin-popup').style.display = 'none';
+            document.getElementById('tm-polo-popup').style.display = 'none';
+            
+            // Если закрыли поп-ап скаута в симуляции, идем дальше
+            if (document.getElementById('app-scout').classList.contains('hidden') === false) {
+                if (typeof nextPracQ === 'function' && document.getElementById('scout-popup').style.display === 'none') {
+                    // Костыль для безопасного вызова только из симуляции
+                    if(document.getElementById('screen-practice').classList.contains('active')) {
+                        nextPracQ();
+                    }
+                }
+            }
+        }
+
+        // =====================================================================
+        //                              ЛОГИКА СКАУТА
+        // =====================================================================
         let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
         let currentProgressStep = 1;
 
-        // 8 Шагов, разбитые на 3 уровня для отрисовки
         const roadmapData = [
             { level: 1, levelTitle: "Уровень 1: Старт (Бейдж)" },
             { id: 1, icon: '📺', title: 'Основы культуры', desc: 'Видео-введение' },
@@ -236,93 +329,61 @@
         ];
 
         const theoryCards = [
-            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br><br>Мы — премиум бренд. Твой внешний вид и поведение — лицо компании.<br>• Запрещено курить/есть на Карете.<br>• Форма должна быть чистой.<br>• Общайся с улыбкой.", img: "1.png" }, 
-            { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br><br>• Ставь Кареты в ровную линию.<br>• Расстояние — ровно <b>50 см</b>.<br>• Руль и фары смотрят прямо.", img: "2.png" },
-            { t: "<b>📱 3. БОТ И ЗАРПЛАТА</b><br><br>Старт смены строго через Telegram-бота. Обязательно делай <b>селфи в форме</b>. Нет отметки = нет зарплаты.", img: "5.png" }
-            // Можно добавить остальные 5 карточек сюда
+            { t: "<b>👔 1. СТАНДАРТ СЕРВИСА</b><br>Запрещено курить/есть на Карете. Общайся с улыбкой.", img: "1.png" }, 
+            { t: "<b>🅿️ 2. ИДЕАЛЬНАЯ ПАРКОВКА</b><br>Расстояние — ровно 50 см. Руль и фары прямо.", img: "2.png" },
+            { t: "<b>📱 3. БОТ И ЗАРПЛАТА</b><br>Нет отметки с селфи в боте = нет зарплаты.", img: "5.png" }
         ];
 
         const simsData = {
-            5: [ // Симуляция 1 (Клиенты)
-                { q: "Мимо точки проходит семья. Ребенок смотрит на веломобиль. Твои действия?", a: [
-                    { t: "Молча стоять.", c: false, f: "Так мы теряем клиентов." },
-                    { t: "Крикнуть про скидку.", c: false, f: "Агрессивно, теряем выручку." },
-                    { t: "Предложить малышу бесплатное фото за рулем.", c: true, f: "Идеальный заход без давления." }
-                ]},
-                { q: "6 подростков хотят сесть в 4-местную карету.", a: [
-                    { t: "Сдать им.", c: false, f: "Риск поломки осей." },
-                    { t: "Твердо отказать и предложить две кареты.", c: true, f: "Соблюдаем ТБ и делаем доп. продажу." },
-                    { t: "Разрешить под двойной залог.", c: false, f: "Залог не спасет от переломов." }
-                ]},
-                { q: "На точке закончилась техника, а люди подходят.", a: [
-                    { t: "Пригнать с соседней точки.", c: true, f: "Проактивность — залог высокого заработка." },
-                    { t: "Сказать, что карет нет.", c: false, f: "Теряем выручку." },
-                    { t: "Пойти на перерыв.", c: false, f: "В пик спроса ты должен быть на посту." }
-                ]}
+            5: [
+                { q: "Семья смотрит на карету, но идет дальше.", a: [ { t: "Молчать", c: false, f: "Теряем клиентов." }, { t: "Предложить бесплатное фото за рулем", c: true, f: "Идеально вовлекает." }, { t: "Крикнуть про скидку", c: false, f: "Агрессивно." } ] },
+                { q: "6 человек хотят сесть в 4-местную карету.", a: [ { t: "Сдать им.", c: false, f: "Риск поломки." }, { t: "Предложить две кареты.", c: true, f: "Соблюдаем ТБ." } ] },
+                { q: "На точке нет карет, а люди подходят.", a: [ { t: "Пригнать с соседней точки.", c: true, f: "Проактивность." }, { t: "Сказать, что карет нет.", c: false, f: "Теряем выручку." } ] }
             ],
-            7: [ // Симуляция 2 (Сложности)
-                { q: "Идет мелкий дождь. Клиенты сомневаются.", a: [
-                    { t: "Отпустить их.", c: false, f: "Потеря продажи." },
-                    { t: "Показать крышу-тент и её защиту.", c: true, f: "Карета — зонт на колесах. Отличный аргумент." },
-                    { t: "Дать скидку.", c: false, f: "Скидки обесценивают продукт." }
-                ]},
-                { q: "Подходит пьяный гость и требует карету.", a: [
-                    { t: "Вежливо отказать по ТБ.", c: true, f: "Мы несем ответственность за безопасность в парке." },
-                    { t: "Взять двойной залог.", c: false, f: "Риск ДТП." },
-                    { t: "Проигнорировать.", c: false, f: "Вызовет агрессию." }
-                ]},
-                { q: "Звонок: Слетела цепь.", a: [
-                    { t: "Уточнить место и отправить коллегу.", c: true, f: "Это и есть сервис Кареты Мобилити." },
-                    { t: "Сказать чинить самим.", c: false, f: "Клиент не должен пачкать руки." },
-                    { t: "Сказать бросать карету.", c: false, f: "Украдут технику." }
-                ]}
+            7: [
+                { q: "Дождь. Клиенты сомневаются.", a: [ { t: "Показать защиту крыши-тента.", c: true, f: "Карета — зонт на колесах." }, { t: "Отпустить их.", c: false, f: "Потеря продажи." } ] },
+                { q: "Подходит пьяный гость.", a: [ { t: "Вежливо отказать по ТБ.", c: true, f: "Мы несем ответственность." }, { t: "Взять двойной залог.", c: false, f: "Риск ДТП." } ] },
+                { q: "Звонок: Слетела цепь.", a: [ { t: "Отправить скаута на помощь.", c: true, f: "Это сервис!" }, { t: "Сказать чинить самим.", c: false, f: "Клиент не пачкает руки." } ] }
             ]
         };
 
         const finalQuizData = [
-            { q: "Расстояние между каретами на парковке?", a: [{t: "Ровно 50 см", c:true}, {t: "Вплотную", c:false}, {t: "1 метр", c:false}] },
-            { q: "Сломалась рама. Твои действия?", a: [{t: "Заявка в бот + снять с линии", c:true}, {t: "Замотать скотчем", c:false}, {t: "Ждать ТМ", c:false}] },
-            { q: "Правило чистоты — это...", a: [{t: "Сиденья, рама, колеса до блеска", c:true}, {t: "Сбить пыль", c:false}, {t: "Только руль", c:false}] }
+            { q: "Расстояние между каретами?", a: [{t: "Ровно 50 см", c:true}, {t: "Вплотную", c:false}] },
+            { q: "Сломалась рама. Что делать?", a: [{t: "Снять с линии + заявка в бот", c:true}, {t: "Ждать", c:false}] },
+            { q: "Правило чистоты — это...", a: [{t: "Сиденья, рама, колеса до блеска", c:true}, {t: "Только руль", c:false}] }
         ];
 
-        // --- ИНИЦИАЛИЗАЦИЯ И ФОРМЫ ---
-        window.addEventListener('DOMContentLoaded', () => {
+        function initScout() {
             let n = localStorage.getItem('scoutName');
             if (n && n.length > 1) {
                 userData.name = n; userData.phone = localStorage.getItem('scoutPhone');
                 userData.city = localStorage.getItem('scoutCity') || ""; userData.birth = localStorage.getItem('scoutBirth') || "";
                 currentProgressStep = parseInt(localStorage.getItem('scoutProgress') || 1);
                 userData.coins = parseInt(localStorage.getItem('scoutCoins') || 0);
-                document.getElementById('user-name').value = userData.name; document.getElementById('user-phone').value = userData.phone;
+                document.getElementById('user-name').value = userData.name;
                 renderRoadmap(); showScreen('screen-roadmap');
             } else { showScreen('screen-reg'); }
-        });
+        }
 
-        function resetApp() { if (confirm("Начать заново?")) { localStorage.clear(); location.reload(); } }
         function formatDate(i) { let v = i.value.replace(/\D/g, ''); if (v.length > 2) v = v.slice(0, 2) + '.' + v.slice(2); if (v.length > 5) v = v.slice(0, 5) + '.' + v.slice(5, 9); i.value = v; }
         function validateForm() {
-            let n = document.getElementById('user-name').value.trim(), c = document.getElementById('user-city').value.trim(), b = document.getElementById('user-birth').value.trim();
-            let p = document.getElementById('user-phone'); let d = p.value.replace(/\D/g, '');
-            if (d.startsWith('7') || d.startsWith('8')) d = d.substring(1); p.value = d.length > 0 ? '+7' + d : '+7'; 
-            document.getElementById('btn-start').disabled = !(n.length > 2 && c.length > 2 && b.length === 10 && d.length >= 10);
+            let n = document.getElementById('user-name').value.trim();
+            document.getElementById('btn-start').disabled = !(n.length > 2);
         }
         function saveAndGo() {
-            userData.name = document.getElementById('user-name').value; userData.phone = document.getElementById('user-phone').value;
-            userData.city = document.getElementById('user-city').value; userData.birth = document.getElementById('user-birth').value;
-            localStorage.setItem('scoutName', userData.name); localStorage.setItem('scoutPhone', userData.phone);
-            localStorage.setItem('scoutCity', userData.city); localStorage.setItem('scoutBirth', userData.birth);
+            userData.name = document.getElementById('user-name').value;
+            localStorage.setItem('scoutName', userData.name);
             renderRoadmap(); showScreen('screen-roadmap');
         }
 
         function showScreen(id) {
             let a = document.getElementById('aud-player'); if(a) a.pause();
             let v = document.getElementById('vid-player'); if(v){let s=v.src; v.src=''; v.src=s;}
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('#app-scout .screen').forEach(s => s.classList.remove('active'));
+            let scr = document.getElementById(id); if(scr) scr.classList.add('active');
             document.getElementById('statusBar').style.display = (id === 'screen-practice') ? 'flex' : 'none';
         }
 
-        // --- ROADMAP ---
         function renderRoadmap() {
             const container = document.getElementById('roadmap-container'); container.innerHTML = '';
             roadmapData.forEach(item => {
@@ -335,7 +396,7 @@
                         <div class="step-card ${stClass}" onclick="handleStepClick(${item.id})">
                             <div class="step-icon">${item.icon}</div>
                             <div class="step-info"><h4>${item.title}</h4><p>${item.desc}</p></div>
-                            <div class="step-status">${stIcon}</div>
+                            <div style="margin-left:auto; font-size:20px;">${stIcon}</div>
                         </div>`;
                 }
             });
@@ -344,7 +405,6 @@
 
         function handleStepClick(id) {
             if (id > currentProgressStep) { tg.HapticFeedback.notificationOccurred('warning'); return; }
-            tg.HapticFeedback.impactOccurred('light');
             if (id === 1) showScreen('screen-video');
             if (id === 2) startCards();
             if (id === 3) showScreen('screen-testdrive');
@@ -356,28 +416,22 @@
         }
 
         function completeStep(id) {
-            if (currentProgressStep === id) { currentProgressStep++; localStorage.setItem('scoutProgress', currentProgressStep); tg.HapticFeedback.notificationOccurred('success'); }
+            if (currentProgressStep === id) { currentProgressStep++; localStorage.setItem('scoutProgress', currentProgressStep); }
             renderRoadmap(); showScreen('screen-roadmap');
         }
 
-        // --- ТЕСТ-ДРАЙВ И ПИН ТМ ---
         function checkDrive() {
             let checks = document.querySelectorAll('.checklist-item input:checked').length;
             document.getElementById('btn-drive-finish').disabled = (checks < 3);
         }
+
         function verifyPin() {
-            let pin = document.getElementById('mentor-pin').value;
-            if (pin === "1234") { // СЕКРЕТНЫЙ ПИН-КОД ДЛЯ ТЕСТА
-                document.getElementById('mentor-pin').value = '';
-                completeStep(4);
-            } else {
-                tg.HapticFeedback.notificationOccurred('error');
-                alert("Неверный PIN-код. Позовите ТМ.");
-                document.getElementById('mentor-pin').value = '';
-            }
+            let pin = document.getElementById('scout-pin').value;
+            if (pin === "1234") { document.getElementById('scout-pin').value = ''; completeStep(4); } 
+            else { tg.HapticFeedback.notificationOccurred('error'); alert("Неверный ПИН-код. Позовите ТМ."); document.getElementById('scout-pin').value = ''; }
         }
 
-        // --- ДВИЖОК СИМУЛЯЦИЙ ---
+        // ДВИЖОК СИМУЛЯЦИЙ СКАУТА
         let pracArr = [], pIdx = 0, isQz = false;
         function startPractice(id) { pracArr = simsData[id].sort(() => Math.random() - 0.5); pIdx = 0; isQz = false; document.getElementById('header-title').innerHTML = `СИМУЛЯЦИЯ: <span id="q-counter"></span>`; showScreen('screen-practice'); renderPrac(); }
         function startFinalQuiz() { pracArr = finalQuizData.sort(() => Math.random() - 0.5); pIdx = 0; userData.score = 0; isQz = true; document.getElementById('header-title').innerHTML = `ЭКЗАМЕН: <span id="q-counter"></span>`; showScreen('screen-practice'); renderPrac(); }
@@ -394,21 +448,25 @@
             document.querySelectorAll('#prac-options .option').forEach(btn => btn.style.pointerEvents = 'none');
             if (isQz) {
                 if (o.c) { el.classList.add('correct'); userData.score++; } else el.classList.add('wrong');
-                setTimeout(() => { pIdx++; if (pIdx < pracArr.length) renderPrac(); else showFinish(); }, 500);
+                setTimeout(() => { pIdx++; if (pIdx < pracArr.length) renderPrac(); else showFinishScout(); }, 500);
             } else {
-                if (o.c) { el.classList.add('correct'); userData.coins += 50; localStorage.setItem('scoutCoins', userData.coins); showPopup("✅ ВЕРНО!", o.f, true); } 
-                else { el.classList.add('wrong'); showPopup("❌ ОШИБКА!", o.f, false); }
+                if (o.c) { el.classList.add('correct'); userData.coins += 50; localStorage.setItem('scoutCoins', userData.coins); showScoutPopup("✅ ВЕРНО!", o.f, true); } 
+                else { el.classList.add('wrong'); showScoutPopup("❌ ОШИБКА!", o.f, false); }
             }
         }
 
-        function showPopup(tit, txt, ok) {
-            document.getElementById('popup-title').innerText = tit; document.getElementById('popup-title').style.color = ok ? 'var(--green)' : 'var(--red)';
-            document.getElementById('popup-text').innerHTML = txt; document.getElementById('overlay').style.display = 'block'; document.getElementById('popup').style.display = 'block';
+        function showScoutPopup(tit, txt, ok) {
+            document.getElementById('sp-title').innerText = tit; document.getElementById('sp-title').style.color = ok ? 'var(--green)' : 'var(--red)';
+            document.getElementById('sp-text').innerHTML = txt; document.getElementById('overlay').style.display = 'block'; document.getElementById('scout-popup').style.display = 'block';
             tg.HapticFeedback.notificationOccurred(ok ? 'success' : 'error');
         }
-        function closePopup() { document.getElementById('overlay').style.display = 'none'; document.getElementById('popup').style.display = 'none'; pIdx++; if (pIdx < pracArr.length) renderPrac(); else completeStep(currentProgressStep); }
+        function nextPracQ() {
+            pIdx++; if (pIdx < pracArr.length) renderPrac(); else completeStep(currentProgressStep);
+        }
 
-        // --- КАРТОЧКИ ---
+        function resetApp() { if (confirm("Сбросить весь прогресс?")) { localStorage.clear(); location.reload(); } }
+
+        // КАРТОЧКИ СКАУТА
         let cIdx = 0;
         function startCards() { cIdx = 0; showScreen('screen-cards'); renderCard(); }
         function renderCard() {
@@ -429,21 +487,74 @@
             };
         }
 
-        // --- ФИНАЛ ---
-        function showFinish() {
+        function showFinishScout() {
             showScreen('screen-finish'); document.getElementById('res-info').innerText = userData.name;
-            if (userData.score < 2) { // 2 из 3 для теста
-                document.getElementById('finish-title').innerText = "Тест не сдан ❌"; document.getElementById('send-status').innerText = `Ошибок слишком много`;
+            if (userData.score < 2) {
+                document.getElementById('finish-title').innerText = "Тест не сдан ❌"; document.getElementById('send-status').innerText = `Нужно подтянуть базу`;
                 document.getElementById('send-status').style.color = "var(--red)"; document.getElementById('btn-retry').style.display = "block";
             } else {
                 document.getElementById('res-coins').innerText = userData.coins; document.getElementById('finish-title').innerText = "Экзамен сдан! ✅";
                 document.getElementById('send-status').innerText = "Отправка в базу..."; document.getElementById('send-status').style.color = "var(--green)";
                 document.getElementById('btn-close').style.display = "block"; document.getElementById('btn-retry').style.display = "none";
-                
-                fetch(GOOGLE_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({
-                    name: userData.name, phone: userData.phone, city: userData.city, birth: userData.birth, role: "Скаут", score: userData.score, coins: userData.coins, tg_user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : "скрыт"
-                })}).then(() => { document.getElementById('send-status').innerText = "✅ ДАННЫЕ В ТАБЛИЦЕ!"; document.getElementById('btn-close').disabled = false; });
             }
+        }
+
+
+        // =====================================================================
+        //                              ЛОГИКА ТМ
+        // =====================================================================
+        let trainees = [
+            { id: 1, name: "Иванов Алексей", role: "Скаут", status: "ready", score: "5/5", coins: 450 },
+            { id: 2, name: "Смирнова Анна", role: "Скаут", status: "waiting", score: "-", coins: 200 },
+            { id: 3, name: "Соколов Иван", role: "Скаут", status: "learning", progress: "Шаг 2/8" }
+        ];
+        let selectedTraineeId = null;
+
+        function initTM() {
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            const list = document.getElementById('users-list'); list.innerHTML = '';
+            let ready = 0, waiting = 0, learning = 0;
+
+            trainees.sort((a, b) => { const order = { "ready": 1, "waiting": 2, "learning": 3 }; return order[a.status] - order[b.status]; });
+
+            trainees.forEach(t => {
+                let cardClass = '', actionBtn = '', details = '';
+                if (t.status === 'ready') { ready++; cardClass = 'status-ready'; details = `<span>🏆 Экзамен: <b>${t.score}</b></span> <span>💰 ${t.coins}</span>`; actionBtn = `<button class="action-btn btn-green" onclick="openPoloPopup(${t.id}, '${t.name}')">👕 Выдать форму</button>`; } 
+                else if (t.status === 'waiting') { waiting++; cardClass = 'status-waiting'; details = `<span>⏳ Ожидает проверку парковки</span>`; actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.name}')">🅿️ Сгенерировать ПИН</button>`; } 
+                else if (t.status === 'learning') { learning++; cardClass = 'status-learning'; details = `<span>📖 Прогресс: <b>${t.progress}</b></span>`; actionBtn = ``; }
+
+                list.innerHTML += `
+                    <div class="user-card ${cardClass}">
+                        <div class="card-header"><h3 class="user-name">${t.name}</h3><span class="user-role">${t.role}</span></div>
+                        <div class="card-body">${details}</div> ${actionBtn}
+                    </div>`;
+            });
+            updateChart(ready, waiting, learning, trainees.length);
+        }
+
+        function updateChart(ready, wait, learn, total) {
+            document.getElementById('total-users').innerText = total; document.getElementById('count-ready').innerText = ready; document.getElementById('count-wait').innerText = wait; document.getElementById('count-learn').innerText = learn;
+            let degReady = (ready / total) * 100, degWait = degReady + ((wait / total) * 100);
+            document.getElementById('main-chart').style.background = `conic-gradient(var(--green) 0% ${degReady}%, var(--orange) ${degReady}% ${degWait}%, var(--red) ${degWait}% 100%)`;
+        }
+
+        function openPinPopup(name) {
+            tg.HapticFeedback.impactOccurred('light'); document.getElementById('pin-student-name').innerText = name;
+            document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-pin-popup').style.display = 'block';
+        }
+
+        function openPoloPopup(id, name) {
+            tg.HapticFeedback.impactOccurred('light'); selectedTraineeId = id; document.getElementById('polo-student-name').innerText = name;
+            document.getElementById('overlay').style.display = 'block'; document.getElementById('tm-polo-popup').style.display = 'block';
+        }
+
+        function confirmPolo() {
+            tg.HapticFeedback.notificationOccurred('success');
+            trainees = trainees.filter(t => t.id !== selectedTraineeId); // Удаляем выведенного в смену
+            closeAllPopups(); renderDashboard();
         }
     </script>
 </body>
