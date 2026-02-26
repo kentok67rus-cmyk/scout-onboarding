@@ -162,6 +162,7 @@
             <h2>Твоё обучение</h2>
             <p style="margin-bottom: 10px;">Пройди все этапы, чтобы получить Поло.</p>
             <div id="roadmap-container"></div>
+            
             <button class="reset-btn" onclick="resetApp()">🔄 Начать всё заново</button>
             <button class="reset-btn" style="margin-top:5px !important;" onclick="logout()">🚪 Сменить роль</button>
         </div>
@@ -305,7 +306,6 @@
         
         let tg = window.Telegram.WebApp; tg.expand();
 
-        // --- ГЕНЕРАТОР УНИКАЛЬНОГО ПИН-КОДА ---
         function generateUserPin(phoneStr) {
             let digits = String(phoneStr).replace(/\D/g, '');
             if (digits.length < 5) return "1234";
@@ -314,7 +314,6 @@
             return pin.toString();
         }
 
-        // --- РОУТИНГ ПРИЛОЖЕНИЯ ---
         window.addEventListener('DOMContentLoaded', () => {
             let savedRole = localStorage.getItem('appRole');
             if (savedRole) initApp(savedRole);
@@ -327,6 +326,23 @@
             else if (role === 'tm') { document.getElementById('app-tm').classList.remove('hidden'); initTM(); }
         }
         function logout() { localStorage.removeItem('appRole'); location.reload(); }
+
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ ОЧИСТКИ (РАБОТАЕТ В ТЕЛЕГРАМЕ)
+        function resetApp() { 
+            if (tg && tg.showConfirm) {
+                tg.showConfirm("Точно сбросить весь прогресс и начать заново?", function(isConfirmed) {
+                    if (isConfirmed) {
+                        localStorage.clear(); 
+                        location.reload(); 
+                    }
+                });
+            } else {
+                if (confirm("Сбросить весь прогресс и начать заново?")) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            }
+        }
 
         function closeAllPopups() {
             document.getElementById('overlay').style.display = 'none';
@@ -368,7 +384,6 @@
             { q: "Сколько стоит услуга аудиогида для клиента?", a: [{t: "Символический 1 рубль", c:true}, {t: "Она абсолютно бесплатна", c:false}, {t: "500 рублей", c:false}] }
         ];
 
-        // --- УМНОЕ ТИХОЕ СОХРАНЕНИЕ ---
         function syncScoutProgress(status) {
             let stepNum = currentProgressStep === 7 ? 6 : currentProgressStep; 
             let progressText = `Шаг ${stepNum}/6`;
@@ -464,6 +479,7 @@
             document.getElementById('btn-drive-finish').disabled = (checks < 3);
         }
 
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ ПРОВЕРКИ ПИН-КОДА (РАБОТАЕТ В ТЕЛЕГРАМЕ)
         function verifyPin() {
             let enteredPin = document.getElementById('scout-pin').value;
             let expectedPin = generateUserPin(userData.phone); 
@@ -473,7 +489,11 @@
                 completeStep(4); 
             } else { 
                 tg.HapticFeedback.notificationOccurred('error'); 
-                alert("Неверный ПИН-код. Твой ПИН должен выдать Наставник."); 
+                if (tg && tg.showAlert) {
+                    tg.showAlert("Неверный ПИН-код. Твой ПИН должен выдать Наставник.");
+                } else {
+                    alert("Неверный ПИН-код. Твой ПИН должен выдать Наставник.");
+                }
                 document.getElementById('scout-pin').value = ''; 
             }
         }
