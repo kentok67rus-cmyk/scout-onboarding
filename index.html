@@ -1089,6 +1089,62 @@ tg.expand(); } catch(e) { tg = { expand: ()=>{}, HapticFeedback: { impactOccurre
                     cardClass = 'status-waiting'; 
                     details = `<span>⏳ Ожидает проверку парковки</span>`
         }
+            } else if (t.status === 'learning') {
+                learning++;
+                cardClass = 'status-learning';
+                details = `<span>📚 Шаг ${t.progress || '?'}</span>`;
+            }
+            if (t.status === 'waiting') {
+                actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.phone}','${t.name}')">🅿️ Выдать ПИН</button>`;
+            }
+            list.innerHTML += `
+                <div class="user-card ${cardClass}">
+                    <div class="card-header">
+                        <p class="user-name">${t.name}</p>
+                        <span class="user-role">${t.role || 'Скаут'}</span>
+                    </div>
+                    <div class="card-body">${details}</div>
+                    ${actionBtn}
+                </div>`;
+        });
+        updateChart(trainees.length, ready, waiting, learning);
+    }
+    function updateChart(total, ready, waiting, learning) {
+        document.getElementById('stat-total').innerText = total;
+        document.getElementById('stat-ready').innerText = ready;
+        document.getElementById('stat-waiting').innerText = waiting;
+        document.getElementById('stat-learning').innerText = learning;
+        let pct = total > 0 ? Math.round((ready / total) * 100) : 0;
+        let chartBox = document.querySelector('.chart-box');
+        if (chartBox) {
+            let g = ready/total||0, w = waiting/total||0, l = learning/total||0;
+            chartBox.style.background = `conic-gradient(var(--green) 0% ${g*100}%, var(--orange) ${g*100}% ${(g+w)*100}%, var(--red) ${(g+w)*100}% 100%)`;
+        }
+        let inner = document.querySelector('.chart-inner span');
+        if (inner) inner.innerText = pct + '%';
+    }
+    function openPinPopup(phone, name) {
+        selectedTrainee = trainees.find(t => t.phone === phone);
+        let pin = generateUserPin(phone);
+        document.getElementById('tm-pin-name').innerText = name;
+        document.getElementById('tm-pin-code').innerText = pin;
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('tm-pin-popup').style.display = 'block';
+    }
+    function openPoloPopup(phone, name) {
+        selectedTrainee = trainees.find(t => t.phone === phone);
+        document.getElementById('polo-student-name').innerText = name;
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('tm-polo-popup').style.display = 'block';
+    }
+    function confirmPolo() {
+        if (!selectedTrainee) return;
+        const payload = Object.assign({}, selectedTrainee, { status: 'active' });
+        fetch(GOOGLE_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
+            .catch(e => console.warn('Sync error:', e));
+        closeAllPopups();
+        setTimeout(fetchTrainees, 1500);
+    }
     </script>
 </body>
 </html>
