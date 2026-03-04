@@ -1020,7 +1020,7 @@
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
                 if (nextNodeIdToLoad === 'finish_game') {
-                    handleGameWin();
+                        completeStep(2);
                 } else {
                     gameChoicesLocked = false;
                     renderGameNode(nextNodeIdToLoad);
