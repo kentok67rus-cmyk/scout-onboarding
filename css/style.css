@@ -561,52 +561,74 @@ body {
 /* ── ЛОАДЕР ───────────────────────────────────────────────────────────── */
 .loader { text-align: center; padding: 28px; font-weight: 700; color: var(--grey); font-size: 15px; }
 
-/* ── DESKTOP: IPHONE MOCKUP ──────────────────────────────────────── */
+/* ── DESKTOP: IPHONE MOCKUP ────────────────────────────────────────── */
 @media (min-width: 768px) {
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
     body {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
-        padding: 40px 20px;
-        margin: 0;
+        position: relative;
     }
     
     body::before {
         content: '';
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        position: absolute;
         width: 393px;
         height: 852px;
         background: #000;
-        border-radius: 55px;
-        box-shadow: 0 30px 80px rgba(0,0,0,0.4), inset 0 0 0 2px #222;
-        z-index: -1;
+        border-radius: 50px;
+        box-shadow: 
+            0 50px 100px rgba(0,0,0,0.5),
+            inset 0 0 0 3px #1a1a1a,
+            inset 0 0 0 8px #000;
+        z-index: 0;
     }
     
     body::after {
         content: '';
-        position: fixed;
-        top: calc(50% - 426px + 20px);
+        position: absolute;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
-        width: 120px;
-        height: 30px;
+        transform: translate(-50%, calc(-50% - 406px));
+        width: 130px;
+        height: 32px;
         background: #000;
-        border-radius: 0 0 20px 20px;
-        z-index: 1000;
+        border-radius: 0 0 18px 18px;
+        z-index: 2;
     }
     
-    body > * {
+    body > *:not(script) {
+        position: absolute;
+        width: 393px;
+        height: 852px;
         max-width: 393px;
-        width: 100%;
         max-height: 852px;
         overflow-y: auto;
         overflow-x: hidden;
-        border-radius: 55px;
+        border-radius: 50px;
         background: var(--bg);
+        z-index: 1;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    #game-feedback-popup {
+        position: fixed !important;
+        width: 393px !important;
+        max-width: 393px !important;
+        left: 50% !important;
+        transform: translateX(-50%) translateY(100%) !important;
+        border-radius: 24px 24px 0 0 !important;
+    }
+    
+    #game-feedback-popup.show {
+        transform: translateX(-50%) translateY(0) !important;
     }
 }
