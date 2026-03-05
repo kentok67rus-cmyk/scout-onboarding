@@ -514,7 +514,7 @@ const gameData = {
         "feedback_art": "❓💰",
         "feedback_title": "Зарплата под вопросом",
         "feedback_text": "Система не зафиксировала смену. Разбираться придётся завтра.",
-        "next_node": "ending_master", "effects": { "loyalty": 0, "tech": 0, "safety": -10 }
+        "next_node": "ending_no_report", "effects": { "loyalty": 0, "tech": 0, "safety": -10 }
       }
     ]
   },
@@ -858,6 +858,18 @@ const gameData = {
   },
 
   // ── КОНЦОВКИ ───────────────────────────────────────────────────────
+    "ending_no_report": {
+    "art": "❓💸",
+    "chapter": "Конец",
+    "title": "Зарплата под вопросом",
+    "bubble": "Ты сделал много правильного за смену. Но не зафиксировал её в боте.\n\nСистема не видит твою работу — значит, зарплата под вопросом. Завтра придётся разбираться с ТМ.\n\nОдин шаг отделял тебя от идеальной смены. Запомни: бот — это не формальность, это твои деньги.",
+    "bubble_type": "narrator",
+    "is_ending": true,
+    "choices": [
+      { "text": "🔄 Пройти правильно", "next_node": "prologue", "effects": { "loyalty": 0, "tech": 0, "safety": 0 } }
+    ]
+  },
+
   "ending_master": {
     "art": "🏆",
     "chapter": "Конец",
