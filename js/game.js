@@ -8,87 +8,98 @@
     style.textContent = `
         @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;600;700;800;900&display=swap');
 
-        /* ── FULLSCREEN GAME WRAPPER ── */
-        #screen-game {
-            padding: 0 !important;
-            overflow: hidden;
-        }
+        #screen-game { padding: 0 !important; overflow: hidden !important; background: #000; }
+
         .game-container {
             position: relative;
             width: 100%;
             height: 100vh;
-            max-height: 100vh;
             overflow: hidden;
-            background: #000;
+            background: #111;
             font-family: 'Onest', sans-serif;
         }
-        /* Статы сверху */
-        .game-stats {
+
+        /* ── БГ КАРТИНКА ── */
+        .game-bg-img {
             position: absolute;
-            top: 0; left: 0; right: 0;
-            z-index: 20;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%);
-            display: flex;
-            justify-content: space-around;
-            padding: 14px 10px 30px;
-        }
-        /* Фоновая картинка */
-        .comic-bg-image {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover;
             object-position: center top;
             z-index: 1;
-            transition: opacity 0.4s ease;
         }
-        .comic-bg-emoji {
+        .game-bg-emoji {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -60%);
-            font-size: 100px;
+            top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
             z-index: 1;
         }
-        /* Градиент снизу */
-        .comic-bottom-gradient {
+        .game-bg-gradient {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 65%;
-            background: linear-gradient(to top, rgba(0,0,0,0.97) 40%, rgba(0,0,0,0.5) 80%, transparent 100%);
+            height: 70%;
+            background: linear-gradient(to top, rgba(0,0,0,0.97) 50%, rgba(0,0,0,0.4) 80%, transparent 100%);
             z-index: 2;
         }
-        /* Bottom sheet */
-        .comic-sheet {
+
+        /* ── СТАТБАР ── */
+        .game-stats-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 8px 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+        .gs-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .gs-label { font-size: 9px; font-weight: 900; text-transform: uppercase; color: rgba(255,255,255,0.55); letter-spacing: 0.8px; font-family: 'Onest', sans-serif; }
+        .gs-bar { width: 64px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
+        .gs-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease, background 0.3s; }
+        .gs-val { font-size: 12px; font-weight: 900; color: #fff100; font-family: 'Onest', sans-serif; }
+
+        /* ── TAP LAYER (первый экран) ── */
+        .game-tap-layer {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            z-index: 10;
+            padding: 0 20px 40px;
+            cursor: pointer;
+        }
+        .game-tap-content { display: flex; flex-direction: column; gap: 4px; }
+        .game-tap-chapter {
+            font-size: 10px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 1.5px; color: rgba(255,255,255,0.4);
+            font-family: 'Onest', sans-serif;
+        }
+        .game-tap-title {
+            font-size: 26px; font-weight: 900; color: #fff;
+            line-height: 1.1; font-family: 'Onest', sans-serif;
+        }
+        .game-tap-hint {
+            margin-top: 10px;
+            font-size: 13px; font-weight: 700; color: #fff100;
+            font-family: 'Onest', sans-serif;
+            display: flex; align-items: center; gap: 6px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+        /* ── BOTTOM SHEET (вопросы) ── */
+        .game-sheet {
             position: absolute;
             bottom: 0; left: 0; right: 0;
             z-index: 10;
             padding: 0 16px 24px;
-            max-height: 70vh;
+            max-height: 80vh;
             overflow-y: auto;
+            animation: slideUp 0.3s ease;
         }
-        .comic-chapter-label {
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: rgba(255,255,255,0.45);
-            margin-bottom: 4px;
-            font-family: 'Onest', sans-serif;
-        }
-        .comic-title {
-            font-size: 20px;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 10px;
-            line-height: 1.2;
-            font-family: 'Onest', sans-serif;
-        }
-        /* Bubble */
-        .comic-bubble {
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .game-bubble {
             background: #fff100;
-            border: 2.5px solid #000;
+            border: 2px solid #000;
             border-radius: 16px;
             padding: 12px 14px;
             font-size: 13px;
@@ -96,23 +107,19 @@
             line-height: 1.55;
             color: #000;
             margin-bottom: 12px;
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
             font-family: 'Onest', sans-serif;
         }
-        .comic-bubble-narrator {
-            background: rgba(255,255,255,0.92);
-        }
-        /* Choices */
-        .comic-choices {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .comic-choice-btn {
+        .game-bubble-narrator { background: rgba(255,255,255,0.95); }
+
+        .game-choices { display: flex; flex-direction: column; gap: 8px; }
+
+        .game-choice-btn {
             background: rgba(255,255,255,0.1) !important;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: #fff !important;
-            border: 1.5px solid rgba(255,255,255,0.3) !important;
+            border: 1.5px solid rgba(255,255,255,0.25) !important;
             padding: 13px 14px !important;
             border-radius: 14px !important;
             font-size: 14px !important;
@@ -123,78 +130,31 @@
             line-height: 1.4 !important;
             margin-top: 0 !important;
             cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.1s !important;
             display: flex;
             align-items: flex-start;
             gap: 10px;
             width: 100%;
             box-shadow: none !important;
+            transition: transform 0.1s !important;
         }
-        .comic-choice-btn:active {
-            transform: scale(0.97) !important;
+        .game-choice-btn:active { transform: scale(0.97) !important; }
+        .game-choice-letter {
+            background: #fff100; color: #000;
+            border-radius: 6px; width: 24px; height: 24px; min-width: 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 900; font-family: 'Onest', sans-serif;
         }
-        .comic-choice-letter {
-            background: #fff100;
-            color: #000;
-            border-radius: 6px;
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 900;
-            font-family: 'Onest', sans-serif;
-        }
-        .comic-choice-btn.selected-correct {
-            background: rgba(46,204,113,0.3) !important;
-            border-color: #2ecc71 !important;
-        }
-        .comic-choice-btn.selected-wrong {
-            background: rgba(231,76,60,0.3) !important;
-            border-color: #e74c3c !important;
-        }
+        .game-choice-btn.selected-correct { background: rgba(46,204,113,0.35) !important; border-color: #2ecc71 !important; }
+        .game-choice-btn.selected-wrong   { background: rgba(231,76,60,0.35)  !important; border-color: #e74c3c !important; }
 
-        /* Stat bar (top overlay) */
-        .game-stat { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-        .game-stat-label { font-size: 9px; font-weight: 900; text-transform: uppercase; color: rgba(255,255,255,0.6); letter-spacing: 0.8px; font-family: 'Onest', sans-serif; }
-        .game-stat-bar { width: 68px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
-        .game-stat-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease, background 0.3s; }
-        .game-stat-value { font-size: 12px; font-weight: 900; color: #fff100; font-family: 'Onest', sans-serif; }
+        /* ── КОНЦОВКА ── */
+        .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; }
+        .game-ending-text { font-size: 13px; color: #ddd; line-height: 1.6; background: rgba(255,241,0,0.15); padding: 14px; border-radius: 14px; margin-bottom: 14px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 1.5px solid rgba(255,241,0,0.35); }
 
-        /* Feedback popup */
-        #game-feedback-popup {
-            background: #1a1a1a !important;
-            border-top: 3px solid #fff100 !important;
-        }
-        .comic-feedback-title { font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #fff; font-family: 'Onest', sans-serif; }
-        .comic-feedback-text { font-size: 14px; color: #ccc; line-height: 1.55; margin-bottom: 14px; background: #2a2a2a; padding: 12px 14px; border-radius: 12px; border-left: 4px solid #fff100; font-family: 'Onest', sans-serif; font-weight: 600; }
-        .comic-continue-btn {
-            display: block;
-            background: #fff100 !important;
-            color: #000 !important;
-            border: none !important;
-            padding: 16px !important;
-            border-radius: 14px !important;
-            font-size: 16px !important;
-            font-weight: 900 !important;
-            font-family: 'Onest', sans-serif !important;
-            width: 100%;
-            text-transform: uppercase !important;
-            letter-spacing: 1px;
-            cursor: pointer;
-            margin-top: 10px !important;
-        }
-
-        /* Ending */
-        .comic-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 12px; font-family: 'Onest', sans-serif; text-transform: uppercase; }
-        .comic-ending-text { font-size: 14px; color: #ddd; line-height: 1.6; background: rgba(255,241,0,0.15); padding: 16px; border-radius: 14px; margin-bottom: 16px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 1.5px solid rgba(255,241,0,0.4); }
-        .comic-ending-btn { display: block; background: #fff100 !important; color: #000 !important; border: none !important; padding: 16px !important; border-radius: 14px !important; font-size: 16px !important; font-weight: 900 !important; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
-
-        @keyframes comicPop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .comic-sheet { animation: slideUp 0.35s ease; }
+        /* ── ФИДБЕК ПОПАП ── */
+        #game-feedback-popup { background: #1a1a1a !important; border-top: 3px solid #fff100 !important; }
+        #gf-title { font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #fff; font-family: 'Onest', sans-serif; }
+        #gf-text { font-size: 14px; color: #ccc; line-height: 1.55; margin-bottom: 14px; background: #2a2a2a; padding: 12px 14px; border-radius: 12px; border-left: 4px solid #fff100; font-family: 'Onest', sans-serif; font-weight: 600; }
     `;
     document.head.appendChild(style);
 })();
@@ -845,9 +805,9 @@ const gameData = {
 //  ЛОГИКА ИГРЫ
 // =====================================================================
 
+
 const STAT_DANGER = 15;
 let currentStats = { loyalty: 50, tech: 50, safety: 50 };
-let nextNodeIdToLoad = '';
 let gameChoicesLocked = false;
 
 function startSimulatorGame() {
@@ -864,7 +824,7 @@ function updateGameStatsUI() {
         const valEl = document.getElementById('stat-val-' + key);
         if (fill) {
             fill.style.width = val + '%';
-            fill.style.background = val < STAT_DANGER ? 'var(--red)' : val < 40 ? 'var(--orange)' : 'var(--green)';
+            fill.style.background = val < STAT_DANGER ? '#e74c3c' : val < 40 ? '#f39c12' : '#2ecc71';
         }
         if (valEl) valEl.innerText = val;
     });
@@ -878,83 +838,114 @@ function renderGameNode(nodeId) {
     const node = gameData[nodeId];
     if (!node) return;
 
-    const container = document.getElementById('game-choices-container');
+    if (node.is_ending) { renderEnding(node, nodeId); return; }
 
-    // Если концовка — рендерим особый layout
-    if (node.is_ending) {
-        renderEnding(node, nodeId);
-        return;
-    }
+    const imgSrc = nodeImages[nodeId] ? IMAGE_BASE_PATH + nodeImages[nodeId] : null;
+    const container = document.querySelector('.game-container');
+    if (!container) return;
 
-
-    const imgSrc = nodeImages[nodeId] ? `${IMAGE_BASE_PATH}${nodeImages[nodeId]}` : null;
-    const html = `
-        <div class="comic-bg-wrapper">
-            ${imgSrc ? `<img src="${imgSrc}" class="comic-bg-image" alt="">` : `<div class="comic-bg-emoji">${node.art || '🛺'}</div>`}
-            <div class="comic-bottom-gradient"></div>
-            <div class="comic-sheet">
-                <div class="comic-chapter-label">${node.chapter || ''}</div>
-                <div class="comic-title">${node.title}</div>
-                <div class="comic-bubble ${node.bubble_type === 'narrator' ? 'comic-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
+    container.innerHTML = `
+        <div class="game-stats-bar" id="game-stats-overlay">
+            <div class="gs-item">
+                <span class="gs-label">❤️ Лояльность</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-loyalty" style="width:${currentStats.loyalty}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-loyalty">${currentStats.loyalty}</span>
             </div>
+            <div class="gs-item">
+                <span class="gs-label">🔧 Техника</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-tech" style="width:${currentStats.tech}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-tech">${currentStats.tech}</span>
+            </div>
+            <div class="gs-item">
+                <span class="gs-label">🛡️ Безопасность</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-safety" style="width:${currentStats.safety}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-safety">${currentStats.safety}</span>
+            </div>
+        </div>
+
+        ${imgSrc
+            ? `<img src="${imgSrc}" class="game-bg-img" alt="">`
+            : `<div class="game-bg-emoji">${node.art || '🛺'}</div>`}
+        <div class="game-bg-gradient"></div>
+
+        <!-- TAP LAYER: показывается сразу, при тапе скрывается -->
+        <div class="game-tap-layer" id="game-tap-layer" onclick="revealChoices()">
+            <div class="game-tap-content">
+                <div class="game-tap-chapter">${node.chapter || ''}</div>
+                <div class="game-tap-title">${node.title}</div>
+                <div class="game-tap-hint">Tap to continue →</div>
+            </div>
+        </div>
+
+        <!-- SHEET: скрыт до тапа -->
+        <div class="game-sheet" id="game-sheet" style="display:none;">
+            <div class="game-bubble ${node.bubble_type === 'narrator' ? 'game-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
+            <div class="game-choices" id="game-choices-container"></div>
         </div>
     `;
 
-    const gameContainer = document.querySelector('.game-container');
-    const oldWrapper = document.querySelector('.comic-bg-wrapper');
-    if (oldWrapper) oldWrapper.remove();
-    if (gameContainer) {
-        gameContainer.insertAdjacentHTML('afterbegin', html);
-    }
-
-    // Рендерим кнопки выборов
-    container.innerHTML = '';
+    // рендерим кнопки (они скрыты до тапа)
+    const choicesEl = container.querySelector('#game-choices-container');
     const letters = ['A','B','C','D'];
     node.choices.forEach((choice, i) => {
         const btn = document.createElement('button');
-        btn.className = 'comic-choice-btn';
-        btn.innerHTML = `<span class="comic-choice-letter">${choice.letter || letters[i]}</span><span>${choice.text}</span>`;
+        btn.className = 'game-choice-btn';
+        btn.innerHTML = `<span class="game-choice-letter">${choice.letter || letters[i]}</span><span>${choice.text}</span>`;
         btn.onclick = () => handleGameChoice(choice, btn);
-        container.appendChild(btn);
+        choicesEl.appendChild(btn);
     });
 }
 
+function revealChoices() {
+    const tapLayer = document.getElementById('game-tap-layer');
+    const sheet = document.getElementById('game-sheet');
+    if (tapLayer) tapLayer.style.display = 'none';
+    if (sheet) sheet.style.display = 'block';
+}
+
 function renderEnding(node, nodeId) {
-    const gameContent = document.querySelector('.game-content');
-    const container   = document.getElementById('game-choices-container');
-    const oldComic = document.querySelector('.comic-container');
-    if (oldComic) oldComic.remove();
-    const oldTitle = document.getElementById('game-scene-title');
-    const oldText  = document.getElementById('game-scene-text');
-    if (oldTitle) oldTitle.innerText = '';
-    if (oldText)  oldText.innerText  = '';
+    updateGameStatsUI();
+    const imgSrc = nodeImages[nodeId] ? IMAGE_BASE_PATH + nodeImages[nodeId] : null;
+    const container = document.querySelector('.game-container');
+    if (!container) return;
 
-
-    const imgSrc = nodeImages[nodeId] ? `${IMAGE_BASE_PATH}${nodeImages[nodeId]}` : null;
-    const endingHtml = `
-        <div class="comic-bg-wrapper">
-            ${imgSrc ? `<img src="${imgSrc}" class="comic-bg-image" alt="">` : `<div class="comic-bg-emoji">${node.art || '🏆'}</div>`}
-            <div class="comic-bottom-gradient"></div>
-            <div class="comic-sheet">
-                <div class="comic-ending-title">${node.title}</div>
-                <div class="comic-ending-text">${node.bubble}</div>
+    container.innerHTML = `
+        <div class="game-stats-bar">
+            <div class="gs-item">
+                <span class="gs-label">❤️ Лояльность</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-loyalty" style="width:${currentStats.loyalty}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-loyalty">${currentStats.loyalty}</span>
+            </div>
+            <div class="gs-item">
+                <span class="gs-label">🔧 Техника</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-tech" style="width:${currentStats.tech}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-tech">${currentStats.tech}</span>
+            </div>
+            <div class="gs-item">
+                <span class="gs-label">🛡️ Безопасность</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-safety" style="width:${currentStats.safety}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-safety">${currentStats.safety}</span>
             </div>
         </div>
+        ${imgSrc
+            ? `<img src="${imgSrc}" class="game-bg-img" alt="">`
+            : `<div class="game-bg-emoji">${node.art || '🏆'}</div>`}
+        <div class="game-bg-gradient"></div>
+        <div class="game-sheet" style="display:block;">
+            <div class="game-ending-title">${node.title}</div>
+            <div class="game-ending-text">${node.bubble}</div>
+            <div class="game-choices" id="game-choices-container"></div>
+        </div>
     `;
-    const gameContainer = document.querySelector('.game-container');
-    const oldWrapper = document.querySelector('.comic-bg-wrapper');
-    if (oldWrapper) oldWrapper.remove();
-    if (gameContainer) gameContainer.insertAdjacentHTML('afterbegin', endingHtml);
 
-    container.innerHTML = '';
+    const choicesEl = container.querySelector('#game-choices-container');
     node.choices.forEach(choice => {
         const btn = document.createElement('button');
-        btn.className = 'comic-choice-btn';
+        btn.className = 'game-choice-btn';
         btn.style.justifyContent = 'center';
-        btn.style.textAlign = 'center';
         btn.innerText = choice.text;
         btn.onclick = () => handleGameChoice(choice, btn);
-        container.appendChild(btn);
+        choicesEl.appendChild(btn);
     });
 }
 
@@ -962,7 +953,7 @@ function handleGameChoice(choice, btn) {
     if (gameChoicesLocked) return;
     gameChoicesLocked = true;
 
-    document.querySelectorAll('.comic-choice-btn').forEach(b => {
+    document.querySelectorAll('.game-choice-btn').forEach(b => {
         b.style.opacity = '0.35';
         b.style.pointerEvents = 'none';
     });
@@ -975,58 +966,56 @@ function handleGameChoice(choice, btn) {
     currentStats.safety  += choice.effects.safety;
     updateGameStatsUI();
 
+    const nextNodeId = choice.next_node;
+
     if (choice.feedback_text || choice.feedback_title) {
-        nextNodeIdToLoad = choice.next_node;
-        showGameFeedback(choice);
+        showGameFeedback(
+            choice.feedback_art  || '',
+            choice.feedback_title || '',
+            choice.feedback_text  || '',
+            nextNodeId
+        );
     } else {
-        setTimeout(() => {
-            gameChoicesLocked = false;
-            if (choice.next_node === 'finish_game') handleGameWin();
-            else renderGameNode(choice.next_node);
-        }, 300);
+        if (nextNodeId === 'finish_game') {
+            finishSimulatorGame();
+        } else {
+            setTimeout(() => renderGameNode(nextNodeId), 400);
+        }
     }
 }
 
-function handleGameWin() {
-    userData.coins += COINS_FOR_SIMULATOR_WIN;
-    localStorage.setItem('scoutCoins', userData.coins);
-    completeStep(2);
-}
+function showGameFeedback(art, title, text, nextNodeId) {
+    const popup = document.getElementById('game-feedback-popup');
+    const titleEl = document.getElementById('gf-title');
+    const textEl  = document.getElementById('gf-text');
+    if (!popup) return;
+    if (titleEl) titleEl.innerHTML = `${art} ${title}`;
+    if (textEl)  textEl.innerText  = text;
 
-function showGameFeedback(choice) {
-    const isGood = choice.is_correct;
-    const popup  = document.getElementById('game-feedback-popup');
-
-    popup.innerHTML = `
-        <div style="font-size:48px; text-align:center; margin-bottom:8px;">${choice.feedback_art || (isGood ? '✅' : '❌')}</div>
-        <div class="comic-feedback-title" style="color:${isGood ? 'var(--green)' : 'var(--red)'}">${choice.feedback_title || (isGood ? 'Верно!' : 'Ой...')}</div>
-        <div class="comic-feedback-text">${choice.feedback_text || ''}</div>
-        <div id="gf-stats" style="display:flex;justify-content:center;gap:14px;margin-bottom:12px;font-size:16px;font-weight:900;"></div>
-        <button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить →</button>
-    `;
-
-    const fx = choice.effects;
-    const statsEl = popup.querySelector('#gf-stats');
-    if (statsEl) {
-        let html = '';
-        if (fx.loyalty !== 0) html += `<span style="color:${fx.loyalty > 0 ? 'var(--green)' : 'var(--red)'}">❤️ ${fx.loyalty > 0 ? '+' : ''}${fx.loyalty}</span>`;
-        if (fx.tech    !== 0) html += `<span style="color:${fx.tech    > 0 ? 'var(--green)' : 'var(--red)'}">🔧 ${fx.tech    > 0 ? '+' : ''}${fx.tech}</span>`;
-        if (fx.safety  !== 0) html += `<span style="color:${fx.safety  > 0 ? 'var(--green)' : 'var(--red)'}">🛡️ ${fx.safety  > 0 ? '+' : ''}${fx.safety}</span>`;
-        statsEl.innerHTML = html;
-    }
-
-    document.getElementById('overlay').style.display = 'block';
-    setTimeout(() => popup.classList.add('show'), 10);
-    haptic(isGood ? 'success' : 'error');
+    // Store next node
+    popup._nextNodeId = nextNodeId;
+    popup.style.display = 'block';
+    if (typeof openPopup === 'function') openPopup('game-feedback-popup');
+    else popup.classList.add('active');
 }
 
 function closeGameFeedback() {
     const popup = document.getElementById('game-feedback-popup');
-    popup.classList.remove('show');
-    setTimeout(() => {
-        document.getElementById('overlay').style.display = 'none';
-        gameChoicesLocked = false;
-        if (nextNodeIdToLoad === 'finish_game') handleGameWin();
-        else renderGameNode(nextNodeIdToLoad);
-    }, 300);
+    if (!popup) return;
+    const nextNodeId = popup._nextNodeId;
+    if (typeof closePopup === 'function') closePopup('game-feedback-popup');
+    else { popup.classList.remove('active'); popup.style.display = 'none'; }
+
+    if (nextNodeId === 'finish_game') {
+        finishSimulatorGame();
+    } else {
+        setTimeout(() => renderGameNode(nextNodeId), 300);
+    }
+}
+
+function finishSimulatorGame() {
+    showScreen('screen-finish');
+    const coinsEl = document.getElementById('res-coins');
+    if (coinsEl) coinsEl.innerText = COINS_FOR_SIMULATOR_WIN;
+    if (typeof awardCoins === 'function') awardCoins(COINS_FOR_SIMULATOR_WIN);
 }
