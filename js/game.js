@@ -81,18 +81,7 @@
             color: #757575;
             font-family: 'Onest', sans-serif;
         }
-        .comic-story-image {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 14px;
-    border: 2.5px solid #000;
-    margin-bottom: 14px;
-    box-shadow: 3px 3px 0 #000;
-    animation: comicPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    display: block;
-}
-.comic-scene-art {
+        .comic-scene-art {
             font-size: 72px;
             line-height: 1;
             margin-bottom: 12px;
@@ -310,35 +299,6 @@
 // =====================================================================
 
 const COINS_FOR_SIMULATOR_WIN = 500;
-
-
-const IMAGE_BASE_PATH = 'images/comic/';
-const nodeImages = {
-  prologue: 'prologue.png',
-  scene1: 'scene_1.png',
-  good2: 'good_2.png',
-  good3: 'good_3.png',
-  good4: 'good_4.png',
-  good5: 'good_5.png',
-  good6: 'good_6.png',
-  good7: 'good7.png',
-  endingmaster: 'ending_good.png',
-  terpila2: 'neutral2.png',
-  terpila3: 'neutral3.png',
-  terpila4: 'neutral4.png',
-  terpila5: 'terpila5.png',
-  terpila6: 'terpila6.png',
-  terpila7: 'terpila7.png',
-  endingterpila: 'ending_neutral.png',
-  chaos2: 'bad_2.png',
-  chaos3: 'bad_3.png',
-  chaos4: 'bad_4.png',
-  chaos5: 'chaos5.png',
-  chaos6: 'chaos6.png',
-  chaos7: 'chaos7.png',
-  endingchaossurvived: 'endingchaossurvived.png',
-  endingcringe: 'ending_bad.png'
-};
 
 const gameData = {
 
@@ -1013,7 +973,7 @@ function renderGameNode(nodeId) {
             </div>
             <div class="comic-panel">
                 <span class="comic-chapter">${node.chapter || ''}</span>
-                <div class="comic-scene-art">${node.art || '🛺'}</div>
+                ${nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<div class="comic-scene-art">${node.art || '🛺'}</div>`}
                 <div class="comic-bubble ${node.bubble_type === 'narrator' ? 'comic-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
             </div>
             <div class="comic-content">
@@ -1060,7 +1020,7 @@ function renderEnding(node, nodeId) {
     const endingHtml = `
         <div class="comic-container">
             <div class="comic-ending">
-                ${typeof nodeImages !== "undefined" && nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<span class="comic-ending-art">${node.art}</span>`}
+                ${nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<span class="comic-ending-art">${node.art}</span>`}
                 <div class="comic-ending-title">${node.title}</div>
                 <div class="comic-ending-text">${node.bubble}</div>
             </div>
