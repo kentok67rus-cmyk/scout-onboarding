@@ -984,7 +984,7 @@ function handleGameChoice(choice, btn) {
         if (textEl)  textEl.innerText  = choice.feedback_text || '';
         if (popup) {
             popup._nextNodeId = nextNodeId;
-            popup.style.cssText = 'display:block !important; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:#1a1a1a; border-top:3px solid #fff100; padding:24px 20px 40px; border-radius:24px 24px 0 0;';
+            popup.style.cssText = 'display:block !important; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:#1a1a1a; border-top:3px solid #fff100; padding:24px 20px 40px; border-radius:24px 24px 0 0; box-shadow:0 -4px 30px rgba(0,0,0,0.5);';
         }
     } else {
         if (nextNodeId === 'finish_game') {
@@ -999,7 +999,7 @@ function closeGameFeedback() {
     const popup = document.getElementById('game-feedback-popup');
     if (!popup) return;
     const nextNodeId = popup._nextNodeId;
-    popup.style.display = 'none';
+    popup.style.cssText = 'display:none';
 
     if (!nextNodeId || nextNodeId === 'finish_game') {
         finishSimulatorGame();
