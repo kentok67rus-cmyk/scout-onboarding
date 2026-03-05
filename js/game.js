@@ -1013,7 +1013,7 @@ function renderGameNode(nodeId) {
             </div>
             <div class="comic-panel">
                 <span class="comic-chapter">${node.chapter || ''}</span>
-                <div class="comic-scene-art">${node.art || '🛺'}</div>
+                ${nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<div class="comic-scene-art">${node.art || '🛺'}</div>`}
                 <div class="comic-bubble ${node.bubble_type === 'narrator' ? 'comic-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
             </div>
             <div class="comic-content">
