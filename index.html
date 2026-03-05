@@ -190,12 +190,13 @@
     <button class="close-btn" onclick="closeAllPopups()">Отмена</button>
 </div>
 
-<div id="game-feedback-popup">
-    <h2 id="gf-title"></h2>
-    <p id="gf-text"></p>
+<div id="game-feedback-popup" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:#1a1a1a; border-top:3px solid #fff100; padding:24px 20px 40px; border-radius:24px 24px 0 0; box-shadow:0 -4px 30px rgba(0,0,0,0.5);">
+    <h2 id="gf-title" style="font-size:20px; font-weight:900; margin:0 0 10px 0; color:#fff; font-family:Onest,sans-serif;"></h2>
+    <p id="gf-text" style="font-size:14px; color:#ccc; line-height:1.55; margin-bottom:14px; background:#2a2a2a; padding:12px 14px; border-radius:12px; border-left:4px solid #fff100; font-family:Onest,sans-serif; font-weight:600;"></p>
     <div id="gf-stats"></div>
-    <button onclick="closeGameFeedback()" style="display:block; background:#3498db; color:#fff; border:none; padding:18px; border-radius:14px; font-size:18px; font-weight:800; width:100%; text-transform:uppercase; box-shadow:0 5px 0 #2980b9; margin-top:20px; cursor:pointer;">Продолжить →</button>
+    <button onclick="closeGameFeedback()" style="display:block; background:#fff100; color:#000; border:none; padding:16px; border-radius:14px; font-size:16px; font-weight:900; font-family:Onest,sans-serif; width:100%; text-transform:uppercase; letter-spacing:1px; cursor:pointer; margin-top:10px;">Продолжить →</button>
 </div>
+
 
     <script src="js/config.js"></script>
     <script src="js/router.js"></script>
