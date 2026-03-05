@@ -1089,7 +1089,8 @@ function handleGameChoice(choice, btn) {
         b.style.pointerEvents = 'none';
     });
     btn.style.opacity = '1';
-    btn.classList.add(choice.is_correct ? 'selected-correct' : (choice.is_correct === false ? 'selected-wrong' : ''));
+    if (choice.is_correct === true) btn.classList.add('selected-correct');
+    else if (choice.is_correct === false) btn.classList.add('selected-wrong');
 
     currentStats.loyalty += choice.effects.loyalty;
     currentStats.tech    += choice.effects.tech;
