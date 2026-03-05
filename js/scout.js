@@ -15,10 +15,6 @@ let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
             { id: 6, icon: '🏆', title: 'Экзамен', desc: 'Финальный тест' }
         ];
 
-        // МОНЕТЫ: 5 вопросов × 100 = 500 за квиз, +500 за победную концовку симулятора
-        const COINS_PER_CORRECT_ANSWER = 100;
-        const COINS_FOR_SIMULATOR_WIN = 500;
-        const QUIZ_PASS_THRESHOLD = 4; // минимум правильных ответов для сдачи
 
         const finalQuizData = [
             { q: "Какое точное расстояние должно быть между припаркованными каретами?", a: [{t: "Ровно 50 см", c:true}, {t: "Вплотную друг к другу", c:false}, {t: "Около 1 метра", c:false}] },
