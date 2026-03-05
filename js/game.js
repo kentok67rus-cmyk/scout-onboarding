@@ -81,7 +81,18 @@
             color: #757575;
             font-family: 'Onest', sans-serif;
         }
-        .comic-scene-art {
+        .comic-story-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2.5px solid #000;
+    margin-bottom: 14px;
+    box-shadow: 3px 3px 0 #000;
+    animation: comicPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    display: block;
+  }
+  .comic-scene-art {
             font-size: 72px;
             line-height: 1;
             margin-bottom: 12px;
@@ -297,6 +308,35 @@
 // =====================================================================
 //  ДАННЫЕ ИГРЫ
 // =====================================================================
+
+
+const IMAGE_BASE_PATH = 'images/comic/';
+const nodeImages = {
+  'prologue':              'prologue.png',
+  'scene_1':               'scene_1.png',
+  'good_2':                'good_2.png',
+  'good_3':                'good_3.png',
+  'good_4':                'good_4.png',
+  'good_5':                'good_5.png',
+  'good_6':                'good_6.png',
+  'good_7':                'good_7.png',
+  'ending_master':         'ending_good.png',
+  'terpila_2':             'neutral_2.png',
+  'terpila_3':             'neutral_3.png',
+  'terpila_4':             'neutral_4.png',
+  'terpila_5':             'terpila_5.png',
+  'terpila_6':             'terpila_6.png',
+  'terpila_7':             'terpila_7.png',
+  'ending_terpila':        'ending_neutral.png',
+  'chaos_2':               'bad_2.png',
+  'chaos_3':               'bad_3.png',
+  'chaos_4':               'bad_4.png',
+  'chaos_5':               'chaos_5.png',
+  'chaos_6':               'chaos_6.png',
+  'chaos_7':               'chaos_7.png',
+  'ending_chaos_survived': 'ending_chaos_survived.png',
+  'ending_cringe':         'ending_bad.png'
+};
 
 const COINS_FOR_SIMULATOR_WIN = 500;
 
@@ -973,7 +1013,7 @@ function renderGameNode(nodeId) {
             </div>
             <div class="comic-panel">
                 <span class="comic-chapter">${node.chapter || ''}</span>
-                ${nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<div class="comic-scene-art">${node.art || '🛺'}</div>`}
+                <div class="comic-scene-art">${node.art || '🛺'}</div>
                 <div class="comic-bubble ${node.bubble_type === 'narrator' ? 'comic-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
             </div>
             <div class="comic-content">
