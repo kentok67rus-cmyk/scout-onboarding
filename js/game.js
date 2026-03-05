@@ -81,7 +81,18 @@
             color: #757575;
             font-family: 'Onest', sans-serif;
         }
-        .comic-scene-art {
+        .comic-story-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2.5px solid #000;
+    margin-bottom: 14px;
+    box-shadow: 3px 3px 0 #000;
+    animation: comicPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    display: block;
+}
+.comic-scene-art {
             font-size: 72px;
             line-height: 1;
             margin-bottom: 12px;
@@ -300,6 +311,35 @@
 
 const COINS_FOR_SIMULATOR_WIN = 500;
 
+
+const IMAGE_BASE_PATH = 'images/comic/';
+const nodeImages = {
+  prologue: 'prologue.png',
+  scene1: 'scene_1.png',
+  good2: 'good_2.png',
+  good3: 'good_3.png',
+  good4: 'good_4.png',
+  good5: 'good_5.png',
+  good6: 'good_6.png',
+  good7: 'good7.png',
+  endingmaster: 'ending_good.png',
+  terpila2: 'neutral2.png',
+  terpila3: 'neutral3.png',
+  terpila4: 'neutral4.png',
+  terpila5: 'terpila5.png',
+  terpila6: 'terpila6.png',
+  terpila7: 'terpila7.png',
+  endingterpila: 'ending_neutral.png',
+  chaos2: 'bad_2.png',
+  chaos3: 'bad_3.png',
+  chaos4: 'bad_4.png',
+  chaos5: 'chaos5.png',
+  chaos6: 'chaos6.png',
+  chaos7: 'chaos7.png',
+  endingchaossurvived: 'endingchaossurvived.png',
+  endingcringe: 'ending_bad.png'
+};
+
 const gameData = {
 
   "prologue": {
@@ -344,7 +384,7 @@ const gameData = {
         "is_correct": false,
         "feedback_art": "🤦💀",
         "feedback_title": "Серьёзно?",
-        "feedback_text": "Семья сама вытирает сиденье своими салфетками и молча косится на тебя. Неловко. Очень неловко.",
+        "feedback_text": "Семья сама вытирает сиденье своими салфетками и косится на тебя. Добро пожаловать в ветку Хаоса.",
         "next_node": "chaos_2", "effects": { "loyalty": -30, "tech": -15, "safety": -15 }
       }
     ]
@@ -514,7 +554,7 @@ const gameData = {
         "feedback_art": "❓💰",
         "feedback_title": "Зарплата под вопросом",
         "feedback_text": "Система не зафиксировала смену. Разбираться придётся завтра.",
-        "next_node": "ending_no_report", "effects": { "loyalty": 0, "tech": 0, "safety": -10 }
+        "next_node": "ending_master", "effects": { "loyalty": 0, "tech": 0, "safety": -10 }
       }
     ]
   },
@@ -544,15 +584,6 @@ const gameData = {
         "feedback_title": "Он звонит в полицию",
         "feedback_text": "ТМ звонит тебе. Ты не берёшь. ТМ приезжает лично. Это хуже любого скандала.",
         "next_node": "terpila_3", "effects": { "loyalty": -40, "tech": 0, "safety": -10 }
-      },
-      {
-        "letter": "C",
-        "text": "Подойти, извиниться, предложить пересесть на исправную карету и написать ТМ.",
-        "is_correct": true,
-        "feedback_art": "🤝😤",
-        "feedback_title": "Ситуацию удалось погасить",
-        "feedback_text": "Отец всё ещё недоволен, но видит — ты не прячешься. Семья пересела, дети успокоились. ТМ в курсе.",
-        "next_node": "terpila_3", "effects": { "loyalty": 10, "tech": 5, "safety": 5 }
       }
     ]
   },
@@ -581,15 +612,6 @@ const gameData = {
         "feedback_title": "«Да расслабься, дядя!»",
         "feedback_text": "И уехали впятером. Тент погнут. Ось скрипит. Ты ничего не сделал.",
         "next_node": "terpila_4", "effects": { "loyalty": -10, "tech": -35, "safety": -40 }
-      },
-      {
-        "letter": "C",
-        "text": "Встать перед каретой: «Трое — максимум. Штраф 1000₽ упадёт на карту. Не моё правило — правило сервиса.»",
-        "is_correct": true,
-        "feedback_art": "💪🛡️",
-        "feedback_title": "Устоял под давлением",
-        "feedback_text": "Поворчали, но двое ушли. Карета цела. Ты сделал то, что должен был с самого начала.",
-        "next_node": "terpila_4", "effects": { "loyalty": 5, "tech": 10, "safety": 15 }
       }
     ]
   },
@@ -618,15 +640,6 @@ const gameData = {
         "feedback_title": "Система видит несоответствие",
         "feedback_text": "ТМ видит, что ты регулярно закрываешь аренды в минус. Разговор неизбежен.",
         "next_node": "terpila_5", "effects": { "loyalty": 5, "tech": -10, "safety": 0 }
-      },
-      {
-        "letter": "C",
-        "text": "Объяснить спокойно: «По правилам доп. время платное. Если были техпроблемы — напишите в поддержку, они разберутся.»",
-        "is_correct": true,
-        "feedback_art": "📋✅",
-        "feedback_title": "По правилам — значит по правилам",
-        "feedback_text": "Гость недоволен, но аргументов нет. Ты не взял его деньги и не потерял свои. Именно так это работает.",
-        "next_node": "terpila_5", "effects": { "loyalty": 0, "tech": 0, "safety": 5 }
       }
     ]
   },
@@ -655,15 +668,6 @@ const gameData = {
         "feedback_title": "Мама всё видела",
         "feedback_text": "ТМ объяснил где аптечка, нашёл. Но мама уже поняла — ты не готов к работе.",
         "next_node": "terpila_6", "effects": { "loyalty": -15, "tech": 0, "safety": -20 }
-      },
-      {
-        "letter": "C",
-        "text": "Быстро принести аптечку от стойки, помочь обработать ранку, коротко извиниться.",
-        "is_correct": true,
-        "feedback_art": "🩹💚",
-        "feedback_title": "Всё под контролем",
-        "feedback_text": "Мама видит — ты знаешь где что лежит и не паникуешь. Ребёнок успокоился. Инцидент закрыт.",
-        "next_node": "terpila_6", "effects": { "loyalty": 15, "tech": 0, "safety": 20 }
       }
     ]
   },
@@ -749,15 +753,6 @@ const gameData = {
         "feedback_title": "Они подрались",
         "feedback_text": "Порвали тент в процессе. Тебя вызывает охрана парка. Объяснять придётся долго.",
         "next_node": "chaos_3", "effects": { "loyalty": -35, "tech": -30, "safety": -25 }
-      },
-      {
-        "letter": "C",
-        "text": "«Сейчас разберёмся — первой компании ближайшую свободную карету, второй скидку. Я напишу ТМ прямо сейчас.»",
-        "is_correct": true,
-        "feedback_art": "🤝⚡",
-        "feedback_title": "Конфликт погашен",
-        "feedback_text": "Обе компании получили решение. Ты не убежал. ТМ отметил твою реакцию.",
-        "next_node": "chaos_3", "effects": { "loyalty": 15, "tech": 0, "safety": 10 }
       }
     ]
   },
@@ -786,15 +781,6 @@ const gameData = {
         "feedback_title": "Карету угнали",
         "feedback_text": "Через 10 минут чужой человек садится в незакрытую карету и уезжает. Деньги продолжают капать с гостя.",
         "next_node": "chaos_4", "effects": { "loyalty": -15, "tech": -40, "safety": -45 }
-      },
-      {
-        "letter": "C",
-        "text": "Позвонить ТМ, объяснить ситуацию. Попробовать прокатить карету назад — замок часто защёлкивается.",
-        "is_correct": true,
-        "feedback_art": "🔒✅",
-        "feedback_title": "Замок закрыт!",
-        "feedback_text": "ТМ подсказал приём за 30 секунд. Замок щёлкнул. Гость удивлён — ты справился без молотка.",
-        "next_node": "chaos_4", "effects": { "loyalty": 10, "tech": 15, "safety": 5 }
       }
     ]
   },
@@ -823,15 +809,6 @@ const gameData = {
         "feedback_title": "ДПС. Это уже уголовка.",
         "feedback_text": "Вы выезжаете за ворота парка на дорогу. Навстречу — ДПС. Это больше не рабочий конфликт.",
         "next_node": "chaos_5", "effects": { "loyalty": -60, "tech": -30, "safety": -70 }
-      },
-      {
-        "letter": "C",
-        "text": "«Не могу дать карету — вижу что вы выпили. Это безопасность, не личное. Приходите завтра!»",
-        "is_correct": true,
-        "feedback_art": "🛡️👍",
-        "feedback_title": "Отказал правильно",
-        "feedback_text": "Мужик поворчал и ушёл. Ты не дал ему пострадать и сам остался чист перед камерами. Именно для этого есть правила.",
-        "next_node": "chaos_5", "effects": { "loyalty": 0, "tech": 0, "safety": 25 }
       }
     ]
   },
@@ -921,18 +898,6 @@ const gameData = {
   },
 
   // ── КОНЦОВКИ ───────────────────────────────────────────────────────
-  "ending_no_report": {
-    "art": "❓💸",
-    "chapter": "Конец",
-    "title": "Зарплата под вопросом",
-    "bubble": "Ты сделал много правильного за смену. Но не зафиксировал её в боте.\n\nСистема не видит твою работу — значит, зарплата под вопросом. Завтра придётся разбираться с ТМ.\n\nОдин шаг отделял тебя от идеальной смены. Запомни: бот — это не формальность, это твои деньги.",
-    "bubble_type": "narrator",
-    "is_ending": true,
-    "choices": [
-      { "text": "🔄 Пройти правильно", "next_node": "prologue", "effects": { "loyalty": 0, "tech": 0, "safety": 0 } }
-    ]
-  },
-
   "ending_master": {
     "art": "🏆",
     "chapter": "Конец",
@@ -1023,7 +988,7 @@ function renderGameNode(nodeId) {
 
     // Если концовка — рендерим особый layout
     if (node.is_ending) {
-        renderEnding(node);
+        renderEnding(node, nodeId);
         return;
     }
 
@@ -1082,7 +1047,7 @@ function renderGameNode(nodeId) {
     });
 }
 
-function renderEnding(node) {
+function renderEnding(node, nodeId) {
     const gameContent = document.querySelector('.game-content');
     const container   = document.getElementById('game-choices-container');
     const oldComic = document.querySelector('.comic-container');
@@ -1095,7 +1060,7 @@ function renderEnding(node) {
     const endingHtml = `
         <div class="comic-container">
             <div class="comic-ending">
-                <span class="comic-ending-art">${node.art}</span>
+                ${typeof nodeImages !== "undefined" && nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<span class="comic-ending-art">${node.art}</span>`}
                 <div class="comic-ending-title">${node.title}</div>
                 <div class="comic-ending-text">${node.bubble}</div>
             </div>
@@ -1124,8 +1089,7 @@ function handleGameChoice(choice, btn) {
         b.style.pointerEvents = 'none';
     });
     btn.style.opacity = '1';
-    if (choice.is_correct === true) btn.classList.add('selected-correct');
-    else if (choice.is_correct === false) btn.classList.add('selected-wrong');
+    btn.classList.add(choice.is_correct ? 'selected-correct' : (choice.is_correct === false ? 'selected-wrong' : ''));
 
     currentStats.loyalty += choice.effects.loyalty;
     currentStats.tech    += choice.effects.tech;
