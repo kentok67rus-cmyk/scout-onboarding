@@ -940,103 +940,55 @@ function renderGameNode(nodeId) {
     if (nodeId === 'prologue') currentStats = { loyalty: 50, tech: 50, safety: 50 };
     updateGameStatsUI();
     gameChoicesLocked = false;
-
     const node = gameData[nodeId];
     if (!node) return;
+    if (node.is_ending) { renderEnding(node); return; }
 
     const container = document.getElementById('game-choices-container');
+    const bubbleClass = node.bubble_type === 'narrator' ? 'comic-bubble comic-bubble-narrator' : 'comic-bubble';
 
-    // Если концовка — рендерим особый layout
-    if (node.is_ending) {
-        renderEnding(node);
-        return;
-    }
-
-    const html = `
-        <div class="comic-container">
-            <div class="comic-stats">
-                <div class="comic-stat">
-                    <span class="comic-stat-label">❤️ Лояльность</span>
-                    <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-loyalty" style="width:${currentStats.loyalty}%"></div></div>
-                    <span class="comic-stat-value" id="stat-val-loyalty">${currentStats.loyalty}</span>
-                </div>
-                <div class="comic-stat">
-                    <span class="comic-stat-label">🔧 Техника</span>
-                    <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-tech" style="width:${currentStats.tech}%"></div></div>
-                    <span class="comic-stat-value" id="stat-val-tech">${currentStats.tech}</span>
-                </div>
-                <div class="comic-stat">
-                    <span class="comic-stat-label">🛡️ Безопасность</span>
-                    <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-safety" style="width:${currentStats.safety}%"></div></div>
-                    <span class="comic-stat-value" id="stat-val-safety">${currentStats.safety}</span>
-                </div>
+    document.getElementById('screen-game').querySelector('.game-container').innerHTML = `
+        <div class="comic-stats">
+            <div class="comic-stat">
+                <div class="comic-stat-label">❤️ Лояльность</div>
+                <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-loyalty" style="width:50%"></div></div>
+                <div class="comic-stat-value" id="stat-val-loyalty">50</div>
             </div>
-            <div class="comic-panel">
-                <span class="comic-chapter">${node.chapter || ''}</span>
-                <div class="comic-scene-art">${node.art || '🛺'}</div>
-                <div class="comic-bubble ${node.bubble_type === 'narrator' ? 'comic-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
+            <div class="comic-stat">
+                <div class="comic-stat-label">🔧 Техника</div>
+                <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-tech" style="width:50%"></div></div>
+                <div class="comic-stat-value" id="stat-val-tech">50</div>
             </div>
-            <div class="comic-content">
-                <div class="comic-title">${node.title}</div>
+            <div class="comic-stat">
+                <div class="comic-stat-label">🛡️ Безопасность</div>
+                <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-safety" style="width:50%"></div></div>
+                <div class="comic-stat-value" id="stat-val-safety">50</div>
             </div>
         </div>
-    `;
-
-    // Вставляем карточку перед контейнером выборов
-    const gameContent = document.querySelector('.game-content');
-    if (gameContent) {
-        // Убираем старый контент
-        const oldComic = document.querySelector('.comic-container');
-        if (oldComic) oldComic.remove();
-        const oldTitle = document.getElementById('game-scene-title');
-        const oldText  = document.getElementById('game-scene-text');
-        if (oldTitle) oldTitle.innerText = '';
-        if (oldText)  oldText.innerText  = '';
-        gameContent.insertAdjacentHTML('afterbegin', html);
-    }
-
-    // Рендерим кнопки выборов
-    container.innerHTML = '';
-    const letters = ['A','B','C','D'];
-    node.choices.forEach((choice, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'comic-choice-btn';
-        btn.innerHTML = `<span class="comic-choice-letter">${choice.letter || letters[i]}</span><span>${choice.text}</span>`;
-        btn.onclick = () => handleGameChoice(choice, btn);
-        container.appendChild(btn);
-    });
-}
-
-function renderEnding(node) {
-    const gameContent = document.querySelector('.game-content');
-    const container   = document.getElementById('game-choices-container');
-    const oldComic = document.querySelector('.comic-container');
-    if (oldComic) oldComic.remove();
-    const oldTitle = document.getElementById('game-scene-title');
-    const oldText  = document.getElementById('game-scene-text');
-    if (oldTitle) oldTitle.innerText = '';
-    if (oldText)  oldText.innerText  = '';
-
-    const endingHtml = `
-        <div class="comic-container">
-            <div class="comic-ending">
-                <span class="comic-ending-art">${node.art}</span>
-                <div class="comic-ending-title">${node.title}</div>
-                <div class="comic-ending-text">${node.bubble}</div>
-            </div>
+        <div class="comic-panel">
+            <div class="comic-chapter">${node.chapter || ''}</div>
+            <div class="comic-scene-art">${node.art || ''}</div>
+            <div class="${bubbleClass}">${(node.bubble || '').replace(/\n/g, '<br>')}</div>
         </div>
+        <div class="comic-content">
+            <div class="comic-title">${node.title || ''}</div>
+        </div>
+        <div class="comic-choices" id="game-choices-container"></div>
     `;
-    if (gameContent) gameContent.insertAdjacentHTML('afterbegin', endingHtml);
 
-    container.innerHTML = '';
+    updateGameStatsUI();
+
+    const choicesContainer = document.getElementById('game-choices-container');
     node.choices.forEach(choice => {
         const btn = document.createElement('button');
         btn.className = 'comic-choice-btn';
-        btn.style.justifyContent = 'center';
-        btn.style.textAlign = 'center';
-        btn.innerText = choice.text;
+        // Показываем букву только если она есть
+        const letterHtml = choice.letter
+            ? `<div class="comic-choice-letter">${choice.letter}</div>`
+            : '';
+        btn.innerHTML = `${letterHtml}<span>${choice.text}</span>`;
         btn.onclick = () => handleGameChoice(choice, btn);
-        container.appendChild(btn);
+        choicesContainer.appendChild(btn);
     });
 }
 
@@ -1044,70 +996,56 @@ function handleGameChoice(choice, btn) {
     if (gameChoicesLocked) return;
     gameChoicesLocked = true;
 
+    // Блокируем все кнопки
     document.querySelectorAll('.comic-choice-btn').forEach(b => {
-        b.style.opacity = '0.35';
+        b.style.opacity = '0.5';
         b.style.pointerEvents = 'none';
     });
     btn.style.opacity = '1';
-    btn.classList.add(choice.is_correct ? 'selected-correct' : (choice.is_correct === false ? 'selected-wrong' : ''));
 
+    // Применяем эффекты
     currentStats.loyalty += choice.effects.loyalty;
-    currentStats.tech    += choice.effects.tech;
-    currentStats.safety  += choice.effects.safety;
+    currentStats.tech += choice.effects.tech;
+    currentStats.safety += choice.effects.safety;
     updateGameStatsUI();
 
-    if (choice.feedback_text || choice.feedback_title) {
-        nextNodeIdToLoad = choice.next_node;
+    // Красим кнопку только если есть is_correct
+    if (typeof choice.is_correct !== 'undefined') {
+        btn.classList.add(choice.is_correct ? 'selected-correct' : 'selected-wrong');
+    }
+
+    nextNodeIdToLoad = choice.next_node;
+
+    // Показываем фидбек только если есть feedback_text
+    if (choice.feedback_text) {
         showGameFeedback(choice);
     } else {
-        setTimeout(() => {
+        // Нет фидбека — сразу переходим
+        if (choice.next_node === 'finish_game') {
+            handleGameWin();
+        } else {
             gameChoicesLocked = false;
-            if (choice.next_node === 'finish_game') handleGameWin();
-            else renderGameNode(choice.next_node);
-        }, 300);
+            renderGameNode(choice.next_node);
+        }
     }
+}
+
+function closeGameFeedback() {
+    document.getElementById('game-feedback-popup').classList.remove('show');
+    setTimeout(() => {
+        document.getElementById('overlay').style.display = 'none';
+        if (nextNodeIdToLoad === 'finish_game') {
+            handleGameWin();
+        } else {
+            gameChoicesLocked = false;
+            renderGameNode(nextNodeIdToLoad);
+        }
+    }, 300);
 }
 
 function handleGameWin() {
     userData.coins += COINS_FOR_SIMULATOR_WIN;
     localStorage.setItem('scoutCoins', userData.coins);
+    localStorage.setItem('scoutCoinsSimulator', COINS_FOR_SIMULATOR_WIN);
     completeStep(2);
-}
-
-function showGameFeedback(choice) {
-    const isGood = choice.is_correct;
-    const popup  = document.getElementById('game-feedback-popup');
-
-    popup.innerHTML = `
-        <div style="font-size:48px; text-align:center; margin-bottom:8px;">${choice.feedback_art || (isGood ? '✅' : '❌')}</div>
-        <div class="comic-feedback-title" style="color:${isGood ? 'var(--green)' : 'var(--red)'}">${choice.feedback_title || (isGood ? 'Верно!' : 'Ой...')}</div>
-        <div class="comic-feedback-text">${choice.feedback_text || ''}</div>
-        <div id="gf-stats" style="display:flex;justify-content:center;gap:14px;margin-bottom:12px;font-size:16px;font-weight:900;"></div>
-        <button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить →</button>
-    `;
-
-    const fx = choice.effects;
-    const statsEl = popup.querySelector('#gf-stats');
-    if (statsEl) {
-        let html = '';
-        if (fx.loyalty !== 0) html += `<span style="color:${fx.loyalty > 0 ? 'var(--green)' : 'var(--red)'}">❤️ ${fx.loyalty > 0 ? '+' : ''}${fx.loyalty}</span>`;
-        if (fx.tech    !== 0) html += `<span style="color:${fx.tech    > 0 ? 'var(--green)' : 'var(--red)'}">🔧 ${fx.tech    > 0 ? '+' : ''}${fx.tech}</span>`;
-        if (fx.safety  !== 0) html += `<span style="color:${fx.safety  > 0 ? 'var(--green)' : 'var(--red)'}">🛡️ ${fx.safety  > 0 ? '+' : ''}${fx.safety}</span>`;
-        statsEl.innerHTML = html;
-    }
-
-    document.getElementById('overlay').style.display = 'block';
-    setTimeout(() => popup.classList.add('show'), 10);
-    haptic(isGood ? 'success' : 'error');
-}
-
-function closeGameFeedback() {
-    const popup = document.getElementById('game-feedback-popup');
-    popup.classList.remove('show');
-    setTimeout(() => {
-        document.getElementById('overlay').style.display = 'none';
-        gameChoicesLocked = false;
-        if (nextNodeIdToLoad === 'finish_game') handleGameWin();
-        else renderGameNode(nextNodeIdToLoad);
-    }, 300);
 }
