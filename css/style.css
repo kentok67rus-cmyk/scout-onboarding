@@ -349,10 +349,12 @@ body {
 
 /* ── ПОПАП ОБРАТНОЙ СВЯЗИ (игра) ──────────────────────────────────────── */
 #game-feedback-popup {
+    display: none;
     position: fixed;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(100%);
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
     width: 100%;
     max-width: 500px;
     background: var(--white);
@@ -363,7 +365,9 @@ body {
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     text-align: left;
 }
-#game-feedback-popup.show { transform: translateX(-50%) translateY(0); }
+
+#game-feedback-popup.show { transform: translateY(0); }
+
 #gf-title { font-size: 21px; font-weight: 900; margin: 0 0 8px 0; }
 #gf-text  { font-size: 15px; color: #444; line-height: 1.4; margin-bottom: 18px; }
 #gf-stats { display: flex; justify-content: center; gap: 18px; margin-bottom: 18px; font-size: 17px; font-weight: bold; }
