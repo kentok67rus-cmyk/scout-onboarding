@@ -6,180 +6,120 @@
 (function injectComicStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        /* ── Импорт шрифта Onest (фирменный шрифт Кареты) ──────────── */
         @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;600;700;800;900&display=swap');
 
-        /* ── СТАТБАР ──────────────────────────────────────────────────── */
-        .comic-container {
-            background: #fff;
-            border-radius: 24px;
+        /* ── FULLSCREEN GAME WRAPPER ── */
+        #screen-game {
+            padding: 0 !important;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+        }
+        .game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+            background: #000;
             font-family: 'Onest', sans-serif;
         }
-        .comic-stats {
-            background: #000;
-            padding: 12px 18px;
+        /* Статы сверху */
+        .game-stats {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%);
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            border-bottom: 3px solid #fff100;
+            padding: 14px 10px 30px;
         }
-        .comic-stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-        }
-        .comic-stat-label {
-            font-size: 9px;
-            font-weight: 900;
-            text-transform: uppercase;
-            color: #757575;
-            letter-spacing: 0.8px;
-            font-family: 'Onest', sans-serif;
-        }
-        .comic-stat-bar {
-            width: 68px;
-            height: 7px;
-            background: #333;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .comic-stat-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease, background 0.3s;
-        }
-        .comic-stat-value {
-            font-size: 12px;
-            font-weight: 900;
-            color: #fff100;
-            font-family: 'Onest', sans-serif;
-        }
-
-        /* ── ПАНЕЛЬ-ИЛЛЮСТРАЦИЯ ───────────────────────────────────────── */
-        .comic-panel {
-            position: relative;
-            background: #fffdf0;
-            border-bottom: 3px solid #000;
-            padding: 24px 20px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 180px;
-            justify-content: center;
-        }
-        .comic-chapter {
+        /* Фоновая картинка */
+        .comic-bg-image {
             position: absolute;
-            top: 10px;
-            left: 14px;
-            font-size: 9px;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            z-index: 1;
+            transition: opacity 0.4s ease;
+        }
+        .comic-bg-emoji {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            font-size: 100px;
+            z-index: 1;
+        }
+        /* Градиент снизу */
+        .comic-bottom-gradient {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 65%;
+            background: linear-gradient(to top, rgba(0,0,0,0.97) 40%, rgba(0,0,0,0.5) 80%, transparent 100%);
+            z-index: 2;
+        }
+        /* Bottom sheet */
+        .comic-sheet {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            z-index: 10;
+            padding: 0 16px 24px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .comic-chapter-label {
+            font-size: 10px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #757575;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 4px;
             font-family: 'Onest', sans-serif;
         }
-        .comic-story-image {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 14px;
-    border: 2.5px solid #000;
-    margin-bottom: 14px;
-    box-shadow: 3px 3px 0 #000;
-    animation: comicPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    display: block;
-  }
-  .comic-scene-art {
-            font-size: 72px;
-            line-height: 1;
-            margin-bottom: 12px;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.12));
-            animation: comicPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        .comic-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            font-family: 'Onest', sans-serif;
         }
-        @keyframes comicPop {
-            from { transform: scale(0.5); opacity: 0; }
-            to   { transform: scale(1);   opacity: 1; }
-        }
-
-        /* ── РЕЧЕВОЙ ПУЗЫРЬ ───────────────────────────────────────────── */
+        /* Bubble */
         .comic-bubble {
-            position: relative;
-            background: #fff;
+            background: #fff100;
             border: 2.5px solid #000;
-            border-radius: 18px;
-            padding: 13px 16px;
-            font-size: 14px;
+            border-radius: 16px;
+            padding: 12px 14px;
+            font-size: 13px;
             font-weight: 600;
             line-height: 1.55;
             color: #000;
-            text-align: left;
-            width: 100%;
-            box-shadow: 3px 3px 0 #000;
+            margin-bottom: 12px;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
             font-family: 'Onest', sans-serif;
         }
-        .comic-bubble::before {
-            content: '';
-            position: absolute;
-            top: -14px; left: 24px;
-            border: 7px solid transparent;
-            border-bottom-color: #000;
-        }
-        .comic-bubble::after {
-            content: '';
-            position: absolute;
-            top: -10px; left: 25px;
-            border: 6px solid transparent;
-            border-bottom-color: #fff;
-        }
-        /* Нарратор — жёлтый фон, без треугольника */
         .comic-bubble-narrator {
-            background: #fff100;
-            border-color: #000;
-            box-shadow: 3px 3px 0 #000;
-            color: #000;
+            background: rgba(255,255,255,0.92);
         }
-        .comic-bubble-narrator::before,
-        .comic-bubble-narrator::after { display: none; }
-
-        /* ── КОНТЕНТ ──────────────────────────────────────────────────── */
-        .comic-content {
-            padding: 16px 18px 10px;
-            background: #fff;
-        }
-        .comic-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: #000;
-            margin-bottom: 0;
-            text-align: left;
-            letter-spacing: -0.3px;
-            border-left: 4px solid #fff100;
-            padding-left: 10px;
-            font-family: 'Onest', sans-serif;
-        }
-
-        /* ── КНОПКИ ВЫБОРА ────────────────────────────────────────────── */
+        /* Choices */
         .comic-choices {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 0 18px 20px;
+            gap: 8px;
         }
         .comic-choice-btn {
-            background: #fff !important;
-            color: #000 !important;
-            border: 2.5px solid #000 !important;
-            padding: 14px 16px !important;
+            background: rgba(255,255,255,0.1) !important;
+            backdrop-filter: blur(10px);
+            color: #fff !important;
+            border: 1.5px solid rgba(255,255,255,0.3) !important;
+            padding: 13px 14px !important;
             border-radius: 14px !important;
             font-size: 14px !important;
             font-family: 'Onest', sans-serif !important;
             font-weight: 700 !important;
             text-align: left !important;
             text-transform: none !important;
-            box-shadow: 3px 3px 0 #000 !important;
             line-height: 1.4 !important;
             margin-top: 0 !important;
             cursor: pointer;
@@ -187,15 +127,15 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
+            width: 100%;
+            box-shadow: none !important;
         }
         .comic-choice-btn:active {
-            transform: translate(3px, 3px) !important;
-            box-shadow: 0 0 0 #000 !important;
+            transform: scale(0.97) !important;
         }
-        /* Буква A/B/C — жёлтая на чёрном (брендбук) */
         .comic-choice-letter {
-            background: #000;
-            color: #fff100;
+            background: #fff100;
+            color: #000;
             border-radius: 6px;
             width: 24px;
             height: 24px;
@@ -208,44 +148,32 @@
             font-family: 'Onest', sans-serif;
         }
         .comic-choice-btn.selected-correct {
-            background: #ebf9e1 !important;
+            background: rgba(46,204,113,0.3) !important;
             border-color: #2ecc71 !important;
-            box-shadow: 3px 3px 0 #2ecc71 !important;
         }
         .comic-choice-btn.selected-wrong {
-            background: #fee2e2 !important;
+            background: rgba(231,76,60,0.3) !important;
             border-color: #e74c3c !important;
-            box-shadow: 3px 3px 0 #e74c3c !important;
         }
 
-        /* ── ФИДБЕК-ПОПАП ─────────────────────────────────────────────── */
+        /* Stat bar (top overlay) */
+        .game-stat { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .game-stat-label { font-size: 9px; font-weight: 900; text-transform: uppercase; color: rgba(255,255,255,0.6); letter-spacing: 0.8px; font-family: 'Onest', sans-serif; }
+        .game-stat-bar { width: 68px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+        .game-stat-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease, background 0.3s; }
+        .game-stat-value { font-size: 12px; font-weight: 900; color: #fff100; font-family: 'Onest', sans-serif; }
+
+        /* Feedback popup */
         #game-feedback-popup {
-            background: #fff !important;
-            border-top: 4px solid #fff100 !important;
+            background: #1a1a1a !important;
+            border-top: 3px solid #fff100 !important;
         }
-        .comic-feedback-title {
-            font-size: 21px;
-            font-weight: 900;
-            margin: 0 0 10px 0;
-            font-family: 'Onest', sans-serif;
-        }
-        .comic-feedback-text {
-            font-size: 14px;
-            color: #333;
-            line-height: 1.55;
-            margin-bottom: 14px;
-            background: #eaeaea;
-            padding: 12px 14px;
-            border-radius: 12px;
-            border-left: 4px solid #fff100;
-            font-family: 'Onest', sans-serif;
-            font-weight: 600;
-        }
-        /* Кнопка Продолжить — чёрная с жёлтым текстом */
+        .comic-feedback-title { font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #fff; font-family: 'Onest', sans-serif; }
+        .comic-feedback-text { font-size: 14px; color: #ccc; line-height: 1.55; margin-bottom: 14px; background: #2a2a2a; padding: 12px 14px; border-radius: 12px; border-left: 4px solid #fff100; font-family: 'Onest', sans-serif; font-weight: 600; }
         .comic-continue-btn {
             display: block;
-            background: #000 !important;
-            color: #fff100 !important;
+            background: #fff100 !important;
+            color: #000 !important;
             border: none !important;
             padding: 16px !important;
             border-radius: 14px !important;
@@ -256,51 +184,17 @@
             text-transform: uppercase !important;
             letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 5px 0 #333 !important;
             margin-top: 10px !important;
-            transition: transform 0.1s, box-shadow 0.1s !important;
-        }
-        .comic-continue-btn:active {
-            transform: translateY(3px) !important;
-            box-shadow: 0 2px 0 #333 !important;
         }
 
-        /* ── КОНЦОВКА ─────────────────────────────────────────────────── */
-        .comic-ending {
-            padding: 28px 20px;
-            text-align: center;
-            background: #fff;
-        }
-        .comic-ending-art {
-            font-size: 80px;
-            margin-bottom: 16px;
-            display: block;
-            animation: comicPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
-        }
-        .comic-ending-title {
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 14px;
-            color: #000;
-            font-family: 'Onest', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .comic-ending-text {
-            font-size: 15px;
-            color: #333;
-            line-height: 1.6;
-            text-align: left;
-            background: #fff100;
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            white-space: pre-line;
-            font-family: 'Onest', sans-serif;
-            font-weight: 600;
-            border: 2.5px solid #000;
-            box-shadow: 3px 3px 0 #000;
-        }
+        /* Ending */
+        .comic-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 12px; font-family: 'Onest', sans-serif; text-transform: uppercase; }
+        .comic-ending-text { font-size: 14px; color: #ddd; line-height: 1.6; background: rgba(255,241,0,0.15); padding: 16px; border-radius: 14px; margin-bottom: 16px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 1.5px solid rgba(255,241,0,0.4); }
+        .comic-ending-btn { display: block; background: #fff100 !important; color: #000 !important; border: none !important; padding: 16px !important; border-radius: 14px !important; font-size: 16px !important; font-weight: 900 !important; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+
+        @keyframes comicPop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .comic-sheet { animation: slideUp 0.35s ease; }
     `;
     document.head.appendChild(style);
 })();
@@ -992,47 +886,25 @@ function renderGameNode(nodeId) {
         return;
     }
 
+
+    const imgSrc = nodeImages[nodeId] ? `${IMAGE_BASE_PATH}${nodeImages[nodeId]}` : null;
     const html = `
-        <div class="comic-container">
-            <div class="comic-stats">
-                <div class="comic-stat">
-                    <span class="comic-stat-label">❤️ Лояльность</span>
-                    <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-loyalty" style="width:${currentStats.loyalty}%"></div></div>
-                    <span class="comic-stat-value" id="stat-val-loyalty">${currentStats.loyalty}</span>
-                </div>
-                <div class="comic-stat">
-                    <span class="comic-stat-label">🔧 Техника</span>
-                    <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-tech" style="width:${currentStats.tech}%"></div></div>
-                    <span class="comic-stat-value" id="stat-val-tech">${currentStats.tech}</span>
-                </div>
-                <div class="comic-stat">
-                    <span class="comic-stat-label">🛡️ Безопасность</span>
-                    <div class="comic-stat-bar"><div class="comic-stat-fill" id="stat-fill-safety" style="width:${currentStats.safety}%"></div></div>
-                    <span class="comic-stat-value" id="stat-val-safety">${currentStats.safety}</span>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <span class="comic-chapter">${node.chapter || ''}</span>
-                ${nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<div class="comic-scene-art">${node.art || '🛺'}</div>`}
-                <div class="comic-bubble ${node.bubble_type === 'narrator' ? 'comic-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
-            </div>
-            <div class="comic-content">
+        <div class="comic-bg-wrapper">
+            ${imgSrc ? `<img src="${imgSrc}" class="comic-bg-image" alt="">` : `<div class="comic-bg-emoji">${node.art || '🛺'}</div>`}
+            <div class="comic-bottom-gradient"></div>
+            <div class="comic-sheet">
+                <div class="comic-chapter-label">${node.chapter || ''}</div>
                 <div class="comic-title">${node.title}</div>
+                <div class="comic-bubble ${node.bubble_type === 'narrator' ? 'comic-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
             </div>
         </div>
     `;
 
-    // Вставляем карточку перед контейнером выборов
-    const gameContent = document.querySelector('.game-content');
-    if (gameContent) {
-        // Убираем старый контент
-        const oldComic = document.querySelector('.comic-container');
-        if (oldComic) oldComic.remove();
-        const oldTitle = document.getElementById('game-scene-title');
-        const oldText  = document.getElementById('game-scene-text');
-        if (oldTitle) oldTitle.innerText = '';
-        if (oldText)  oldText.innerText  = '';
-        gameContent.insertAdjacentHTML('afterbegin', html);
+    const gameContainer = document.querySelector('.game-container');
+    const oldWrapper = document.querySelector('.comic-bg-wrapper');
+    if (oldWrapper) oldWrapper.remove();
+    if (gameContainer) {
+        gameContainer.insertAdjacentHTML('afterbegin', html);
     }
 
     // Рендерим кнопки выборов
@@ -1057,16 +929,22 @@ function renderEnding(node, nodeId) {
     if (oldTitle) oldTitle.innerText = '';
     if (oldText)  oldText.innerText  = '';
 
+
+    const imgSrc = nodeImages[nodeId] ? `${IMAGE_BASE_PATH}${nodeImages[nodeId]}` : null;
     const endingHtml = `
-        <div class="comic-container">
-            <div class="comic-ending">
-                ${nodeImages[nodeId] ? `<img src="${IMAGE_BASE_PATH}${nodeImages[nodeId]}" class="comic-story-image" alt="">` : `<span class="comic-ending-art">${node.art}</span>`}
+        <div class="comic-bg-wrapper">
+            ${imgSrc ? `<img src="${imgSrc}" class="comic-bg-image" alt="">` : `<div class="comic-bg-emoji">${node.art || '🏆'}</div>`}
+            <div class="comic-bottom-gradient"></div>
+            <div class="comic-sheet">
                 <div class="comic-ending-title">${node.title}</div>
                 <div class="comic-ending-text">${node.bubble}</div>
             </div>
         </div>
     `;
-    if (gameContent) gameContent.insertAdjacentHTML('afterbegin', endingHtml);
+    const gameContainer = document.querySelector('.game-container');
+    const oldWrapper = document.querySelector('.comic-bg-wrapper');
+    if (oldWrapper) oldWrapper.remove();
+    if (gameContainer) gameContainer.insertAdjacentHTML('afterbegin', endingHtml);
 
     container.innerHTML = '';
     node.choices.forEach(choice => {
