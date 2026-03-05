@@ -6,157 +6,161 @@
 (function injectComicStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;600;700;800;900&display=swap');
 
-        #screen-game { padding: 0 !important; overflow: hidden !important; background: #000; }
+    #screen-game { padding: 0 !important; overflow: hidden !important; background: #000; }
 
-        .game-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            background: #111;
-            font-family: 'Onest', sans-serif;
-        }
+    .game-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        font-family: 'Onest', sans-serif;
+    }
 
-        /* ── БГ КАРТИНКА ── */
-        .game-bg-img {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            z-index: 1;
-        }
-        .game-bg-emoji {
-            position: absolute;
-            top: 40%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 120px;
-            z-index: 1;
-        }
-        .game-bg-gradient {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 70%;
-            background: linear-gradient(to top, rgba(0,0,0,0.97) 50%, rgba(0,0,0,0.4) 80%, transparent 100%);
-            z-index: 2;
-        }
+    /* Фон — картинка во весь экран, БЕЗ градиента */
+    .game-bg-img {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        z-index: 1;
+    }
+    .game-bg-emoji {
+        position: absolute;
+        top: 40%; left: 50%;
+        transform: translate(-50%,-50%);
+        font-size: 120px;
+        z-index: 1;
+    }
 
-        /* ── СТАТБАР ── */
-        .game-stats-bar {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            z-index: 20;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 8px 20px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
-        }
-        .gs-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-        .gs-label { font-size: 9px; font-weight: 900; text-transform: uppercase; color: rgba(255,255,255,0.55); letter-spacing: 0.8px; font-family: 'Onest', sans-serif; }
-        .gs-bar { width: 64px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
-        .gs-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease, background 0.3s; }
-        .gs-val { font-size: 12px; font-weight: 900; color: #fff100; font-family: 'Onest', sans-serif; }
+    /* Статбар сверху */
+    .game-stats-bar {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        z-index: 20;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 8px 16px;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%);
+    }
+    .gs-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .gs-label { font-size: 9px; font-weight: 900; text-transform: uppercase; color: rgba(255,255,255,0.6); letter-spacing: 0.8px; font-family: 'Onest', sans-serif; }
+    .gs-bar { width: 64px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+    .gs-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease, background 0.3s; }
+    .gs-val { font-size: 12px; font-weight: 900; color: #fff100; font-family: 'Onest', sans-serif; }
 
-        /* ── TAP LAYER (первый экран) ── */
-        .game-tap-layer {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            z-index: 10;
-            padding: 0 20px 40px;
-            cursor: pointer;
-        }
-        .game-tap-content { display: flex; flex-direction: column; gap: 4px; }
-        .game-tap-chapter {
-            font-size: 10px; font-weight: 900; text-transform: uppercase;
-            letter-spacing: 1.5px; color: rgba(255,255,255,0.4);
-            font-family: 'Onest', sans-serif;
-        }
-        .game-tap-title {
-            font-size: 26px; font-weight: 900; color: #fff;
-            line-height: 1.1; font-family: 'Onest', sans-serif;
-        }
-        .game-tap-hint {
-            margin-top: 10px;
-            font-size: 13px; font-weight: 700; color: #fff100;
-            font-family: 'Onest', sans-serif;
-            display: flex; align-items: center; gap: 6px;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+    /* Нижний блок — поверх картинки */
+    .game-bottom {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        z-index: 10;
+        padding: 0 16px 28px;
+    }
 
-        /* ── BOTTOM SHEET (вопросы) ── */
-        .game-sheet {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            z-index: 10;
-            padding: 0 16px 24px;
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    /* Название сцены (всегда видно) */
+    .game-scene-header {
+        margin-bottom: 10px;
+    }
+    .game-tap-chapter {
+        font-size: 10px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 1.5px; color: rgba(255,255,255,0.45);
+        font-family: 'Onest', sans-serif;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .game-tap-title {
+        font-size: 26px; font-weight: 900; color: #fff;
+        line-height: 1.15; font-family: 'Onest', sans-serif;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    }
 
-        .game-bubble {
-            background: #fff100;
-            border: 2px solid #000;
-            border-radius: 16px;
-            padding: 12px 14px;
-            font-size: 13px;
-            font-weight: 600;
-            line-height: 1.55;
-            color: #000;
-            margin-bottom: 12px;
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
-            font-family: 'Onest', sans-serif;
-        }
-        .game-bubble-narrator { background: rgba(255,255,255,0.95); }
+    /* Жёлтый пузырь — нажимаемый */
+    .game-bubble-tap {
+        background: #fff100;
+        border: 2.5px solid #000;
+        border-radius: 16px;
+        padding: 14px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.55;
+        color: #000;
+        margin-bottom: 10px;
+        box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+        font-family: 'Onest', sans-serif;
+        cursor: pointer;
+        position: relative;
+    }
+    .game-bubble-narrator-tap {
+        background: rgba(255,255,255,0.95);
+    }
+    .game-bubble-hint {
+        font-size: 11px;
+        font-weight: 900;
+        color: rgba(0,0,0,0.45);
+        text-align: right;
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        animation: pulsehint 1.5s infinite;
+    }
+    @keyframes pulsehint { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-        .game-choices { display: flex; flex-direction: column; gap: 8px; }
+    /* Кнопки выборов */
+    .game-choices { display: flex; flex-direction: column; gap: 8px; }
+    .game-choice-btn {
+        background: rgba(0,0,0,0.55) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: #fff !important;
+        border: 1.5px solid rgba(255,255,255,0.3) !important;
+        padding: 13px 14px !important;
+        border-radius: 14px !important;
+        font-size: 14px !important;
+        font-family: 'Onest', sans-serif !important;
+        font-weight: 700 !important;
+        text-align: left !important;
+        text-transform: none !important;
+        line-height: 1.4 !important;
+        margin-top: 0 !important;
+        cursor: pointer;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        width: 100%;
+        box-shadow: none !important;
+        transition: transform 0.1s !important;
+        animation: slideUp 0.3s ease both;
+    }
+    .game-choice-btn:nth-child(1) { animation-delay: 0.05s; }
+    .game-choice-btn:nth-child(2) { animation-delay: 0.1s; }
+    .game-choice-btn:nth-child(3) { animation-delay: 0.15s; }
+    @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .game-choice-btn:active { transform: scale(0.97) !important; }
+    .game-choice-letter {
+        background: #fff100; color: #000;
+        border-radius: 6px; width: 24px; height: 24px; min-width: 24px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 900; font-family: 'Onest', sans-serif;
+    }
+    .game-choice-btn.selected-correct { background: rgba(46,204,113,0.4) !important; border-color: #2ecc71 !important; }
+    .game-choice-btn.selected-wrong   { background: rgba(231,76,60,0.4)  !important; border-color: #e74c3c !important; }
 
-        .game-choice-btn {
-            background: rgba(255,255,255,0.1) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff !important;
-            border: 1.5px solid rgba(255,255,255,0.25) !important;
-            padding: 13px 14px !important;
-            border-radius: 14px !important;
-            font-size: 14px !important;
-            font-family: 'Onest', sans-serif !important;
-            font-weight: 700 !important;
-            text-align: left !important;
-            text-transform: none !important;
-            line-height: 1.4 !important;
-            margin-top: 0 !important;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            width: 100%;
-            box-shadow: none !important;
-            transition: transform 0.1s !important;
-        }
-        .game-choice-btn:active { transform: scale(0.97) !important; }
-        .game-choice-letter {
-            background: #fff100; color: #000;
-            border-radius: 6px; width: 24px; height: 24px; min-width: 24px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 900; font-family: 'Onest', sans-serif;
-        }
-        .game-choice-btn.selected-correct { background: rgba(46,204,113,0.35) !important; border-color: #2ecc71 !important; }
-        .game-choice-btn.selected-wrong   { background: rgba(231,76,60,0.35)  !important; border-color: #e74c3c !important; }
+    /* Концовка */
+    .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+    .game-ending-text { font-size: 13px; color: #000; line-height: 1.6; background: #fff100; padding: 14px; border-radius: 14px; margin-bottom: 14px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 2px solid #000; box-shadow: 3px 3px 0 rgba(0,0,0,0.4); }
 
-        /* ── КОНЦОВКА ── */
-        .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; }
-        .game-ending-text { font-size: 13px; color: #ddd; line-height: 1.6; background: rgba(255,241,0,0.15); padding: 14px; border-radius: 14px; margin-bottom: 14px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 1.5px solid rgba(255,241,0,0.35); }
-
-        /* ── ФИДБЕК ПОПАП ── */
-        #game-feedback-popup { background: #1a1a1a !important; border-top: 3px solid #fff100 !important; }
-        #gf-title { font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #fff; font-family: 'Onest', sans-serif; }
-        #gf-text { font-size: 14px; color: #ccc; line-height: 1.55; margin-bottom: 14px; background: #2a2a2a; padding: 12px 14px; border-radius: 12px; border-left: 4px solid #fff100; font-family: 'Onest', sans-serif; font-weight: 600; }
-    `;
-    document.head.appendChild(style);
+    /* Фидбек попап */
+    #game-feedback-popup { background: #1a1a1a !important; border-top: 3px solid #fff100 !important; }
+    #gf-title { font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #fff; font-family: 'Onest', sans-serif; }
+    #gf-text { font-size: 14px; color: #ccc; line-height: 1.55; margin-bottom: 14px; background: #2a2a2a; padding: 12px 14px; border-radius: 12px; border-left: 4px solid #fff100; font-family: 'Onest', sans-serif; font-weight: 600; }
+    .comic-continue-btn {
+        display: block; background: #fff100 !important; color: #000 !important;
+        border: none !important; padding: 16px !important; border-radius: 14px !important;
+        font-size: 16px !important; font-weight: 900 !important; font-family: 'Onest', sans-serif !important;
+        width: 100%; text-transform: uppercase !important; letter-spacing: 1px; cursor: pointer; margin-top: 10px !important;
+    }
+`;
+document.head.appendChild(style);
 })();
 
 // =====================================================================
@@ -805,7 +809,6 @@ const gameData = {
 //  ЛОГИКА ИГРЫ
 // =====================================================================
 
-
 const STAT_DANGER = 15;
 let currentStats = { loyalty: 50, tech: 50, safety: 50 };
 let gameChoicesLocked = false;
@@ -837,79 +840,26 @@ function renderGameNode(nodeId) {
 
     const node = gameData[nodeId];
     if (!node) return;
-
     if (node.is_ending) { renderEnding(node, nodeId); return; }
 
     const imgSrc = nodeImages[nodeId] ? IMAGE_BASE_PATH + nodeImages[nodeId] : null;
     const container = document.querySelector('.game-container');
     if (!container) return;
 
-    container.innerHTML = `
-        <div class="game-stats-bar" id="game-stats-overlay">
-            <div class="gs-item">
-                <span class="gs-label">❤️ Лояльность</span>
-                <div class="gs-bar"><div class="gs-fill" id="stat-fill-loyalty" style="width:${currentStats.loyalty}%;background:#2ecc71"></div></div>
-                <span class="gs-val" id="stat-val-loyalty">${currentStats.loyalty}</span>
-            </div>
-            <div class="gs-item">
-                <span class="gs-label">🔧 Техника</span>
-                <div class="gs-bar"><div class="gs-fill" id="stat-fill-tech" style="width:${currentStats.tech}%;background:#2ecc71"></div></div>
-                <span class="gs-val" id="stat-val-tech">${currentStats.tech}</span>
-            </div>
-            <div class="gs-item">
-                <span class="gs-label">🛡️ Безопасность</span>
-                <div class="gs-bar"><div class="gs-fill" id="stat-fill-safety" style="width:${currentStats.safety}%;background:#2ecc71"></div></div>
-                <span class="gs-val" id="stat-val-safety">${currentStats.safety}</span>
-            </div>
-        </div>
+    // Собираем кнопки выборов как строку (скрыты изначально)
+    const letters = ['A','B','C','D'];
+    const choicesHtml = node.choices.map((choice, i) => `
+        <button class="game-choice-btn" data-idx="${i}">
+            <span class="game-choice-letter">${choice.letter || letters[i]}</span>
+            <span>${choice.text}</span>
+        </button>
+    `).join('');
 
+    container.innerHTML = `
         ${imgSrc
             ? `<img src="${imgSrc}" class="game-bg-img" alt="">`
             : `<div class="game-bg-emoji">${node.art || '🛺'}</div>`}
-        <div class="game-bg-gradient"></div>
 
-        <!-- TAP LAYER: показывается сразу, при тапе скрывается -->
-        <div class="game-tap-layer" id="game-tap-layer" onclick="revealChoices()">
-            <div class="game-tap-content">
-                <div class="game-tap-chapter">${node.chapter || ''}</div>
-                <div class="game-tap-title">${node.title}</div>
-                <div class="game-tap-hint">Tap to continue →</div>
-            </div>
-        </div>
-
-        <!-- SHEET: скрыт до тапа -->
-        <div class="game-sheet" id="game-sheet" style="display:none;">
-            <div class="game-bubble ${node.bubble_type === 'narrator' ? 'game-bubble-narrator' : ''}">${node.bubble.replace(/\n/g, '<br>')}</div>
-            <div class="game-choices" id="game-choices-container"></div>
-        </div>
-    `;
-
-    // рендерим кнопки (они скрыты до тапа)
-    const choicesEl = container.querySelector('#game-choices-container');
-    const letters = ['A','B','C','D'];
-    node.choices.forEach((choice, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'game-choice-btn';
-        btn.innerHTML = `<span class="game-choice-letter">${choice.letter || letters[i]}</span><span>${choice.text}</span>`;
-        btn.onclick = () => handleGameChoice(choice, btn);
-        choicesEl.appendChild(btn);
-    });
-}
-
-function revealChoices() {
-    const tapLayer = document.getElementById('game-tap-layer');
-    const sheet = document.getElementById('game-sheet');
-    if (tapLayer) tapLayer.style.display = 'none';
-    if (sheet) sheet.style.display = 'block';
-}
-
-function renderEnding(node, nodeId) {
-    updateGameStatsUI();
-    const imgSrc = nodeImages[nodeId] ? IMAGE_BASE_PATH + nodeImages[nodeId] : null;
-    const container = document.querySelector('.game-container');
-    if (!container) return;
-
-    container.innerHTML = `
         <div class="game-stats-bar">
             <div class="gs-item">
                 <span class="gs-label">❤️ Лояльность</span>
@@ -927,25 +877,83 @@ function renderEnding(node, nodeId) {
                 <span class="gs-val" id="stat-val-safety">${currentStats.safety}</span>
             </div>
         </div>
-        ${imgSrc
-            ? `<img src="${imgSrc}" class="game-bg-img" alt="">`
-            : `<div class="game-bg-emoji">${node.art || '🏆'}</div>`}
-        <div class="game-bg-gradient"></div>
-        <div class="game-sheet" style="display:block;">
-            <div class="game-ending-title">${node.title}</div>
-            <div class="game-ending-text">${node.bubble}</div>
-            <div class="game-choices" id="game-choices-container"></div>
+
+        <div class="game-bottom">
+            <div class="game-scene-header">
+                <div class="game-tap-chapter">${node.chapter || ''}</div>
+                <div class="game-tap-title">${node.title}</div>
+            </div>
+
+            <!-- Жёлтый пузырь — нажми чтобы скрыть и увидеть вопросы -->
+            <div class="game-bubble-tap ${node.bubble_type === 'narrator' ? 'game-bubble-narrator-tap' : ''}" id="game-bubble-tap" onclick="revealChoices('${nodeId}')">
+                ${node.bubble.replace(/\n/g, '<br>')}
+                <div class="game-bubble-hint">Нажми, чтобы ответить ↓</div>
+            </div>
+
+            <!-- Кнопки — скрыты до нажатия на пузырь -->
+            <div class="game-choices" id="game-choices-container" style="display:none;">
+                ${choicesHtml}
+            </div>
         </div>
     `;
 
-    const choicesEl = container.querySelector('#game-choices-container');
-    node.choices.forEach(choice => {
-        const btn = document.createElement('button');
-        btn.className = 'game-choice-btn';
-        btn.style.justifyContent = 'center';
-        btn.innerText = choice.text;
+    // Вешаем обработчики на кнопки
+    container.querySelectorAll('.game-choice-btn').forEach((btn, i) => {
+        const choice = node.choices[i];
         btn.onclick = () => handleGameChoice(choice, btn);
-        choicesEl.appendChild(btn);
+    });
+}
+
+function revealChoices(nodeId) {
+    const bubble = document.getElementById('game-bubble-tap');
+    const choices = document.getElementById('game-choices-container');
+    if (bubble) bubble.style.display = 'none';
+    if (choices) choices.style.display = 'flex';
+}
+
+function renderEnding(node, nodeId) {
+    updateGameStatsUI();
+    const imgSrc = nodeImages[nodeId] ? IMAGE_BASE_PATH + nodeImages[nodeId] : null;
+    const container = document.querySelector('.game-container');
+    if (!container) return;
+
+    const choicesHtml = node.choices.map(choice => `
+        <button class="game-choice-btn" style="justify-content:center;text-align:center;">${choice.text}</button>
+    `).join('');
+
+    container.innerHTML = `
+        ${imgSrc
+            ? `<img src="${imgSrc}" class="game-bg-img" alt="">`
+            : `<div class="game-bg-emoji">${node.art || '🏆'}</div>`}
+
+        <div class="game-stats-bar">
+            <div class="gs-item">
+                <span class="gs-label">❤️ Лояльность</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-loyalty" style="width:${currentStats.loyalty}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-loyalty">${currentStats.loyalty}</span>
+            </div>
+            <div class="gs-item">
+                <span class="gs-label">🔧 Техника</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-tech" style="width:${currentStats.tech}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-tech">${currentStats.tech}</span>
+            </div>
+            <div class="gs-item">
+                <span class="gs-label">🛡️ Безопасность</span>
+                <div class="gs-bar"><div class="gs-fill" id="stat-fill-safety" style="width:${currentStats.safety}%;background:#2ecc71"></div></div>
+                <span class="gs-val" id="stat-val-safety">${currentStats.safety}</span>
+            </div>
+        </div>
+
+        <div class="game-bottom">
+            <div class="game-ending-title">${node.title}</div>
+            <div class="game-ending-text">${node.bubble}</div>
+            <div class="game-choices" id="game-choices-container">${choicesHtml}</div>
+        </div>
+    `;
+
+    container.querySelectorAll('.game-choice-btn').forEach((btn, i) => {
+        const choice = node.choices[i];
+        btn.onclick = () => handleGameChoice(choice, btn);
     });
 }
 
@@ -969,12 +977,16 @@ function handleGameChoice(choice, btn) {
     const nextNodeId = choice.next_node;
 
     if (choice.feedback_text || choice.feedback_title) {
-        showGameFeedback(
-            choice.feedback_art  || '',
-            choice.feedback_title || '',
-            choice.feedback_text  || '',
-            nextNodeId
-        );
+        const popup = document.getElementById('game-feedback-popup');
+        const titleEl = document.getElementById('gf-title');
+        const textEl  = document.getElementById('gf-text');
+        if (titleEl) titleEl.innerHTML = (choice.feedback_art || '') + ' ' + (choice.feedback_title || '');
+        if (textEl)  textEl.innerText  = choice.feedback_text || '';
+        if (popup) {
+            popup._nextNodeId = nextNodeId;
+            popup.style.display = 'block';
+            popup.classList.add('active');
+        }
     } else {
         if (nextNodeId === 'finish_game') {
             finishSimulatorGame();
@@ -984,29 +996,14 @@ function handleGameChoice(choice, btn) {
     }
 }
 
-function showGameFeedback(art, title, text, nextNodeId) {
-    const popup = document.getElementById('game-feedback-popup');
-    const titleEl = document.getElementById('gf-title');
-    const textEl  = document.getElementById('gf-text');
-    if (!popup) return;
-    if (titleEl) titleEl.innerHTML = `${art} ${title}`;
-    if (textEl)  textEl.innerText  = text;
-
-    // Store next node
-    popup._nextNodeId = nextNodeId;
-    popup.style.display = 'block';
-    if (typeof openPopup === 'function') openPopup('game-feedback-popup');
-    else popup.classList.add('active');
-}
-
 function closeGameFeedback() {
     const popup = document.getElementById('game-feedback-popup');
     if (!popup) return;
     const nextNodeId = popup._nextNodeId;
-    if (typeof closePopup === 'function') closePopup('game-feedback-popup');
-    else { popup.classList.remove('active'); popup.style.display = 'none'; }
+    popup.style.display = 'none';
+    popup.classList.remove('active');
 
-    if (nextNodeId === 'finish_game') {
+    if (!nextNodeId || nextNodeId === 'finish_game') {
         finishSimulatorGame();
     } else {
         setTimeout(() => renderGameNode(nextNodeId), 300);
