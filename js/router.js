@@ -98,10 +98,5 @@ function closeAllPopups() {
             let gf = document.getElementById('game-feedback-popup');
             if (gf && gf.classList.contains('show')) {
                 gf.classList.remove('show');
-                if (nextNodeIdToLoad === 'finish_game') { 
-                    handleGameWin(); 
-                } else { 
-                    renderGameNode(nextNodeIdToLoad); 
-                }
             }
         }
