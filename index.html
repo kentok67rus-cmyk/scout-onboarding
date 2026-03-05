@@ -1087,17 +1087,14 @@ tg.expand(); } catch(e) { tg = { expand: ()=>{}, HapticFeedback: { impactOccurre
                 } else if (t.status === 'waiting') { 
                     waiting++; 
                     cardClass = 'status-waiting'; 
-                    details = `<span>⏳ Ожидает проверку парковки</span>`
-        }
-            } else if (t.status === 'learning') {
-                learning++;
-                cardClass = 'status-learning';
-                details = `<span>📚 Шаг ${t.progress || '?'}</span>`;
-            }
-            if (t.status === 'waiting') {
-                actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.phone}','${t.name}')">🅿️ Выдать ПИН</button>`;
-            }
-            list.innerHTML += `
+                    details = `<span>⏳ Ожидает проверку парковки</span>`;
+                    actionBtn = `<button class="action-btn btn-orange" onclick="openPinPopup('${t.phone}','${t.name}')">🅿️ Выдать ПИН</button>`;
+                } else if (t.status === 'learning') {
+                    learning++;
+                    cardClass = 'status-learning';
+                    details = `<span>📚 Шаг ${t.progress || '?'}</span>`;
+                }
+                list.innerHTML += `
                 <div class="user-card ${cardClass}">
                     <div class="card-header">
                         <p class="user-name">${t.name}</p>
@@ -1106,14 +1103,14 @@ tg.expand(); } catch(e) { tg = { expand: ()=>{}, HapticFeedback: { impactOccurre
                     <div class="card-body">${details}</div>
                     ${actionBtn}
                 </div>`;
-        });
-        updateChart(trainees.length, ready, waiting, learning);
+            });
+                updateChart(trainees.length, ready, waiting, learning);
     }
     function updateChart(total, ready, waiting, learning) {
-        document.getElementById('stat-total').innerText = total;
-        document.getElementById('stat-ready').innerText = ready;
-        document.getElementById('stat-waiting').innerText = waiting;
-        document.getElementById('stat-learning').innerText = learning;
+        document.getElementById('total-users').innerText = total;
+        document.getElementById('count-ready').innerText = ready;
+        document.getElementById('count-wait').innerText = waiting;
+        document.getElementById('count-learn').innerText = learning;
         let pct = total > 0 ? Math.round((ready / total) * 100) : 0;
         let chartBox = document.querySelector('.chart-box');
         if (chartBox) {
@@ -1126,8 +1123,8 @@ tg.expand(); } catch(e) { tg = { expand: ()=>{}, HapticFeedback: { impactOccurre
     function openPinPopup(phone, name) {
         selectedTrainee = trainees.find(t => t.phone === phone);
         let pin = generateUserPin(phone);
-        document.getElementById('tm-pin-name').innerText = name;
-        document.getElementById('tm-pin-code').innerText = pin;
+        document.getElementById('pin-student-name').innerText = name;
+        document.getElementById('generated-pin').innerText = pin;
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('tm-pin-popup').style.display = 'block';
     }
@@ -1145,6 +1142,9 @@ tg.expand(); } catch(e) { tg = { expand: ()=>{}, HapticFeedback: { impactOccurre
         closeAllPopups();
         setTimeout(fetchTrainees, 1500);
     }
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
