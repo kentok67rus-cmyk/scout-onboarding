@@ -6,8 +6,6 @@ let pracArr = [], pIdx = 0;
             pracArr = [...finalQuizData].sort(() => Math.random() - 0.5); 
             pIdx = 0; 
             userData.score = 0;
-            // Сбрасываем только монеты за квиз (не трогаем монеты за симулятор)
-            userData.coins = parseInt(localStorage.getItem('scoutCoins') || 0);
             // Убираем ранее начисленные монеты за квиз, если пересдача
             const coinsFromSimulator = parseInt(localStorage.getItem('scoutCoinsSimulator') || 0);
             userData.coins = coinsFromSimulator;
