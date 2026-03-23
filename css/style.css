@@ -369,7 +369,7 @@ body {
 }
 
 #game-feedback-popup.show { transform: translateY(0); }
-    display: block;
+    
 
 #gf-title { font-size: 21px; font-weight: 900; margin: 0 0 8px 0; }
 #gf-text  { font-size: 15px; color: #444; line-height: 1.4; margin-bottom: 18px; }
@@ -608,9 +608,11 @@ body {
     
     body > *:not(script) {
         position: absolute;
+               top: 50%;
+               left: 50%;
+               transform: translate(-50%, -50%);
         width: 393px;
-        height: 852px;
-        max-width: 393px;
+                       height: 852px;
         max-height: 852px;
         overflow-y: auto;
         overflow-x: hidden;
