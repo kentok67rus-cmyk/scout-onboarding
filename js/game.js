@@ -1010,8 +1010,30 @@ popup.classList.remove('show');
 }
 
 function finishSimulatorGame() {
-    showScreen('screen-finish');
-    const coinsEl = document.getElementById('res-coins');
-    if (coinsEl) coinsEl.innerText = COINS_FOR_SIMULATOR_WIN;
-    if (typeof awardCoins === 'function') awardCoins(COINS_FOR_SIMULATOR_WIN);
+    // Начисляем монеты за симулятор
+    userData.coins = parseInt(localStorage.getItem('scoutCoins') || 0) + COINS_FOR_SIMULATOR_WIN;
+    localStorage.setItem('scoutCoins', userData.coins);
+    localStorage.setItem('scoutCoinsSimulator', userData.coins);
+    haptic('success');
+
+    // Показываем экран-результат симулятора
+    const container = document.querySelector('.game-container');
+    if (container) {
+        container.innerHTML = `
+            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;font-family:'Onest',sans-serif;">
+                <div style="font-size:80px;margin-bottom:16px;">🎉</div>
+                <div style="font-size:24px;font-weight:900;color:#fff100;margin-bottom:12px;text-transform:uppercase;">Симуляция пройдена!</div>
+                <div style="font-size:15px;color:#ccc;line-height:1.6;margin-bottom:24px;">Ты прошёл свою первую смену.<br>Теперь ты знаешь, как всё работает.</div>
+                <div style="background:#1e1e1e;border:2px solid #fff100;border-radius:16px;padding:18px 28px;margin-bottom:28px;">
+                    <div style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Заработано монет</div>
+                    <div style="font-size:36px;font-weight:900;color:#fff100;">+${COINS_FOR_SIMULATOR_WIN} 💰</div>
+                </div>
+                <button onclick="completeSimulator()" style="background:#fff100;color:#000;border:none;padding:18px 32px;border-radius:16px;font-size:17px;font-weight:900;font-family:'Onest',sans-serif;width:100%;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">Продолжить →</button>
+            </div>
+        `;
+    }
+}
+
+function completeSimulator() {
+    completeStep(2);
 }
