@@ -1,6 +1,11 @@
 // config.js — Конфигурация и утилиты
 
 const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbztUcsreMEKKZ4QfjmKWgkYmZTfBx1WRZRdQQjIcnjryp29vKYN9PbrzJ8lxG6jFK86/exec";
+
+// Константы геймификации
+const COINS_PER_CORRECT_ANSWER = 100; // монет за правильный ответ в экзамене
+const QUIZ_PASS_THRESHOLD = 4;        // минимум правильных ответов для сдачи (из 5)
+const COINS_FOR_SIMULATOR_WIN = 500;  // монет за прохождение симулятора
         
 let tg = {}; try { tg = window.Telegram.WebApp;
 tg.expand(); } catch(e) { tg = { expand: ()=>{}, HapticFeedback: { impactOccurred: ()=>{}, notificationOccurred: ()=>{} }, showConfirm: (m, cb) => { cb(confirm(m)); }, showAlert: (m) => { alert(m); }, initDataUnsafe: {}, ready: ()=>{} }; }
