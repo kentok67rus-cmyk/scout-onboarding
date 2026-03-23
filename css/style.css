@@ -609,13 +609,7 @@ body {
     
     body > *:not(script) {
         position: absolute;
-               top: 50%;
-               left: 50%;
-               transform: translate(-50%, -50%);
-        width: 393px;
-                       height: 852px;
-        max-height: 852px;
-        overflow-y: auto;
+                       overflow-y: auto;
         overflow-x: hidden;
         border-radius: 50px;
         background: var(--bg);
