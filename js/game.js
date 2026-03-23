@@ -814,6 +814,14 @@ let currentStats = { loyalty: 50, tech: 50, safety: 50 };
 let gameChoicesLocked = false;
 
 function startSimulatorGame() {
+        // Создаём screen-game в DOM если ещё нет
+        if (!document.getElementById('screen-game')) {
+                    const appScout = document.getElementById('app-scout');
+                    const sg = document.createElement('div');
+                    sg.id = 'screen-game'; sg.className = 'screen';
+                    sg.innerHTML = '<div class="game-container"></div><div id="game-feedback-popup"><div id="gf-title"></div><div id="gf-text"></div><button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить</button></div>';
+                    if (appScout) appScout.appendChild(sg);
+                }
     currentStats = { loyalty: 50, tech: 50, safety: 50 };
     gameChoicesLocked = false;
     showScreen('screen-game');
