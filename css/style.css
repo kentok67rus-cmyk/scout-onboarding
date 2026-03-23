@@ -132,6 +132,7 @@ body {
 #tm-auth-status { font-size: 15px; font-weight: 700; margin-top: 14px; min-height: 22px; }
 
 /* ── СКАУТ: общее ─────────────────────────────────────────────────────── */
+#app-scout { background: var(--white); }
 #app-scout .screen {
     display: none;
     background: var(--white);
