@@ -195,12 +195,11 @@ const nodeImages = {
   'ending_chaos_survived': 'ending_chaos_survived.png',
   'ending_cringe':         'ending_bad.png'
 };
-
 const COINS_FOR_SIMULATOR_WIN = 500;
 
 const gameData = {
 
-  "prologue": {
+  
     "art": "☀️🛴",
     "chapter": "Пролог",
     "title": "Утро в Карете",
