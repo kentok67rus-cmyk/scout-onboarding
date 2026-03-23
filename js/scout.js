@@ -132,6 +132,18 @@ function showScreen(id) {
     let scr = document.getElementById(id); if(scr) scr.classList.add('active');
     document.getElementById('statusBar').style.display =
         (id === 'screen-practice') ? 'flex' : 'none';
+        // Кнопка Назад
+        const screensWithBack = ['screen-video','screen-testdrive','screen-audio','screen-practice'];
+        let backBtn = document.getElementById('back-btn-dynamic');
+        if (!backBtn && scr) {
+                    backBtn = document.createElement('button');
+                    backBtn.id = 'back-btn-dynamic';
+                    backBtn.className = 'reset-btn';
+                    backBtn.innerHTML = '← Назад';
+                    backBtn.onclick = () => showScreen('screen-roadmap');
+                    scr.appendChild(backBtn);
+                }
+        if (backBtn) backBtn.style.display = screensWithBack.includes(id) ? 'block' : 'none';
 }
 
 function renderRoadmap() {
