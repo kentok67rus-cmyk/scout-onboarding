@@ -131,6 +131,12 @@
     }
     .game-choice-btn.selected-correct { background: rgba(46,204,113,0.4) !important; border-color: #2ecc71 !important; }
     .game-choice-btn.selected-wrong   { background: rgba(231,76,60,0.4)  !important; border-color: #e74c3c !important; }
+    `;
+
+    document.head.appendChild(style);
+})();
+
+// ===================================================================== 
 function startSimulatorGame() {
     /* Концовка */
     .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 4px rgba(0,0,0,0.9); }
