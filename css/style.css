@@ -656,3 +656,8 @@ body {
         opacity: 0.8;
     }
 }
+
+/* Фикс: скрыть экран лидерборда по умолчанию */
+#screen-leaderboard:not(.active) {
+    display: none !important;
+}
