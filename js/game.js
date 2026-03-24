@@ -138,29 +138,11 @@
 
 // ===================================================================== 
 function startSimulatorGame() {
-        // Создаём screen-game в DOM если ещё нет
-    if (!document.getElementById('screen-game')) {
-        const appScout = document.getElementById('app-scout');
-        const sg = document.createElement('div');
-        sg.id = 'screen-game';
-        sg.className = 'screen';
-        sg.innerHTML = `
-          <div class="game-container"></div>
-          <div id="game-feedback-popup" style="display:none; position:fixed; bottom:0; left:0; right:0; background:#1a1a1a; padding:20px; z-index:10000; border-top:3px solid #fff100;">
-            <h3 id="gf-title"></h3>
-            <p id="gf-text"></p>
-            <button onclick="closeGameFeedback()" class="comic-continue-btn">Продолжить</button>
-          </div>
-        `;
-        if (appScout) appScout.appendChild(sg);
-    }
-
     currentStats = { loyalty: 50, tech: 50, safety: 50 };
     gameChoicesLocked = false;
     showScreen('screen-game');
     renderGameNode('prologue');
-    }
-    
+}    
 // ====================================================================`;
 
 //  ДАННЫЕ ИГРЫ
