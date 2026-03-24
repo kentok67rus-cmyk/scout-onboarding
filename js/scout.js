@@ -212,70 +212,62 @@ let currentQuestionIndex = 0;
 let selectedAnswer = null;
 
 function startQuiz() {
-        currentQuestionIndex = 0;
-        selectedAnswer = null;
-        loadQuestion();
-        showScreen('screen-game');
-    }
+    currentQuestionIndex = 0;
+    selectedAnswer = null;
+    loadQuestion();
+    showScreen('screen-game');
+}
 
 function loadQuestion() {
-        const q = finalQuizData[currentQuestionIndex];
-        if (!q) {
-                    completeStep(2);
-                    return;
-                }
-        selectedAnswer = null;
-        const container = document.getElementById('quiz-container');
-        const btn = document.getElementById('quiz-btn');
-
-        let html = `<p style="font-size:18px;margin-bottom:15px;">Вопрос ${currentQuestionIndex + 1}/${finalQuizData.length}</p>`;
-        html += `<p style="font-size:20px;font-weight:600;margin-bottom:20px;">${q.q}</p>`;
-
-        q.a.forEach((ans, idx) => {
-                    const correct = ans.c;
-                    html += `<div class="quiz-option" onclick="selectAnswer(${idx})" id="opt-${idx}" style="padding:15px;margin:10px 0;border:2px solid #ddd;border-radius:10px;cursor:pointer;">${ans.t}</div>`;
-                });
-
-        container.innerHTML = html;
-        btn.style.display = 'none';
-    }
+    const q = finalQuizData[currentQuestionIndex];
+    if (!q) { completeStep(2); return; }
+    selectedAnswer = null;
+    const container = document.getElementById('quiz-container');
+    const btn = document.getElementById('quiz-btn');
+    let html = '<p style="color:#aaa;margin-bottom:15px;">\u0412\u043e\u043f\u0440\u043e\u0441 ' + (currentQuestionIndex + 1) + '/' + finalQuizData.length + '</p>';
+    html += '<p style="font-size:20px;font-weight:600;margin-bottom:20px;color:#fff;">' + q.q + '</p>';
+    q.a.forEach(function(ans, idx) {
+        html += '<div class="quiz-option" onclick="selectAnswer(' + idx + ')" id="opt-' + idx + '" style="padding:15px;margin:10px 0;border:2px solid #555;border-radius:10px;cursor:pointer;color:#fff;background:#222;">' + ans.t + '</div>';
+    });
+    container.innerHTML = html;
+    btn.style.display = 'none';
+}
 
 function selectAnswer(idx) {
-        selectedAnswer = idx;
-        const opts = document.querySelectorAll('.quiz-option');
-        opts.forEach((o, i) => {
-                    o.style.borderColor = i === idx ? '#FFD700' : '#ddd';
-                    o.style.background = i === idx ? '#FFF9E6' : 'white';
-                });
-        document.getElementById('quiz-btn').style.display = 'block';
-    }
+    selectedAnswer = idx;
+    const opts = document.querySelectorAll('.quiz-option');
+    opts.forEach(function(o, i) {
+        o.style.borderColor = i === idx ? '#FFD700' : '#555';
+        o.style.background = i === idx ? '#3a3000' : '#222';
+    });
+    document.getElementById('quiz-btn').style.display = 'block';
+}
 
 function checkAnswer() {
-        if (selectedAnswer === null) return;
-
-        const q = finalQuizData[currentQuestionIndex];
-        const correct = q.a[selectedAnswer].c;
-
-        if (correct) {
-                    currentQuestionIndex++;
-                    if (currentQuestionIndex < finalQuizData.length) {
-                                    loadQuestion();
-                                } else {
-                                    completeStep(2);
-                                }
-                } else {
-                    alert('Неправильно! Попробуй ещё раз.');
-                    selectedAnswer = null;
-                    loadQuestion();
-                }
+    if (selectedAnswer === null) return;
+    const q = finalQuizData[currentQuestionIndex];
+    const correct = q.a[selectedAnswer].c;
+    if (correct) {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < finalQuizData.length) {
+            loadQuestion();
+        } else {
+            completeStep(2);
+        }
+    } else {
+        const msg = '\u041d\u0435\u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e! \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439 \u0435\u0449\u0451 \u0440\u0430\u0437.';
+        if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        selectedAnswer = null;
+        loadQuestion();
     }
+}
 
-// Функция сброса прогресса
+// \u0424\u0443\u043d\u043a\u0446\u0438\u044f \u0441\u0431\u0440\u043e\u0441\u0430 \u043f\u0440\u043e\u0433\u0440\u0435\u0441\u0441\u0430
 function resetApp() {
-  if (confirm('Вы уверены, что хотите сбросить весь прогресс?')) {
-    localStorage.removeItem('scoutProgress');
-    localStorage.removeItem('scoutCoins');
-    localStorage.removeItem('scoutCoinsSimulator');
-    location.reload();
-  }
+    if (confirm('\u0412\u044b \u0443\u0432\u0435\u0440\u0435\u043d\u044b, \u0447\u0442\u043e \u0445\u043e\u0442\u0438\u0442\u0435 \u0441\u0431\u0440\u043e\u0441\u0438\u0442\u044c \u0432\u0435\u0441\u044c \u043f\u0440\u043e\u0433\u0440\u0435\u0441\u0441?')) {
+        localStorage.removeItem('scoutProgress');
+        localStorage.removeItem('scoutCoins');
+        localStorage.removeItem('scoutCoinsSimulator');
+        location.reload();
+    }
 }
