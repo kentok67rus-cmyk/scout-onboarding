@@ -208,3 +208,13 @@ function verifyPin() {
         document.getElementById('scout-pin').value = '';
     }
 }
+
+// Функция сброса прогресса
+function resetApp() {
+  if (confirm('Вы уверены, что хотите сбросить весь прогресс?')) {
+    localStorage.removeItem('scoutProgress');
+    localStorage.removeItem('scoutCoins');
+    localStorage.removeItem('scoutCoinsSimulator');
+    location.reload();
+  }
+}
