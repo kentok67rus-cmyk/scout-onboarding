@@ -1,4 +1,4 @@
-// scout.js — Логика скаута
+// scout.js — Логика скаута | v1.1
 
 let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
 let currentProgressStep = 1;
