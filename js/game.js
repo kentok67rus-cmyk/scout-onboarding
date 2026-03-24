@@ -148,7 +148,7 @@ function startSimulatorGame()
         .game-feedback-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 9998; display: none; }
         .game-feedback-backdrop.show { display: block; }
         /* Кнопка выхода из симулятора */
-        .game-exit-btn { position: absolute; top: max(env(safe-area-inset-top,10px44px10px); left: 12px; z-index: 25; background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 800; font-family: 'Onest', sans-serif; cursor: pointer; backdrop-filter: blur(8px); }
+        .game-exit-btn { position: absolute; top: max(env(safe-area-inset-top,10px),44px); left: 12px; z-index: 25; background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 800; font-family: 'Onest', sans-serif; cursor: pointer; backdrop-filter: blur(8px); }
         /* Кнопка «нажми чтобы ответить» — сделаем заметнее */
         .game-bubble-hint { font-size: 12px; font-weight: 900; color: rgba(0,0,0,0.6); text-align: center; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.8px; animation: pulsehint 1.2s infinite; background: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 20px; display: inline-block; }
         .game-bubble-tap-wrapper { text-align: center; }
