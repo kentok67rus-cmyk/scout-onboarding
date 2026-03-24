@@ -11,7 +11,7 @@
     #screen-game { padding: 0 !important; overflow: hidden !important; background: #000; height: 100% !important; min-height: 100vh; background: #000 !important; }
 
     .game-container {
-        position: relative;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;
         width: 100%;
         height: 100vh; background: #000 !important;
         overflow: hidden;
@@ -88,7 +88,7 @@
         box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
         font-family: 'Onest', sans-serif;
         cursor: pointer;
-        position: relative;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;
     }
     .game-bubble-narrator-tap {
         background: rgba(255,255,255,0.95);
