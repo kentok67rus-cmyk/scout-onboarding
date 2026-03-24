@@ -8,12 +8,12 @@
     style.textContent = `
     @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;600;700;800;900&display=swap');
 
-    #screen-game { padding: 0 !important; overflow: hidden !important; background: #000; }
+    #screen-game { padding: 0 !important; overflow: hidden !important; background: #000; height: 100% !important; min-height: 100vh; background: #000 !important; }
 
     .game-container {
         position: relative;
         width: 100%;
-        height: 100vh;
+        height: 100vh; background: #000 !important;
         overflow: hidden;
         font-family: 'Onest', sans-serif;
     }
