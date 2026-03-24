@@ -197,7 +197,7 @@ const nodeImages = {
 };
 
 
-const gameData = {   "prologue":
+const gameData = {   "prologue": {
 
   
     "art": "☀️🛴",
