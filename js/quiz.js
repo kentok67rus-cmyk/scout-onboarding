@@ -20,11 +20,16 @@ let pracArr = [], pIdx = 0;
             let q = pracArr[pIdx];
             document.getElementById('q-counter').innerText = `${pIdx + 1}/${pracArr.length}`;
             document.getElementById('prac-text').innerText = q.q;
-            document.getElementById('prac-options').innerHTML = [...q.a]
-                .sort(() => Math.random() - 0.5)
-                .map(o => `<div class="option" onclick='handleAns(${JSON.stringify(o)}, this)'>${o.t}</div>`)
-                .join('');
-            document.getElementById('coins').innerText = userData.coins;
+        const optContainer = document.getElementById('prac-options');
+        optContainer.innerHTML = '';
+        [...q.a].sort(() => Math.random() - 0.5).forEach(o => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.textContent = o.t;
+            div.addEventListener('click', function() { handleAns(o, this); });
+            optContainer.appendChild(div);
+        });
+        document.getElementById('coins').innerText = userData.coins;
         }
 
         function handleAns(o, el) {
