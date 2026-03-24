@@ -73,8 +73,12 @@
 
     <!-- Игра-симулятор -->
     <div id="screen-game" class="screen" style="padding:0;overflow:hidden;background:#000;">
-        <div class="game-container"></div>
-    </div>
+        <div class="game-container" style="background:#fff;border-radius:16px;padding:24px;text-align:center;">
+                        <h2>🎮 Симулятор Смены</h2>
+                        <div id="quiz-container"></div>
+                        <button id="quiz-btn" onclick="checkAnswer()" style="margin-top:20px;display:none;background:var(--primary);color:#000;border:none;padding:14px 30px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;">Ответить →</button>
+                    </div>
+            </div>
 
     <!-- Тест-драйв -->
     <div id="screen-testdrive" class="screen center">
