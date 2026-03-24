@@ -133,12 +133,11 @@ function showScreen(id) {
     document.getElementById('statusBar').style.display =
         (id === 'screen-practice') ? 'flex' : 'none';
         // Кнопка Назад
-        const screensWithBack = ['screen-video','screen-testdrive','screen-audio','screen-practice','screen-mentor'];
+        const screensWithBack = ['screen-video','screen-testdrive','screen-audio','screen-practice','screen-mentor','screen-game'];
 const oldBack = document.getElementById('back-btn-dynamic');
         if (oldBack) oldBack.remove();
         if (scr && screensWithBack.includes(id)) {
-            const backBtn = document.createElement('button');
-            backBtn.id = 'back-btn-dynamic';
+        const backBtn = document.createElement('button');            backBtn.id = 'back-btn-dynamic';
             backBtn.className = 'reset-btn';
             backBtn.innerHTML = '← Назад';
             backBtn.onclick = () => showScreen('screen-roadmap');
@@ -233,8 +232,8 @@ function loadQuestion() {
         html += `<p style="font-size:20px;font-weight:600;margin-bottom:20px;">${q.q}</p>`;
 
         q.a.forEach((ans, idx) => {
-                    const correct = ans[1];
-                    html += `<div class="quiz-option" onclick="selectAnswer(${idx})" id="opt-${idx}" style="padding:15px;margin:10px 0;border:2px solid #ddd;border-radius:10px;cursor:pointer;">${ans[0]}</div>`;
+                    const correct = ans.c;
+                    html += `<div class="quiz-option" onclick="selectAnswer(${idx})" id="opt-${idx}" style="padding:15px;margin:10px 0;border:2px solid #ddd;border-radius:10px;cursor:pointer;">${ans.t}</div>`;
                 });
 
         container.innerHTML = html;
@@ -255,7 +254,7 @@ function checkAnswer() {
         if (selectedAnswer === null) return;
 
         const q = finalQuizData[currentQuestionIndex];
-        const correct = q.a[selectedAnswer][1];
+        const correct = q.a[selectedAnswer].c;
 
         if (correct) {
                     currentQuestionIndex++;
