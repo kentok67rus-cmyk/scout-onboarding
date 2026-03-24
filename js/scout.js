@@ -171,8 +171,7 @@ function renderRoadmap() {
 function handleStepClick(id) {
     if (id > currentProgressStep) { haptic('warning'); return; }
     if (id === 1) showScreen('screen-video');
-    if (id === 2) startSimulatorGame();
-    if (id === 3) showScreen('screen-testdrive');
+    if (id === 2) startQuiz();    if (id === 3) showScreen('screen-testdrive');
     if (id === 4) showScreen('screen-mentor');
     if (id === 5) showScreen('screen-audio');
     if (id === 6) startFinalQuiz();
@@ -208,6 +207,69 @@ function verifyPin() {
         document.getElementById('scout-pin').value = '';
     }
 }
+
+// Викторина
+let currentQuestionIndex = 0;
+let selectedAnswer = null;
+
+function startQuiz() {
+        currentQuestionIndex = 0;
+        selectedAnswer = null;
+        loadQuestion();
+        showScreen('screen-game');
+    }
+
+function loadQuestion() {
+        const q = finalQuizData[currentQuestionIndex];
+        if (!q) {
+                    completeStep(2);
+                    return;
+                }
+        selectedAnswer = null;
+        const container = document.getElementById('quiz-container');
+        const btn = document.getElementById('quiz-btn');
+
+        let html = `<p style="font-size:18px;margin-bottom:15px;">Вопрос ${currentQuestionIndex + 1}/${finalQuizData.length}</p>`;
+        html += `<p style="font-size:20px;font-weight:600;margin-bottom:20px;">${q.q}</p>`;
+
+        q.a.forEach((ans, idx) => {
+                    const correct = ans[1];
+                    html += `<div class="quiz-option" onclick="selectAnswer(${idx})" id="opt-${idx}" style="padding:15px;margin:10px 0;border:2px solid #ddd;border-radius:10px;cursor:pointer;">${ans[0]}</div>`;
+                });
+
+        container.innerHTML = html;
+        btn.style.display = 'none';
+    }
+
+function selectAnswer(idx) {
+        selectedAnswer = idx;
+        const opts = document.querySelectorAll('.quiz-option');
+        opts.forEach((o, i) => {
+                    o.style.borderColor = i === idx ? '#FFD700' : '#ddd';
+                    o.style.background = i === idx ? '#FFF9E6' : 'white';
+                });
+        document.getElementById('quiz-btn').style.display = 'block';
+    }
+
+function checkAnswer() {
+        if (selectedAnswer === null) return;
+
+        const q = finalQuizData[currentQuestionIndex];
+        const correct = q.a[selectedAnswer][1];
+
+        if (correct) {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < finalQuizData.length) {
+                                    loadQuestion();
+                                } else {
+                                    completeStep(2);
+                                }
+                } else {
+                    alert('Неправильно! Попробуй ещё раз.');
+                    selectedAnswer = null;
+                    loadQuestion();
+                }
+    }
 
 // Функция сброса прогресса
 function resetApp() {
