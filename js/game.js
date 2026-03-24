@@ -139,6 +139,8 @@
 // ===================================================================== 
 function startSimulatorGame() {
     currentStats = { loyalty: 50, tech: 50, safety: 50 };
+        let gc = document.querySelector('.game-container');
+    if (!gc) { gc = document.createElement('div'); gc.className = 'game-container'; document.getElementById('screen-game').appendChild(gc); }
     gameChoicesLocked = false;
     showScreen('screen-game');
     renderGameNode('prologue');
