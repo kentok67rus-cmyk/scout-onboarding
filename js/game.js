@@ -131,7 +131,7 @@
     }
     .game-choice-btn.selected-correct { background: rgba(46,204,113,0.4) !important; border-color: #2ecc71 !important; }
     .game-choice-btn.selected-wrong   { background: rgba(231,76,60,0.4)  !important; border-color: #e74c3c !important; }
-function startSimulatorGame()
+function startSimulatorGame() {
     /* Концовка */
     .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 4px rgba(0,0,0,0.9); }
     .game-ending-text { font-size: 13px; color: #000; line-height: 1.6; background: #fff100; padding: 14px; border-radius: 14px; margin-bottom: 14px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 2px solid #000; box-shadow: 3px 3px 0 rgba(0,0,0,0.4); }
