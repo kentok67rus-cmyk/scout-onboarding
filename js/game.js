@@ -88,23 +88,10 @@
         box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
         font-family: 'Onest', sans-serif;
         cursor: pointer;
-        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;
     }
     .game-bubble-narrator-tap {
         background: rgba(255,255,255,0.95);
     }
-    .game-bubble-hint {
-        font-size: 11px;
-        font-weight: 900;
-        color: rgba(0,0,0,0.45);
-        text-align: right;
-        margin-top: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        animation: pulsehint 1.5s infinite;
-    }
-    @keyframes pulsehint { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
     /* Кнопки выборов */
     .game-choices { display: flex; flex-direction: column; gap: 8px; }
     .game-choice-btn {
@@ -156,14 +143,12 @@ function startSimulatorGame()
     .comic-continue-btn {
         display: block; background: #fff100 !important; color: #000 !important;
         border: none !important; padding: 16px !important; border-radius: 14px !important;
-popup.style.display = 'none';
-        popup.classList.remove('show');        width: 100%; text-transform: uppercase !important; letter-spacing: 1px; cursor: pointer; margin-top: 10px !important;
     }
             /* Backdrop для feedback popup */
         .game-feedback-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 9998; display: none; }
         .game-feedback-backdrop.show { display: block; }
         /* Кнопка выхода из симулятора */
-        .game-exit-btn { position: absolute; top: max(env(safe-area-inset-top,10px),10px); left: 12px; z-index: 25; background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 800; font-family: 'Onest', sans-serif; cursor: pointer; backdrop-filter: blur(8px); }
+        .game-exit-btn { position: absolute; top: max(env(safe-area-inset-top,10px44px10px); left: 12px; z-index: 25; background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 800; font-family: 'Onest', sans-serif; cursor: pointer; backdrop-filter: blur(8px); }
         /* Кнопка «нажми чтобы ответить» — сделаем заметнее */
         .game-bubble-hint { font-size: 12px; font-weight: 900; color: rgba(0,0,0,0.6); text-align: center; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.8px; animation: pulsehint 1.2s infinite; background: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 20px; display: inline-block; }
         .game-bubble-tap-wrapper { text-align: center; }
@@ -833,8 +818,15 @@ function startSimulatorGame() {
                     if (appScout) appScout.appendChild(sg);
                 }
     currentStats = { loyalty: 50, tech: 50, safety: 50 };
-            // Гарантируем game-container внутри screen-game
-            const _sg = document.getElementById('screen-game');
+        sg.innerHTML = `
+            <div class="game-container"></div>
+            <div class="game-feedback-backdrop" onclick="closeGameFeedback()"></div>
+            <div id="game-feedback-popup">
+                <div id="gf-title"></div>
+                <div id="gf-text"></div>
+                <button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить</button>
+            </div>
+        `;            const _sg = document.getElementById('screen-game');
             if (_sg && !_sg.querySelector('.game-container')) { const _gc = document.createElement('div'); _gc.className = 'game-container'; _sg.insertBefore(_gc, _sg.firstChild); }
     gameChoicesLocked = false;
     showScreen('screen-game');
@@ -1023,6 +1015,7 @@ function closeGameFeedback() {
     const nextNodeId = popup._nextNodeId;
     popup.style.display = 'none';
 popup.classList.remove('show');
+        const bd = document.querySelector('.game-feedback-backdrop'); if(bd) bd.style.display = 'none';
     if (!nextNodeId || nextNodeId === 'finish_game') {
         finishSimulatorGame();
     } else {
