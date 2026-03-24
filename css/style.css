@@ -630,3 +630,13 @@ body {
         transform: translateX(-50%) translateY(0) !important;
     }
 }
+
+/* Фикс перекрытия текста в роадмапе - UX аудит */
+#screen-roadmap h2 {
+  margin-top: 50px !important;
+}
+
+#screen-roadmap > p {
+  margin-top: 0 !important;
+  padding-top: 5px;
+}
