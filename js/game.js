@@ -138,32 +138,29 @@
 
 // ===================================================================== 
 function startSimulatorGame() {
-    /* Концовка */
-    .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 4px rgba(0,0,0,0.9); }
-    .game-ending-text { font-size: 13px; color: #000; line-height: 1.6; background: #fff100; padding: 14px; border-radius: 14px; margin-bottom: 14px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 2px solid #000; box-shadow: 3px 3px 0 rgba(0,0,0,0.4); }
-
-    /* Фидбек попап */
-    #game-feedback-popup { background: #1a1a1a !important; border-top: 3px solid #fff100 !important; }
-    #gf-title { font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #fff; font-family: 'Onest', sans-serif; }
-    #gf-text { font-size: 14px; color: #ccc; line-height: 1.55; margin-bottom: 14px; background: #2a2a2a; padding: 12px 14px; border-radius: 12px; border-left: 4px solid #fff100; font-family: 'Onest', sans-serif; font-weight: 600; }
-    .comic-continue-btn {
-        display: block; background: #fff100 !important; color: #000 !important;
-        border: none !important; padding: 16px !important; border-radius: 14px !important;
+        // Создаём screen-game в DOM если ещё нет
+    if (!document.getElementById('screen-game')) {
+        const appScout = document.getElementById('app-scout');
+        const sg = document.createElement('div');
+        sg.id = 'screen-game';
+        sg.className = 'screen';
+        sg.innerHTML = `
+          <div class="game-container"></div>
+          <div id="game-feedback-popup" style="display:none; position:fixed; bottom:0; left:0; right:0; background:#1a1a1a; padding:20px; z-index:10000; border-top:3px solid #fff100;">
+            <h3 id="gf-title"></h3>
+            <p id="gf-text"></p>
+            <button onclick="closeGameFeedback()" class="comic-continue-btn">Продолжить</button>
+          </div>
+        `;
+        if (appScout) appScout.appendChild(sg);
     }
-            /* Backdrop для feedback popup */
-        .game-feedback-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 9998; display: none; }
-        .game-feedback-backdrop.show { display: block; }
-        /* Кнопка выхода из симулятора */
-        .game-exit-btn { position: absolute; top: max(env(safe-area-inset-top,10px),44px); left: 12px; z-index: 25; background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 800; font-family: 'Onest', sans-serif; cursor: pointer; backdrop-filter: blur(8px); }
-        /* Кнопка «нажми чтобы ответить» — сделаем заметнее */
-        .game-bubble-hint { font-size: 12px; font-weight: 900; color: rgba(0,0,0,0.6); text-align: center; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.8px; animation: pulsehint 1.2s infinite; background: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 20px; display: inline-block; }
-        .game-bubble-tap-wrapper { text-align: center; }
-        /* Кнопка «подсказка» активный стиль */
-        .game-choice-btn.correct-answer-reveal { background: rgba(46,204,113,0.4) !important; border-color: #2ecc71 !important; }
 
-document.head.appendChild(style);
-})();
-
+    currentStats = { loyalty: 50, tech: 50, safety: 50 };
+    gameChoicesLocked = false;
+    showScreen('screen-game');
+    renderGameNode('prologue');
+    }
+    
 // ====================================================================`;
 
 //  ДАННЫЕ ИГРЫ
