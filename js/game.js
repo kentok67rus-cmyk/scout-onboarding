@@ -41,7 +41,7 @@
         z-index: 20;
         display: flex;
         justify-content: space-around;
-        padding: 10px 8px 16px;
+        padding: max(env(safe-area-inset-top, 12px), 44px) 8px 16px;
         background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%);
     }
     .gs-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
@@ -71,7 +71,7 @@
     .game-tap-title {
         font-size: 26px; font-weight: 900; color: #fff;
         line-height: 1.15; font-family: 'Onest', sans-serif;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 4px rgba(0,0,0,0.9);
     }
 
     /* Жёлтый пузырь — нажимаемый */
@@ -144,9 +144,9 @@
     }
     .game-choice-btn.selected-correct { background: rgba(46,204,113,0.4) !important; border-color: #2ecc71 !important; }
     .game-choice-btn.selected-wrong   { background: rgba(231,76,60,0.4)  !important; border-color: #e74c3c !important; }
-
+function startSimulatorGame()
     /* Концовка */
-    .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+    .game-ending-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 10px; font-family: 'Onest', sans-serif; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 4px rgba(0,0,0,0.9); }
     .game-ending-text { font-size: 13px; color: #000; line-height: 1.6; background: #fff100; padding: 14px; border-radius: 14px; margin-bottom: 14px; white-space: pre-line; font-family: 'Onest', sans-serif; font-weight: 600; border: 2px solid #000; box-shadow: 3px 3px 0 rgba(0,0,0,0.4); }
 
     /* Фидбек попап */
@@ -156,9 +156,20 @@
     .comic-continue-btn {
         display: block; background: #fff100 !important; color: #000 !important;
         border: none !important; padding: 16px !important; border-radius: 14px !important;
-        font-size: 16px !important; font-weight: 900 !important; font-family: 'Onest', sans-serif !important;
-        width: 100%; text-transform: uppercase !important; letter-spacing: 1px; cursor: pointer; margin-top: 10px !important;
+popup.style.display = 'none';
+        popup.classList.remove('show');        width: 100%; text-transform: uppercase !important; letter-spacing: 1px; cursor: pointer; margin-top: 10px !important;
     }
+            /* Backdrop для feedback popup */
+        .game-feedback-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 9998; display: none; }
+        .game-feedback-backdrop.show { display: block; }
+        /* Кнопка выхода из симулятора */
+        .game-exit-btn { position: absolute; top: max(env(safe-area-inset-top,10px),10px); left: 12px; z-index: 25; background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 800; font-family: 'Onest', sans-serif; cursor: pointer; backdrop-filter: blur(8px); }
+        /* Кнопка «нажми чтобы ответить» — сделаем заметнее */
+        .game-bubble-hint { font-size: 12px; font-weight: 900; color: rgba(0,0,0,0.6); text-align: center; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.8px; animation: pulsehint 1.2s infinite; background: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 20px; display: inline-block; }
+        .game-bubble-tap-wrapper { text-align: center; }
+        /* Кнопка «подсказка» активный стиль */
+        .game-choice-btn.correct-answer-reveal { background: rgba(46,204,113,0.4) !important; border-color: #2ecc71 !important; }
+
 `;
 document.head.appendChild(style);
 })();
