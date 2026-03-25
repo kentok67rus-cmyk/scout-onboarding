@@ -820,21 +820,60 @@ const STAT_DANGER = 15;
 let currentStats = { loyalty: 50, tech: 50, safety: 50 };
 let gameChoicesLocked = false;
 
+// --- ФУНКЦИЯ ПРЕДЗАГРУЗКИ КАРТИНОК ---
+function preloadGameImages(urls, callback) {
+    let loadedCounter = 0;
+    if (urls.length === 0) return callback();
+
+    urls.forEach(url => {
+        let img = new Image();
+        img.onload = () => {
+            loadedCounter++;
+            if (loadedCounter === urls.length) callback();
+        };
+        img.onerror = () => {
+            console.warn("Ошибка загрузки: " + url);
+            loadedCounter++; 
+            if (loadedCounter === urls.length) callback();
+        };
+        img.src = url;
+    });
+}
+
 function startSimulatorGame() {
-        // Создаём screen-game в DOM если ещё нет
-        if (!document.getElementById('screen-game')) {
-                    const appScout = document.getElementById('app-scout');
-                    const sg = document.createElement('div');
-                    sg.id = 'screen-game'; sg.className = 'screen';
-                    sg.innerHTML = '<div class="game-container"></div><div id="game-feedback-popup"><div id="gf-title"></div><div id="gf-text"></div><button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить</button></div>';
-                    if (appScout) appScout.appendChild(sg);
-                }
+    // Создаём screen-game в DOM если ещё нет
+    if (!document.getElementById('screen-game')) {
+        const appScout = document.getElementById('app-scout');
+        const sg = document.createElement('div');
+        sg.id = 'screen-game'; sg.className = 'screen';
+        sg.innerHTML = '<div class="game-container"></div><div id="game-feedback-popup"><div id="gf-title"></div><div id="gf-text"></div><button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить</button></div>';
+        if (appScout) appScout.appendChild(sg);
+    }
     currentStats = { loyalty: 50, tech: 50, safety: 50 };
-                    const _sg = document.getElementById('screen-game');
-            if (_sg && !_sg.querySelector('.game-container')) { const _gc = document.createElement('div'); _gc.className = 'game-container'; _sg.insertBefore(_gc, _sg.firstChild); }
+    const _sg = document.getElementById('screen-game');
+    if (_sg && !_sg.querySelector('.game-container')) { 
+        const _gc = document.createElement('div'); 
+        _gc.className = 'game-container'; 
+        _sg.insertBefore(_gc, _sg.firstChild); 
+    }
     gameChoicesLocked = false;
     showScreen('screen-game');
-    renderGameNode('prologue');
+
+    // Экран загрузки
+    const container = document.querySelector('.game-container');
+    if (container) {
+        container.innerHTML = `
+            <div style="display:flex; flex-direction:column; height:100vh; width:100%; align-items:center; justify-content:center; background:#000;">
+                <div style="color:#fff100; font-family:Onest,sans-serif; font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:2px; animation: pulse 1.5s infinite;">ЗАГРУЗКА СМЕНЫ...</div>
+            </div>`;
+    }
+
+    // Собираем пути к картинкам (в вашем коде есть const nodeImages = {...})
+    const imageUrls = Object.values(nodeImages).map(filename => IMAGE_BASE_PATH + filename);
+
+    preloadGameImages(imageUrls, () => {
+        renderGameNode('prologue');
+    });
 }
 
 function updateGameStatsUI() {
