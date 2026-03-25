@@ -864,7 +864,8 @@ function startSimulatorGame() {
     if (container) {
         container.innerHTML = `
             <div style="display:flex; flex-direction:column; height:100vh; width:100%; align-items:center; justify-content:center; background:#000;">
-                <div style="color:#fff100; font-family:Onest,sans-serif; font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:2px; animation: pulse 1.5s infinite;">ЗАГРУЗКА СМЕНЫ...</div>
+                <div style="color:#fff100; font-family:Onest,sans-serif; font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:2px; animation: opacityPulse 1.5s ease-in-out infinite;">ЗАГРУЗКА СМЕНЫ...</div>
+                <style>@keyframes opacityPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }</style>
             </div>`;
     }
 
