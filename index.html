@@ -92,7 +92,7 @@
         <div style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:20px; font-weight:bold; text-align:left; font-size: 14px; line-height: 1.4;">
             ⚠️ После проверки ТМ продиктует тебе ПИН-код. Введи его ниже.
         </div>
-        <input type="password" id="scout-pin" inputmode="numeric" pattern="[0-9]*" placeholder="Введи PIN-код от ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;">
+        <input type="password" id="scout-pin" inputmode="numeric" pattern="[0-9]*" placeholder="Введи PIN-код от ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;" oninput="document.querySelector('#screen-mentor .confirm-btn, #screen-mentor button[onclick*=verifyPin]').disabled = this.value.length < 4">
         <button style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">🔓 Подтвердить</button>
         <button class="reset-btn" onclick="showScreen('screen-roadmap')">← Назад</button>
     </div>
@@ -106,7 +106,7 @@
                 <source src="podcast.m4a" type="audio/mp4">
             </audio>
         </div>
-        <button style="background:var(--green); color:white; margin-top:20px;" onclick="completeStep(5)">✅ Подкаст прослушан</button>
+        <button style="background:var(--green); color:white; margin-top:20px;" id="btn-podcast-done" disabled onclick="completeStep(5)">✅ Подкаст прослушан</button>
     </div>
 
     <!-- Финальный квиз -->
