@@ -895,37 +895,60 @@ function renderGameNode(nodeId) {
             </div>
         </div>
 
-        <div class="game-bottom">
+        <!-- ФАЗА 1: пульсирующая подсказка — видна сразу, картинка весь экран -->
+        <div class="game-tap-hint" id="game-tap-hint">👆 Нажми, чтобы начать</div>
+
+        <!-- ФАЗА 2: пузырь с заголовком — скрыт до тапа -->
+        <div class="game-phase2-bottom" id="game-phase2">
             <div class="game-scene-header">
                 <div class="game-tap-chapter">${node.chapter || ''}</div>
                 <div class="game-tap-title">${node.title}</div>
             </div>
-
-            <!-- Жёлтый пузырь — нажми чтобы скрыть и увидеть вопросы -->
             <div class="game-bubble-tap ${node.bubble_type === 'narrator' ? 'game-bubble-narrator-tap' : ''}" id="game-bubble-tap" onclick="revealChoices('${nodeId}')">
                 ${node.bubble.replace(/\n/g, '<br>')}
                 <div class="game-bubble-hint">Нажми, чтобы ответить ↓</div>
             </div>
-
-            <!-- Кнопки — скрыты до нажатия на пузырь -->
-            <div class="game-choices" id="game-choices-container" style="display:none;">
-                ${choicesHtml}
-            </div>
         </div>
-    `;
+
+        <!-- ФАЗА 3: кнопки — скрыты до тапа на пузырь -->
+        <div class="game-choices-wrap" id="game-choices-container" style="position:absolute;bottom:0;left:0;right:0;padding:0 14px 24px;z-index:15;display:flex;flex-direction:column;gap:8px;">
+            ${choicesHtml}
+        </div>    `;
 
     // Вешаем обработчики на кнопки
     container.querySelectorAll('.game-choice-btn').forEach((btn, i) => {
         const choice = node.choices[i];
         btn.onclick = () => handleGameChoice(choice, btn);
     });
+    // ФАЗА 1 → ФАЗА 2: тап на любое место экрана (кроме кнопок) показывает пузырь
+    container.addEventListener('click', function phase1Handler(e) {
+        // Игнорируем клики по кнопкам и пузырю
+        if (e.target.closest('.game-choice-btn') || e.target.closest('#game-bubble-tap') || e.target.closest('#game-choices-container')) return;
+        const hint = document.getElementById('game-tap-hint');
+        const phase2 = document.getElementById('game-phase2');
+        if (!phase2 || phase2.classList.contains('visible')) return;
+        // Скрываем подсказку фазы 1
+        if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.3s'; }
+        // Показываем пузырь фазы 2
+        phase2.classList.add('visible');
+        // Удаляем обработчик чтобы не срабатывал повторно
+        container.removeEventListener('click', phase1Handler);
+    });
 }
 
 function revealChoices(nodeId) {
-    const bubble = document.getElementById('game-bubble-tap');
+    // ФАЗА 2 → ФАЗА 3: скрываем пузырь, показываем кнопки с анимацией
+    const phase2 = document.getElementById('game-phase2');
     const choices = document.getElementById('game-choices-container');
-    if (bubble) bubble.style.display = 'none';
-    if (choices) choices.style.display = 'flex';
+    if (phase2) {
+        phase2.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        phase2.style.transform = 'translateY(100%)';
+        phase2.style.opacity = '0';
+        setTimeout(() => { phase2.style.display = 'none'; }, 300);
+    }
+    if (choices) {
+        choices.classList.add('visible');
+    }
 }
 
 function renderEnding(node, nodeId) {
