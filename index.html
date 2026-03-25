@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Portal | Карета Мобилити</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-            <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
 
@@ -51,7 +51,7 @@
         <input type="text" id="user-city" placeholder="Город / Локация" oninput="validateForm()">
         <button id="btn-start" disabled onclick="saveAndGo()">Начать обучение 🚀</button>
         <button class="reset-btn" onclick="logout()">← Сменить роль</button>
-            </div>
+    </div>
     <!-- Роадмап -->
     <div id="screen-roadmap" class="screen">
         <h2>🗺️ Твой путь</h2>
@@ -61,7 +61,6 @@
         <button class="reset-btn" style="margin-top:5px !important;" onclick="logout()">← Сменить роль</button>
     </div>
 
-            
     <!-- Видео -->
     <div id="screen-video" class="screen center">
         <h2>📺 Основы культуры</h2>
@@ -73,11 +72,12 @@
 
     <!-- Игра-симулятор -->
     <div id="screen-game" class="screen" style="padding:0;overflow:hidden;background:#000;">
-                <div class="game-container"></div>
+        <div class="game-container"></div>
     </div>                
+
     <!-- Тест-драйв -->
     <div id="screen-testdrive" class="screen center">
-            <p style=="text-align:left;">Ты не сможешь сдавать кареты, пока сам не почувствуешь габариты. Возьми свободную Карету и сделай 2 полноценных круга по парку.</p>
+        <p style="text-align:left;">Ты не сможешь сдавать кареты, пока сам не почувствуешь габариты. Возьми свободную Карету и сделай 2 полноценных круга по парку.</p>
         <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"><span>Сделал 2 круга по парку.</span></div>
         <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"><span>Понял тормоза и габариты.</span></div>
         <div class="checklist-item"><input type="checkbox" onchange="checkDrive()"><span>Вернул карету на место!</span></div>
@@ -93,7 +93,7 @@
             ⚠️ После проверки ТМ продиктует тебе ПИН-код. Введи его ниже.
         </div>
         <input type="password" id="scout-pin" inputmode="numeric" pattern="[0-9]*" placeholder="Введи PIN-код от ТМ" maxlength="4" style="letter-spacing:10px; font-size:24px;" oninput="document.querySelector('#screen-mentor .confirm-btn, #screen-mentor button[onclick*=verifyPin]').disabled = this.value.length < 4">
-        <button style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">🔓 Подтвердить</button>
+        <button disabled style="background:var(--blue); color:white; box-shadow:0 5px 0 #2980b9;" onclick="verifyPin()">🔓 Подтвердить</button>
         <button class="reset-btn" onclick="showScreen('screen-roadmap')">← Назад</button>
     </div>
 
@@ -106,7 +106,7 @@
                 <source src="podcast.m4a" type="audio/mp4">
             </audio>
         </div>
-        <button style="background:var(--green); color:white; margin-top:20px;" id="btn-podcast-done"  onclick="completeStep(5)">✅ Подкаст прослушан</button>
+        <button style="background:var(--green); color:white; margin-top:20px;" id="btn-podcast-done" onclick="completeStep(5)">✅ Подкаст прослушан</button>
     </div>
 
     <!-- Финальный квиз -->
@@ -114,6 +114,7 @@
         <h3 id="prac-text" style="margin-bottom:20px;"></h3>
         <div id="prac-options" style="display:flex;flex-direction:column;gap:10px;"></div>
     </div>
+
     <!-- Финиш -->
     <div id="screen-finish" class="screen center">
         <img src="logo.jpg" class="logo-main" onerror="this.src='https://placehold.co/400x400/FFED00/000000?text=WIN'">
@@ -138,11 +139,6 @@
         <button class="reset-btn" style="margin-top: 20px !important;" onclick="showScreen('screen-finish')">← Назад</button>
     </div>
 
-    <!-- Экзамен -->
-    <div id="screen-practice" class="screen">
-        <h3 id="prac-text" style="font-size: 18px; line-height: 1.4; margin-bottom: 20px; font-weight: 800; color: #111;"></h3>
-        <div id="prac-options"></div>
-    </div>
 </div>
 
 <!-- ПРИЛОЖЕНИЕ ТМ -->
@@ -201,12 +197,11 @@
     <button onclick="closeGameFeedback()" style="display:block; background:#fff100; color:#000; border:none; padding:16px; border-radius:14px; font-size:16px; font-weight:900; font-family:Onest,sans-serif; width:100%; text-transform:uppercase; letter-spacing:1px; cursor:pointer; margin-top:10px;">Продолжить →</button>
 </div>
 
-
-            <script src="js/config.js"></script>
-        <script src="js/router.js"></script>
-        <script src="js/scout.js?v=3"></script>
-                <script src="js/game.js?v=43"></script>
-                                <script src="js/quiz.js"></script>
-        <script src="js/tm.js"></script>
-    </body>
+<script src="js/config.js"></script>
+<script src="js/router.js"></script>
+<script src="js/scout.js?v=4"></script>
+<script src="js/game.js?v=44"></script>
+<script src="js/quiz.js"></script>
+<script src="js/tm.js"></script>
+</body>
 </html>
