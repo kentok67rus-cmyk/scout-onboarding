@@ -137,8 +137,7 @@
 })();
 
 // =============================================================== 
-165
-    () {
+function startSimulatorGame() {
     // Create screen-game if it doesn't exist
     if (!document.getElementById('screen-game')) {
         const appScout = document.getElementById('app-scout');
@@ -821,6 +820,22 @@ const STAT_DANGER = 15;
 let currentStats = { loyalty: 50, tech: 50, safety: 50 };
 let gameChoicesLocked = false;
 
+function startSimulatorGame() {
+        // Создаём screen-game в DOM если ещё нет
+        if (!document.getElementById('screen-game')) {
+                    const appScout = document.getElementById('app-scout');
+                    const sg = document.createElement('div');
+                    sg.id = 'screen-game'; sg.className = 'screen';
+                    sg.innerHTML = '<div class="game-container"></div><div id="game-feedback-popup"><div id="gf-title"></div><div id="gf-text"></div><button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить</button></div>';
+                    if (appScout) appScout.appendChild(sg);
+                }
+    currentStats = { loyalty: 50, tech: 50, safety: 50 };
+                    const _sg = document.getElementById('screen-game');
+            if (_sg && !_sg.querySelector('.game-container')) { const _gc = document.createElement('div'); _gc.className = 'game-container'; _sg.insertBefore(_gc, _sg.firstChild); }
+    gameChoicesLocked = false;
+    showScreen('screen-game');
+    renderGameNode('prologue');
+}
 
 function updateGameStatsUI() {
     ['loyalty','tech','safety'].forEach(key => {
