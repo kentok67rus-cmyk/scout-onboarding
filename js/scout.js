@@ -4,6 +4,25 @@ let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
 let currentProgressStep = 1;
 let videoTimeout; // Добавлено для фикса таймера
 
+// --- ФОНОВАЯ ПРЕДЗАГРУЗКА КАРТИНОК ИГРЫ ---
+// Эта функция запускается тихо при старте приложения, 
+// чтобы картинки симулятора скачались в кэш ДО того, как скаут дойдет до игры.
+function silentPreloadGameAssets() {
+    // Ждем 2 секунды после старта приложения, чтобы не тормозить основной интерфейс,
+    // и начинаем потихоньку тянуть картинки в кэш браузера.
+    setTimeout(() => {
+        // Убеждаемся, что объект nodeImages доступен из game.js
+        if (typeof nodeImages !== 'undefined' && typeof IMAGE_BASE_PATH !== 'undefined') {
+            const imageUrls = Object.values(nodeImages).map(filename => IMAGE_BASE_PATH + filename);
+            imageUrls.forEach(url => {
+                let img = new Image();
+                img.src = url;
+            });
+        }
+    }, 2000);
+}
+
+
 const roadmapData = [
     { level: 1, levelTitle: "Уровень 1: Старт (Бейдж)" },
     { id: 1, icon: '📺', title: 'Основы культуры', desc: 'Видео-введение' },
@@ -38,6 +57,7 @@ function syncScoutProgress(status) {
 }
 
 function initScout() {
+    silentPreloadGameAssets(); // Запускаем фоновую предзагрузку картинок
     let n = localStorage.getItem('scoutName');
     if (n && n.length > 1) {
         userData.name = n;
