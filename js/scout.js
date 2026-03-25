@@ -169,7 +169,7 @@ function renderRoadmap() {
 
 function handleStepClick(id) {
     if (id > currentProgressStep) { haptic('warning'); return; }
-    if (id === 1) { showScreen('screen-video'); const vb = document.getElementById('btn-video-done'); if (vb) vb.disabled = true; const vi = document.getElementById('intro-video'); if (vi) { vi.currentTime = 0; vi.onended = () => { vb.disabled = false; }; } }
+    if (id === 1) { showScreen('screen-video'); const vb = document.getElementById('btn-video-done'); if (vb) { vb.disabled = true; setTimeout(() => { vb.disabled = false; }, 45000); } }
     if (id === 2) startSimulatorGame();    if (id === 3) { showScreen('screen-testdrive'); const db = document.getElementById('btn-drive-finish'); if (db) db.disabled = true; }
     if (id === 4) showScreen('screen-mentor');
     if (id === 5) showScreen('screen-audio');
