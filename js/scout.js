@@ -2,6 +2,7 @@
 
 let userData = { name: "", phone: "", city: "", birth: "", score: 0, coins: 0 };
 let currentProgressStep = 1;
+let videoTimeout; // Добавлено для фикса таймера
 
 const roadmapData = [
     { level: 1, levelTitle: "Уровень 1: Старт (Бейдж)" },
@@ -132,17 +133,19 @@ function showScreen(id) {
     let scr = document.getElementById(id); if(scr) scr.classList.add('active');
     document.getElementById('statusBar').style.display =
         (id === 'screen-practice') ? 'flex' : 'none';
-        // Кнопка Назад
-        const screensWithBack = ['screen-video','screen-testdrive','screen-audio','screen-practice','screen-mentor','screen-game'];
-const oldBack = document.getElementById('back-btn-dynamic');
-        if (oldBack) oldBack.remove();
-        if (scr && screensWithBack.includes(id)) {
-        const backBtn = document.createElement('button');            backBtn.id = 'back-btn-dynamic';
-            backBtn.className = 'reset-btn';
-            backBtn.innerHTML = '← Назад';
-            backBtn.onclick = () => showScreen('screen-roadmap');
-            scr.appendChild(backBtn);
-        }
+
+    // Кнопка Назад
+    const screensWithBack = ['screen-video','screen-testdrive','screen-audio','screen-practice','screen-mentor','screen-game'];
+    const oldBack = document.getElementById('back-btn-dynamic');
+    if (oldBack) oldBack.remove();
+    if (scr && screensWithBack.includes(id)) {
+        const backBtn = document.createElement('button');            
+        backBtn.id = 'back-btn-dynamic';
+        backBtn.className = 'reset-btn';
+        backBtn.innerHTML = '← Назад';
+        backBtn.onclick = () => showScreen('screen-roadmap');
+        scr.appendChild(backBtn);
+    }
 }
 
 function renderRoadmap() {
@@ -169,8 +172,20 @@ function renderRoadmap() {
 
 function handleStepClick(id) {
     if (id > currentProgressStep) { haptic('warning'); return; }
-    if (id === 1) { showScreen('screen-video'); const vb = document.getElementById('btn-video-done'); if (vb) { vb.disabled = true; setTimeout(() => { vb.disabled = false; }, 45000); } }
-    if (id === 2) startSimulatorGame();    if (id === 3) { showScreen('screen-testdrive'); const db = document.getElementById('btn-drive-finish'); if (db) db.disabled = true; }
+
+    // Исправлен баг с таймером видео
+    if (id === 1) { 
+        showScreen('screen-video'); 
+        const vb = document.getElementById('btn-video-done'); 
+        if (vb) { 
+            vb.disabled = true; 
+            clearTimeout(videoTimeout);
+            videoTimeout = setTimeout(() => { vb.disabled = false; }, 45000); 
+        } 
+    }
+
+    if (id === 2) startSimulatorGame();    
+    if (id === 3) { showScreen('screen-testdrive'); const db = document.getElementById('btn-drive-finish'); if (db) db.disabled = true; }
     if (id === 4) showScreen('screen-mentor');
     if (id === 5) showScreen('screen-audio');
     if (id === 6) startFinalQuiz();
@@ -213,6 +228,11 @@ function resetApp() {
         localStorage.removeItem('scoutProgress');
         localStorage.removeItem('scoutCoins');
         localStorage.removeItem('scoutCoinsSimulator');
+        // Сбрасываем данные пользователя, чтобы он снова попал на экран регистрации
+        localStorage.removeItem('scoutName');
+        localStorage.removeItem('scoutPhone');
+        localStorage.removeItem('scoutCity');
+        localStorage.removeItem('scoutBirth');
         location.reload();
     }
 }
