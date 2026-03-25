@@ -830,15 +830,7 @@ function startSimulatorGame() {
                     if (appScout) appScout.appendChild(sg);
                 }
     currentStats = { loyalty: 50, tech: 50, safety: 50 };
-        sg.innerHTML = `
-            <div class="game-container"></div>
-            <div class="game-feedback-backdrop" onclick="closeGameFeedback()"></div>
-            <div id="game-feedback-popup">
-                <div id="gf-title"></div>
-                <div id="gf-text"></div>
-                <button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить</button>
-            </div>
-        `;            const _sg = document.getElementById('screen-game');
+                    const _sg = document.getElementById('screen-game');
             if (_sg && !_sg.querySelector('.game-container')) { const _gc = document.createElement('div'); _gc.className = 'game-container'; _sg.insertBefore(_gc, _sg.firstChild); }
     gameChoicesLocked = false;
     showScreen('screen-game');
