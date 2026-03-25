@@ -859,22 +859,9 @@ function startSimulatorGame() {
     gameChoicesLocked = false;
     showScreen('screen-game');
 
-    // Экран загрузки
-    const container = document.querySelector('.game-container');
-    if (container) {
-        container.innerHTML = `
-            <div style="display:flex; flex-direction:column; height:100vh; width:100%; align-items:center; justify-content:center; background:#000;">
-                <div style="color:#fff100; font-family:Onest,sans-serif; font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:2px; animation: opacityPulse 1.5s ease-in-out infinite;">ЗАГРУЗКА СМЕНЫ...</div>
-                <style>@keyframes opacityPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }</style>
-            </div>`;
-    }
-
-    // Собираем пути к картинкам (в вашем коде есть const nodeImages = {...})
-    const imageUrls = Object.values(nodeImages).map(filename => IMAGE_BASE_PATH + filename);
-
-    preloadGameImages(imageUrls, () => {
-        renderGameNode('prologue');
-    });
+    // Картинки уже начали грузиться в фоне при старте приложения,
+    // поэтому здесь мы просто моментально запускаем первую сцену.
+    renderGameNode('prologue');
 }
 
 function updateGameStatsUI() {
