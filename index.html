@@ -73,7 +73,7 @@
 
     <!-- Игра-симулятор -->
     <div id="screen-game" class="screen" style="padding:0;overflow:hidden;background:#000;">
-                    </div>
+                <div class="game-container"></div>
     </div>                
     <!-- Тест-драйв -->
     <div id="screen-testdrive" class="screen center">
@@ -109,6 +109,11 @@
         <button style="background:var(--green); color:white; margin-top:20px;" onclick="completeStep(5)">✅ Подкаст прослушан</button>
     </div>
 
+    <!-- Финальный квиз -->
+    <div id="screen-practice" class="screen center">
+        <h3 id="prac-text" style="margin-bottom:20px;"></h3>
+        <div id="prac-options" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
     <!-- Финиш -->
     <div id="screen-finish" class="screen center">
         <img src="logo.jpg" class="logo-main" onerror="this.src='https://placehold.co/400x400/FFED00/000000?text=WIN'">
