@@ -121,7 +121,7 @@
     .game-choice-btn:nth-child(1) { animation-delay: 0.05s; }
     .game-choice-btn:nth-child(2) { animation-delay: 0.1s; }
     .game-choice-btn:nth-child(3) { animation-delay: 0.15s; }
-    @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }     .game-phase2-bottom { display: none; position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; padding: 0 16px 28px; }     .game-phase2-bottom.visible { display: block; }     .game-tap-hint { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.15); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: 'Onest', sans-serif; z-index: 10; animation: pulse 1.5s ease-in-out infinite; white-space: nowrap; }     @keyframes pulse { 0%,100%{opacity:1;transform:translateX(-50%) scale(1)} 50%{opacity:0.6;transform:translateX(-50%) scale(0.95)} }
     .game-choice-btn:active { transform: scale(0.97) !important; }
     .game-choice-letter {
         background: #fff100; color: #000;
@@ -911,7 +911,7 @@ function renderGameNode(nodeId) {
         </div>
 
         <!-- ФАЗА 3: кнопки — скрыты до тапа на пузырь -->
-        <div class="game-choices-wrap" id="game-choices-container" style="position:absolute;bottom:0;left:0;right:0;padding:0 14px 24px;z-index:15;display:flex;flex-direction:column;gap:8px;">
+        <div class="game-choices-wrap" id="game-choices-container" style="position:absolute;bottom:0;left:0;right:0;padding:0 14px 24px;z-index:15;flex-direction:column;gap:8px;display:none;">
             ${choicesHtml}
         </div>    `;
 
@@ -947,7 +947,7 @@ function revealChoices(nodeId) {
         setTimeout(() => { phase2.style.display = 'none'; }, 300);
     }
     if (choices) {
-        choices.classList.add('visible');
+        choices.style.display = 'flex';
     }
 }
 
