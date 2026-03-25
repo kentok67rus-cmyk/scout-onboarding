@@ -136,7 +136,7 @@
     document.head.appendChild(style);
 })();
 
-=============================================================== 
+// =============================================================== 
 function startSimulatorGame() {
     // Create screen-game if it doesn't exist
     if (!document.getElementById('screen-game')) {
