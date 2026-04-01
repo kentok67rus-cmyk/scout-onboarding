@@ -368,7 +368,7 @@ const gameData = {   "prologue": {
         "effects": { "loyalty": -30, "tech": 0, "safety": -5 }
       }
     ]
-  }
+  },
 
   "good_7": {
     "art": "📸🅿️✅",
@@ -811,6 +811,10 @@ function startSimulatorGame() {
     showScreen('screen-game');
     renderGameNode('prologue');
 }
+
+
+
+
 
 
 // --- ФУНКЦИЯ ПРЕДЗАГРУЗКИ КАРТИНОК ---
