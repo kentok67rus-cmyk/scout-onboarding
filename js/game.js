@@ -137,39 +137,7 @@
 })();
 
 // =============================================================== 
-function startSimulatorGame() {
-    // Create screen-game if it doesn't exist
-    if (!document.getElementById('screen-game')) {
-        const appScout = document.getElementById('app-scout');
-        if (appScout) {
-            const sg = document.createElement('div');
-            sg.id = 'screen-game';
-            sg.className = 'screen';
-            appScout.appendChild(sg);
-        }
-    }
-    const screenGame = document.getElementById('screen-game');
-    if (!screenGame) return;
-    // Create game-container if needed
-    if (!screenGame.querySelector('.game-container')) {
-        const gc = document.createElement('div');
-        gc.className = 'game-container';
-        screenGame.insertBefore(gc, screenGame.firstChild);
-    }
-    // Create feedback popup if needed
-    if (!document.getElementById('game-feedback-popup')) {
-        const popup = document.createElement('div');
-        popup.id = 'game-feedback-popup';
-        popup.className = 'game-feedback-popup';
-        popup.style.display = 'none';
-        popup.innerHTML = '<div id="gf-title"></div><div id="gf-text"></div><button onclick="closeGameFeedback()" style="background:#fff100;border:none;padding:12px 24px;border-radius:12px;font-weight:900;font-size:15px;margin-top:12px;cursor:pointer;width:100%">Продолжить →</button>';
-        screenGame.appendChild(popup);
-    }
-    currentStats = { loyalty: 50, tech: 50, safety: 50 };
-    gameChoicesLocked = false;
-    showScreen('screen-game');
-    renderGameNode('prologue');
-}
+
 // ====================================================================
 
 //  ДАННЫЕ ИГРЫ
@@ -826,6 +794,25 @@ const STAT_DANGER = 15;
 let currentStats = { loyalty: 50, tech: 50, safety: 50 };
 let gameChoicesLocked = false;
 
+
+function startSimulatorGame() {
+    const screenGame = document.getElementById('screen-game');
+    if (!screenGame) return;
+
+    // Убедимся, что есть контейнер игры
+    if (!screenGame.querySelector('.game-container')) {
+        const gc = document.createElement('div');
+        gc.className = 'game-container';
+        screenGame.insertBefore(gc, screenGame.firstChild);
+    }
+
+    currentStats = { loyalty: 50, tech: 50, safety: 50 };
+    gameChoicesLocked = false;
+    showScreen('screen-game');
+    renderGameNode('prologue');
+}
+
+
 // --- ФУНКЦИЯ ПРЕДЗАГРУЗКИ КАРТИНОК ---
 function preloadGameImages(urls, callback) {
     let loadedCounter = 0;
@@ -846,29 +833,7 @@ function preloadGameImages(urls, callback) {
     });
 }
 
-function startSimulatorGame() {
-    // Создаём screen-game в DOM если ещё нет
-    if (!document.getElementById('screen-game')) {
-        const appScout = document.getElementById('app-scout');
-        const sg = document.createElement('div');
-        sg.id = 'screen-game'; sg.className = 'screen';
-        sg.innerHTML = '<div class="game-container"></div><div id="game-feedback-popup"><div id="gf-title"></div><div id="gf-text"></div><button class="comic-continue-btn" onclick="closeGameFeedback()">Продолжить</button></div>';
-        if (appScout) appScout.appendChild(sg);
-    }
-    currentStats = { loyalty: 50, tech: 50, safety: 50 };
-    const _sg = document.getElementById('screen-game');
-    if (_sg && !_sg.querySelector('.game-container')) { 
-        const _gc = document.createElement('div'); 
-        _gc.className = 'game-container'; 
-        _sg.insertBefore(_gc, _sg.firstChild); 
-    }
-    gameChoicesLocked = false;
-    showScreen('screen-game');
 
-    // Картинки уже начали грузиться в фоне при старте приложения,
-    // поэтому здесь мы просто моментально запускаем первую сцену.
-    renderGameNode('prologue');
-}
 
 function updateGameStatsUI() {
     ['loyalty','tech','safety'].forEach(key => {
